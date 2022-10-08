@@ -1,0 +1,27 @@
+const en = {
+  'authorization.title': 'Authorization',
+  'changeLanguage.title': 'Change language',
+  'onboarding.button': 'Next',
+  'account.headerTitle': 'Account',
+  'settings.headerTitle': 'Settings',
+  'menu.header.menu.settings': 'Settings',
+  'menu.header.menu.logout': 'Logout',
+  'menu.goodsAndMaterials.title': 'Goods and materials',
+  'menu.goodsAndMaterials.find': 'Find',
+  'menu.goodsAndMaterials.create': 'Create',
+  'menu.goodsAndMaterials.issueGoods': 'Issue goods',
+  'menu.goodsAndMaterials.receive': 'Receive',
+  'menu.goodsAndMaterials.return': 'Return',
+  'menu.scanning.title': 'Scanning',
+  'menu.scanning.scan': 'Scan',
+  'menu.scanning.qrMarking': 'QR Marking',
+  'menu.scanning.changeQr': 'Change QR',
+  'menu.stocktaking': 'Stocktaking',
+  'menu.users.title': 'Users',
+  'menu.users.find': 'Find',
+  'menu.users.create': 'Create',
+  'menu.reports.title': 'Reports',
+  'menu.reports.getReport': 'Get excel report',
+};
+
+export default en;
