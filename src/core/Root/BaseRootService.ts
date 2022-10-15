@@ -42,6 +42,9 @@ export default abstract class BaseRootService implements Root, Service {
   get appearance() {
     return this._core.appearance;
   }
+  get configuration() {
+    return this._core.configuration;
+  }
 
   readonly navigationContainer = new NavigationContainerImpl();
   readonly navigationContainerBinding = this.navigationContainer;

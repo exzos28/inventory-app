@@ -1,11 +1,11 @@
 import React, {useCallback} from 'react';
 import {observer} from 'mobx-react-lite';
-import {AuthStackBindingProps} from './AuthStackBindingProps';
 import {SignInScreen} from '../../screens/SignInScreen';
+import {RootStackBindingProps} from '../RootStack/RootStackBindingProps';
 
-export type SignInBindingProps = AuthStackBindingProps<'SignIn'>;
-
-export default observer(function SignInBinding(props: SignInBindingProps) {
+export default observer(function SignInBinding(
+  props: RootStackBindingProps<'Auth'>,
+) {
   const {navigation} = props;
   const goToSignUp = useCallback(
     () => navigation.navigate('SignUp'),

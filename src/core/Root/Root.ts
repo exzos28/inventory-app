@@ -14,6 +14,7 @@ import {DeviceInfo} from '../DeviceInfo';
 import {Appearance} from '../Appearance';
 import {AppWindow, AppWindowState} from '../AppWindow';
 import {WindowDimensions, WindowDimensionsState} from '../WindowDimensions';
+import {Configuration} from '../Configuration';
 
 export interface Root {
   readonly appLifecycle: AppLifecycle;
@@ -34,4 +35,5 @@ export interface Root {
   readonly windowDimensions: WindowDimensions;
   readonly windowDimensionsState: WindowDimensionsState;
   readonly appearance: Appearance;
+  readonly configuration: Configuration;
 }

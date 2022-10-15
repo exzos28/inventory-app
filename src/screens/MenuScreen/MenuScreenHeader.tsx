@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
 import {
-  Avatar,
   Divider,
   Icon,
   IconProps,
@@ -58,17 +57,18 @@ export default observer(function MenuScreenHeader() {
         </OverflowMenu>
       </React.Fragment>
     ),
-    [goToAuth, goToSettings, menuVisible, renderMenuAction, toggleMenu],
+    [
+      goToAuth,
+      goToSettings,
+      menuVisible,
+      renderMenuAction,
+      strings,
+      toggleMenu,
+    ],
   );
   const renderTitle = useCallback(
     (props?: TextProps) => (
       <View style={styles.titleContainer}>
-        <Avatar
-          style={styles.logo}
-          source={{
-            uri: 'https://akveo.github.io/react-native-ui-kitten/docs/assets/playground-build/static/media/icon.a78e4b51.png',
-          }}
-        />
         <Text {...props}>Test User</Text>
       </View>
     ),
@@ -97,8 +97,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  logo: {
     marginHorizontal: 16,
   },
 });

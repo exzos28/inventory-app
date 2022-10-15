@@ -25,6 +25,7 @@ export default observer(function AuthStack({navigation}: AuthStackProps) {
   }, [navigation]);
   return (
     <Navigator
+      initialRouteName="SignIn"
       screenOptions={{
         cardShadowEnabled: true,
         title: strings['authorization.title'],

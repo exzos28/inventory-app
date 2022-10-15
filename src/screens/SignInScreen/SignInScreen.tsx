@@ -2,8 +2,6 @@ import React, {useCallback, useState} from 'react';
 import {View, TouchableWithoutFeedback} from 'react-native';
 import {
   Button,
-  Input,
-  Layout,
   StyleService,
   Text,
   useStyleSheet,
@@ -13,6 +11,7 @@ import {
 import {observer} from 'mobx-react-lite';
 import CustomKeyboardAvoidingView from '../../components/CustomKeyboardAvoidingView';
 import {ScrollView} from 'react-native-gesture-handler';
+import useOnLogInPress, {OAuthVariant} from './useOnLogInPress';
 
 export type SignInScreenProps = {
   onSignUpPress: () => void;
@@ -21,39 +20,37 @@ export type SignInScreenProps = {
 export default observer(function SignInScreen({
   onSignUpPress,
 }: SignInScreenProps) {
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-
+  const onPress = useOnLogInPress();
   const styles = useStyleSheet(themedStyles);
-
-  const onForgotPasswordButtonPress = () => {};
-
-  const onPasswordIconPress = useCallback(() => {
-    setPasswordVisible(!passwordVisible);
-  }, [passwordVisible]);
-
-  const renderPasswordIcon = useCallback(
-    (props: IconProps) => (
-      <TouchableWithoutFeedback onPress={onPasswordIconPress}>
-        <Icon {...props} name={passwordVisible ? 'eye-off' : 'eye'} />
-      </TouchableWithoutFeedback>
-    ),
-    [onPasswordIconPress, passwordVisible],
-  );
 
   return (
     <CustomKeyboardAvoidingView style={styles.root}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.container}>
+        <View style={styles.headerView}>
+          <Text category="h1" status="control">
+            Hello
+          </Text>
+          <Text style={styles.signInLabel} category="s1" status="control">
+            Sign in to your account
+          </Text>
+        </View>
+
         <View style={styles.socialAuthContainer}>
+          <Text
+            style={styles.socialAuthHintText}
+            appearance="hint"
+            category="c2">
+            Sign In using Social Media
+          </Text>
           <View style={styles.socialAuthButtonsContainer}>
             <Button
               appearance="ghost"
               status="basic"
               size="giant"
               accessoryLeft={GoogleIcon}
+              onPress={() => onPress(OAuthVariant.Google)}
             />
             <Button
               appearance="ghost"

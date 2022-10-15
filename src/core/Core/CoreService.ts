@@ -8,12 +8,14 @@ import {HttpImpl} from '../Http';
 import {KeyValueMap, KeyValueStore, KeyValueStoreImpl} from '../KeyValueStore';
 import {JsonKeyValueMap, JsonKeyValueStoreImpl} from '../JsonKeyValueStore';
 import {AppearanceService} from '../Appearance';
+import {ConfigurationService} from '../Configuration';
 
 export default class CoreService implements Core, Service {
   readonly json = new JsonImpl(this);
   readonly http = new HttpImpl(this);
 
   readonly appLifecycle = new AppLifecycleService();
+  readonly configuration = new ConfigurationService(this);
 
   readonly errorRepository = new ErrorRepositoryImpl();
 
