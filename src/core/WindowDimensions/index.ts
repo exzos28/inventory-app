@@ -3,5 +3,3 @@ export {default as WindowDimensionsStateService} from './WindowDimensionsStateSe
 export {default as WindowDimensionsStatic} from './WindowDimensionsStatic';
 export * from './WindowDimensions';
 export * from './WindowDimensionsState';
-export {default as useWindowDimensions} from './useWindowDimensions';
-export {default as useScreenDimensions} from './useScreenDimensions';

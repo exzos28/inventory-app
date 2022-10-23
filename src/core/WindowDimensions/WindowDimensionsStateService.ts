@@ -6,7 +6,8 @@ import {WindowDimensionsState} from './WindowDimensionsState';
 import WindowDimensionsStatic from './WindowDimensionsStatic';
 
 export default class WindowDimensionsStateService
-  implements WindowDimensionsState, Service {
+  implements WindowDimensionsState, Service
+{
   @observable private _dimensions: Dimensions;
 
   constructor(

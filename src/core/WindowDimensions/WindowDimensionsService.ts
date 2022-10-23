@@ -5,7 +5,8 @@ import {Dimensions, WindowDimensions} from './WindowDimensions';
 import {BusImpl} from '../structure/Bus';
 
 export default class WindowDimensionsService
-  implements WindowDimensions, Service {
+  implements WindowDimensions, Service
+{
   private readonly _updates = new BusImpl<Dimensions>();
 
   get updates() {

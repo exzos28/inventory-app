@@ -19,7 +19,7 @@ export default observer(function StepList({steps}: StepListProps) {
   const strings = useStrings();
   return (
     <Space gutter={Gutter.Small}>
-      <Text category="h6">{strings['itemDetails.history']}</Text>
+      <Text category="h6">{strings['itemDetailsScreen.history']}</Text>
       <View>
         {steps.map((_, i) => (
           <ItemView key={i}>

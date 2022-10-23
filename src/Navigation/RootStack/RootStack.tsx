@@ -1,35 +1,54 @@
 import {observer} from 'mobx-react-lite';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {Platform} from 'react-native';
 import ChangeLanguageBinding from './ChangeLanguageBinding';
 import {useStrings} from '../../core';
 import MenuScreenBinding from './MenuBinding';
 import MenuScreenHeader from '../../screens/MenuScreen/MenuScreenHeader';
 import ScanQRBinding from './ScanQRBinding';
-import {TopNavigation} from '../../components/TopNavigation';
+import {Header} from '../components/Header';
 import SettingsBinding from './SettingsBinding';
 import FindUserBinding from './FindUserBinding';
 import FindItemBinding from './FindItemBinding';
-import ItemDetailsBinding from './ItemDetailsBinding';
+import ItemDetailsBinding, {ItemDetailsHeader} from './ItemDetailsBinding';
 import CreateItemBinding from './CreateItemBinding';
-import SignInBinding from '../AuthStack/SignInBinding';
-import SignUpBinding from '../AuthStack/SignUpBinding';
+import PickFieldNameBinding from './PickFieldNameBinding';
+import EditItemBinding from './EditItemBinding';
 
 export type RootParamList = {
   Menu: undefined;
   FindItem: undefined;
   ItemDetails: undefined;
-  CreateItem: undefined;
+
+  CreateItem:
+    | {
+        pickedValue:
+          | {
+              label: string;
+            }
+          | undefined;
+      }
+    | undefined;
+  EditItem:
+    | {
+        pickedValue:
+          | {
+              label: string;
+            }
+          | undefined;
+        // id: number; // TODO Pass id
+      }
+    | undefined;
+  PickFieldName: {
+    fromScreen: 'CreateItem' | 'EditItem';
+  };
+
   FindUser: undefined;
 
   Account: undefined;
   Settings: undefined;
   ScanQR: undefined;
   ChangeLanguage: undefined;
-
-  Auth: undefined;
-  SignUp: undefined;
 };
 
 const {Navigator, Screen, Group} = createStackNavigator<RootParamList>();
@@ -40,77 +59,91 @@ export const RootStack = observer(() => {
     <Navigator
       screenOptions={{cardShadowEnabled: true}}
       initialRouteName="Menu">
-      <Group>
-        <Screen
-          name="Menu"
-          options={{
-            header: props => <MenuScreenHeader {...props} />,
-          }}
-          component={MenuScreenBinding}
-        />
+      <Screen
+        name="Menu"
+        options={{
+          header: props => <MenuScreenHeader {...props} />,
+        }}
+        component={MenuScreenBinding}
+      />
+      <Group
+        screenOptions={{
+          header: props => <Header {...props} />,
+        }}>
         <Screen
           name="Settings"
           options={{
             title: 'Settings',
-            header: props => <TopNavigation {...props} />,
           }}
           component={SettingsBinding}
         />
         <Screen
           name="FindItem"
           options={{
-            title: strings['findItem.headerTitle'],
-            header: props => <TopNavigation {...props} />,
+            title: strings['findItemScreen.headerTitle'],
           }}
           component={FindItemBinding}
         />
         <Screen
           name="ItemDetails"
           options={{
-            title: strings['itemDetails.headerTitle'],
-            header: props => <TopNavigation {...props} />,
+            title: strings['itemDetailsScreen.headerTitle'],
+            header: props => <ItemDetailsHeader {...props} />,
           }}
           component={ItemDetailsBinding}
         />
         <Screen
           name="CreateItem"
           options={{
-            title: strings['createItem.headerTitle'],
-            header: props => <TopNavigation {...props} />,
+            title: strings['createItemScreen.headerTitle'],
           }}
           component={CreateItemBinding}
+        />
+        <Screen
+          name="EditItem"
+          options={{
+            title: strings['editItemScreen.headerTitle'],
+          }}
+          component={EditItemBinding}
         />
         <Screen
           name="FindUser"
           options={{
             title: 'Find user',
-            header: props => <TopNavigation {...props} />,
           }}
           component={FindUserBinding}
         />
+        <Screen
+          options={{
+            title: 'Scan QR',
+          }}
+          name="ScanQR"
+          component={ScanQRBinding}
+        />
       </Group>
-      <Screen
-        options={{
-          title: 'Scan QR',
-          header: props => <TopNavigation {...props} />,
-        }}
-        name="ScanQR"
-        component={ScanQRBinding}
-      />
-      <Screen name="Auth" component={SignInBinding} />
       <Group
         screenOptions={{
-          cardOverlayEnabled: Platform.OS === 'ios', // Fix flick
           presentation: 'modal',
+          header: props => <Header {...props} />,
         }}>
         <Screen
           name="ChangeLanguage"
           component={ChangeLanguageBinding}
-          options={() => ({
+          options={{
             title: strings['changeLanguage.title'],
-            header: props => <TopNavigation {...props} presentation="modal" />,
-          })}
+          }}
         />
+      </Group>
+      <Group
+        screenOptions={{
+          headerShown: false,
+          animationEnabled: false,
+          cardStyle: {backgroundColor: 'transparent'},
+          cardOverlayEnabled: false,
+          gestureEnabled: false,
+          presentation: 'transparentModal',
+        }}>
+        <Screen name="PickFieldName" component={PickFieldNameBinding} />
       </Group>
     </Navigator>
   );

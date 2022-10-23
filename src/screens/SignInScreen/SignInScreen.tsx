@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react';
-import {View, TouchableWithoutFeedback} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import {
   Button,
   StyleService,
@@ -17,9 +17,7 @@ export type SignInScreenProps = {
   onSignUpPress: () => void;
 };
 
-export default observer(function SignInScreen({
-  onSignUpPress,
-}: SignInScreenProps) {
+export default observer(function SignInScreen({}: SignInScreenProps) {
   const onPress = useOnLogInPress();
   const styles = useStyleSheet(themedStyles);
 
@@ -71,7 +69,6 @@ export default observer(function SignInScreen({
   );
 });
 
-const PersonIcon = (props: IconProps) => <Icon {...props} name="person" />;
 const FacebookIcon = (props: IconProps) => <Icon {...props} name="facebook" />;
 const AppleIcon = (props: IconProps) => (
   <Icon {...props} name="apple" pack="assets" />

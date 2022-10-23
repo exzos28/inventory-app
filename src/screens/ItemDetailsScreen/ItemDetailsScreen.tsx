@@ -8,15 +8,18 @@ import {range} from 'lodash';
 import dayjs from 'dayjs';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
+import {Item} from '../../tempTypes';
 
 const ACTIONS_HEIGHT = 75;
 
 export type ItemDetailsScreenProps = {
   onTransferPress: () => void;
+  item: Item;
 };
 
 export default function ItemDetailsScreen({
   onTransferPress,
+  item,
 }: ItemDetailsScreenProps) {
   const strings = useStrings();
   return (
@@ -25,15 +28,21 @@ export default function ItemDetailsScreen({
         <SafeAreaView
           style={{paddingBottom: ACTIONS_HEIGHT}}
           edges={['bottom']}>
-          <ItemImage source={require('./hp.png')} />
+          <ItemImage source={{uri: item.image}} />
           <Bubble>
             <Space gutter={Gutter.Middle}>
               <Space>
                 <Space gutter={Gutter.Small}>
-                  <Text category="h6">HP Neverstop Laser</Text>
+                  <Text category="h6">{item.name}</Text>
                   <Text appearance="hint" category="c1">
-                    {strings['itemDetails.serialNumber']} 4QD21A
+                    {strings['itemDetailsScreen.serialNumber']}{' '}
+                    {item.serialNumber}
                   </Text>
+                  {item.fields.map((_, index) => (
+                    <Text key={index} appearance="hint" category="c1">
+                      {_.label} {_.value}
+                    </Text>
+                  ))}
                 </Space>
               </Space>
               <StepList steps={DATA} />
@@ -45,7 +54,7 @@ export default function ItemDetailsScreen({
       <AbsoluteActionsView gutter={[0, Gutter.Middle]}>
         <AbsoluteActionsContentView edges={['bottom']}>
           <Button accessoryLeft={CornerRightUpIcon} onPress={onTransferPress}>
-            {strings['itemDetails.transfer']}
+            {strings['itemDetailsScreen.transfer']}
           </Button>
         </AbsoluteActionsContentView>
       </AbsoluteActionsView>

@@ -1,3 +1,2 @@
-export default {
-
-};
+const de = {};
+export default de;

@@ -4,7 +4,7 @@ import {Translation} from './Translation';
 import {template, TemplateExecutor} from 'lodash';
 import Localization from './Localization';
 import {LocaleDict, LocaleKeys} from './LocaleStrings';
-import {de, en, ru, pl} from './dictionaries';
+import {de, en, pl} from './dictionaries';
 
 export default class TranslationService implements Translation {
   constructor(
@@ -33,8 +33,6 @@ export default class TranslationService implements Translation {
         return en;
       case Locale.German:
         return de;
-      case Locale.Russian:
-        return ru;
       case Locale.Polish:
         return pl;
       default:
@@ -80,7 +78,7 @@ export const translateLocale = (locale: string) => {
     case 'uk':
     case 'ru-US':
     case 'ru':
-      return Locale.Russian;
+      return Locale.English;
     default:
       return Locale.English;
   }

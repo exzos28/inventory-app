@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {observer} from 'mobx-react-lite';
 import {
   Divider,
@@ -10,8 +10,13 @@ import {
 } from '@ui-kitten/components';
 import {useStrings, variance} from '../../core';
 import Item from './Item';
+import {ITEMS} from '../../MOCK';
+import {Item as ItemType} from '../../tempTypes';
+import {FlatListProps, StyleSheet} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {NavigationIQKeyboardManager} from '../../Navigation/components';
 
-type FindUserScreenProps = {
+export type FindUserScreenProps = {
   searchValue: string;
   onChangeText: (_: string) => void;
   goToItemDetails: () => void;
@@ -23,36 +28,50 @@ export default observer(function FindUserScreen({
   goToItemDetails,
 }: FindUserScreenProps) {
   const strings = useStrings();
-  const renderItem = () => <Item onPress={goToItemDetails} />;
+  const renderItem: ListProps['renderItem'] = useCallback(
+    ({item}) => <Item onPress={goToItemDetails} item={item} />,
+    [goToItemDetails],
+  );
+  const insets = useSafeAreaInsets();
   return (
-    <List
-      data={data}
-      stickyHeaderIndices={[0]}
-      ListHeaderComponent={
-        <SearchView level="1">
-          <Input
-            autoFocus
-            placeholder={strings['findItem.input']}
-            value={searchValue}
-            onChangeText={onChangeText}
-            accessoryLeft={SearchIcon}
-          />
-        </SearchView>
-      }
-      ItemSeparatorComponent={Divider}
-      renderItem={renderItem}
-    />
+    <NavigationIQKeyboardManager>
+      <List
+        data={ITEMS}
+        stickyHeaderIndices={[0]}
+        contentContainerStyle={[
+          styles.container,
+          {paddingBottom: insets.bottom},
+        ]}
+        ListHeaderComponent={
+          <SearchView level="1">
+            <Input
+              size="large"
+              autoFocus
+              placeholder={strings['findItemScreen.input']}
+              value={searchValue}
+              onChangeText={onChangeText}
+              accessoryLeft={SearchIcon}
+            />
+          </SearchView>
+        }
+        ItemSeparatorComponent={Divider}
+        renderItem={renderItem}
+      />
+    </NavigationIQKeyboardManager>
   );
 });
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
+});
+
+type ListProps = FlatListProps<ItemType>;
 
 const SearchIcon = (props: IconProps) => (
   <Icon {...props} name="search-outline" />
 );
-
-const data = new Array(8).fill({
-  title: 'Item',
-  description: 'Description for Item',
-});
 
 const SearchView = variance(Layout)(() => ({
   root: {

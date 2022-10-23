@@ -47,12 +47,12 @@ export default observer(function MenuScreenHeader() {
           <MenuItem
             onPress={goToSettings}
             accessoryLeft={SettingsIcon}
-            title={strings['menu.header.menu.settings']}
+            title={strings['menuScreen.header.menu.settings']}
           />
           <MenuItem
             onPress={goToAuth}
             accessoryLeft={LogoutIcon}
-            title={strings['menu.header.menu.logout']}
+            title={strings['menuScreen.header.menu.logout']}
           />
         </OverflowMenu>
       </React.Fragment>

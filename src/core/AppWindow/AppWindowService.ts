@@ -26,7 +26,7 @@ export default class AppWindowService implements AppWindow, Service {
   subscribe() {
     const subs: NativeEventSubscription[] = [];
     subs.push(
-      RNAppState.addEventListener('change', (_status) => {
+      RNAppState.addEventListener('change', _status => {
         const status = AppWindowStatic.translateStatus(_status);
         this._updates.send(status, status);
       }),

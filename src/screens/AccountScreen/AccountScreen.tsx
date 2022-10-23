@@ -4,6 +4,6 @@ import {observer} from 'mobx-react-lite';
 
 export type AccountScreenProps = {};
 
-export default observer(function AccountScreen(props: AccountScreenProps) {
+export default observer(function AccountScreen({}: AccountScreenProps) {
   return <Layout level="1" />;
 });

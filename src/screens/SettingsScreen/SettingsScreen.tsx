@@ -1,6 +1,6 @@
 import React from 'react';
 import {observer} from 'mobx-react-lite';
-import {Icon, IconProps, Layout, Menu, MenuItem} from '@ui-kitten/components';
+import {IconProps, Layout, Menu, MenuItem} from '@ui-kitten/components';
 import {StyleSheet} from 'react-native';
 
 export type SettingsScreenProps = {

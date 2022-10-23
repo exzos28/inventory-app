@@ -25,15 +25,11 @@ export default class HttpImpl implements Http {
   }
 
   async fetch(
-    // eslint-disable-next-line no-undef
     input: RequestInfo,
-    // eslint-disable-next-line no-undef
     init?: RequestInit,
-    // eslint-disable-next-line no-undef
   ): Promise<Either<Response, NetworkError>> {
     const correlationId = this._generateCorrelationId();
     this.io.send(REQUEST, {correlationId, input, init});
-    // eslint-disable-next-line no-undef
     let response: Response;
     try {
       response = await fetch(input, init);

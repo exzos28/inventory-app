@@ -30,26 +30,26 @@ export default observer(function MenuScreen({
               <Space gutter={Gutter.Small}>
                 <Bubble gutter={[0, Gutter.Middle]}>
                   <Text category="h5">
-                    {strings['menu.goodsAndMaterials.title']}
+                    {strings['menuScreen.goodsAndMaterials.title']}
                   </Text>
                 </Bubble>
                 <View>
                   <MenuItem
-                    title={strings['menu.goodsAndMaterials.find']}
+                    title={strings['menuScreen.goodsAndMaterials.find']}
                     accessoryLeft={SearchIcon}
                     onPress={goToFindItem}
                   />
                   <MenuItem
-                    title={strings['menu.goodsAndMaterials.create']}
+                    title={strings['menuScreen.goodsAndMaterials.create']}
                     accessoryLeft={PlusOutlineIcon}
                     onPress={goToCreateItem}
                   />
                   <MenuItem
-                    title={strings['menu.goodsAndMaterials.transfer']}
+                    title={strings['menuScreen.goodsAndMaterials.transfer']}
                     accessoryLeft={UploadOutlineIcon}
                   />
                   <MenuItem
-                    title={strings['menu.goodsAndMaterials.receive']}
+                    title={strings['menuScreen.goodsAndMaterials.receive']}
                     accessoryLeft={DownloadOutlineIcon}
                   />
                 </View>
@@ -57,16 +57,18 @@ export default observer(function MenuScreen({
 
               <Space gutter={Gutter.Small}>
                 <Bubble gutter={[0, Gutter.Middle]}>
-                  <Text category="h5">{strings['menu.scanning.title']}</Text>
+                  <Text category="h5">
+                    {strings['menuScreen.scanning.title']}
+                  </Text>
                 </Bubble>
                 <View>
                   <MenuItem
                     onPress={onScanPress}
-                    title={strings['menu.scanning.scan']}
+                    title={strings['menuScreen.scanning.scan']}
                     accessoryLeft={CameraIcon}
                   />
                   <MenuItem
-                    title={strings['menu.scanning.qrMarking']}
+                    title={strings['menuScreen.scanning.qrMarking']}
                     accessoryLeft={ArrowheadDownOutlineIcon}
                   />
                 </View>
@@ -74,33 +76,35 @@ export default observer(function MenuScreen({
 
               <Space gutter={Gutter.Small}>
                 <Bubble gutter={[0, Gutter.Middle]}>
-                  <Text category="h5">{strings['menu.users.title']}</Text>
+                  <Text category="h5">{strings['menuScreen.users.title']}</Text>
                 </Bubble>
                 <View>
                   <MenuItem
-                    title={strings['menu.users.find']}
+                    title={strings['menuScreen.users.find']}
                     accessoryLeft={SearchIcon}
                     onPress={goToFindUser}
                   />
                   <MenuItem
-                    title={strings['menu.users.invite']}
+                    title={strings['menuScreen.users.invite']}
                     accessoryLeft={PersonAddOutline}
                   />
                 </View>
               </Space>
 
               <MenuItem
-                title={strings['menu.stocktaking']}
+                title={strings['menuScreen.stocktaking']}
                 accessoryLeft={DoneAllOutlineIcon}
               />
 
               <Space gutter={Gutter.Small}>
                 <Bubble gutter={[0, Gutter.Middle]}>
-                  <Text category="h5">{strings['menu.reports.title']}</Text>
+                  <Text category="h5">
+                    {strings['menuScreen.reports.title']}
+                  </Text>
                 </Bubble>
                 <View>
                   <MenuItem
-                    title={strings['menu.reports.getReport']}
+                    title={strings['menuScreen.reports.getReport']}
                     accessoryLeft={FileTextOutlineIcon}
                   />
                 </View>
