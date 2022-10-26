@@ -1,16 +1,18 @@
 import React from 'react';
 import {Either, useStrings} from '../../core';
 import {InputsResult, ItemFormScene} from '../../scenes/ItemFormScene';
-import {ITEMS} from '../../MOCK';
+import {ItemType} from '../../tempTypes';
 
 export type EditItemScreenProps = {
   onCreatePress: (_: InputsResult) => void;
   onNewFieldNameRequest: () => Promise<Either<string, void>>;
+  item: ItemType;
 };
 
 export default function EditItemScreen({
   onCreatePress,
   onNewFieldNameRequest,
+  item,
 }: EditItemScreenProps) {
   const strings = useStrings();
   return (
@@ -18,12 +20,10 @@ export default function EditItemScreen({
       onSubmitPress={onCreatePress}
       onNewFieldNameRequest={onNewFieldNameRequest}
       submitTitle={strings['editItemScreen.editButton']}
-      defaultValues={DEFAULT_VALUES}
+      defaultValues={{
+        ...item,
+        image: item.image ? {uri: item.image} : undefined,
+      }}
     />
   );
 }
-
-const DEFAULT_VALUES = {
-  ...ITEMS[0],
-  image: {uri: ITEMS[0].image},
-};

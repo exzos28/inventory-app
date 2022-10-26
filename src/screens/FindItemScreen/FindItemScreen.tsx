@@ -1,80 +1,51 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {observer} from 'mobx-react-lite';
-import {
-  Divider,
-  Icon,
-  IconProps,
-  Input,
-  Layout,
-  List,
-} from '@ui-kitten/components';
-import {useStrings, variance} from '../../core';
-import Item from './Item';
-import {ITEMS} from '../../MOCK';
-import {Item as ItemType} from '../../tempTypes';
-import {FlatListProps, StyleSheet} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NavigationIQKeyboardManager} from '../../Navigation/components';
+import FindItemList, {
+  ItemListProps,
+} from '../../components/modules/ItemList/ItemList';
+import {variance} from '../../core';
+import {Layout} from '@ui-kitten/components';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-export type FindUserScreenProps = {
+export type FindUserScreenProps = ItemListProps & {
   searchValue: string;
   onChangeText: (_: string) => void;
-  goToItemDetails: () => void;
 };
 
 export default observer(function FindUserScreen({
   searchValue,
   onChangeText,
-  goToItemDetails,
+  onItemPress,
+  data,
 }: FindUserScreenProps) {
-  const strings = useStrings();
-  const renderItem: ListProps['renderItem'] = useCallback(
-    ({item}) => <Item onPress={goToItemDetails} item={item} />,
-    [goToItemDetails],
-  );
   const insets = useSafeAreaInsets();
+  const paddingBottom = insets.bottom;
   return (
-    <NavigationIQKeyboardManager>
-      <List
-        data={ITEMS}
-        stickyHeaderIndices={[0]}
-        contentContainerStyle={[
-          styles.container,
-          {paddingBottom: insets.bottom},
-        ]}
-        ListHeaderComponent={
-          <SearchView level="1">
-            <Input
-              size="large"
-              autoFocus
-              placeholder={strings['findItemScreen.input']}
-              value={searchValue}
-              onChangeText={onChangeText}
-              accessoryLeft={SearchIcon}
-            />
-          </SearchView>
-        }
-        ItemSeparatorComponent={Divider}
-        renderItem={renderItem}
-      />
-    </NavigationIQKeyboardManager>
+    <RootNavigationIQKeyboardManager>
+      <RootLayout>
+        <FindItemList
+          searchValue={searchValue}
+          onChangeText={onChangeText}
+          onItemPress={onItemPress}
+          data={data}
+          contentContainerStyle={{paddingBottom}}
+        />
+      </RootLayout>
+    </RootNavigationIQKeyboardManager>
   );
 });
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
-});
-
-type ListProps = FlatListProps<ItemType>;
-
-const SearchIcon = (props: IconProps) => (
-  <Icon {...props} name="search-outline" />
+const RootNavigationIQKeyboardManager = variance(NavigationIQKeyboardManager)(
+  () => ({
+    root: {
+      flex: 1,
+    },
+  }),
 );
 
-const SearchView = variance(Layout)(() => ({
+const RootLayout = variance(Layout)(() => ({
   root: {
-    padding: 16,
+    flex: 1,
   },
 }));

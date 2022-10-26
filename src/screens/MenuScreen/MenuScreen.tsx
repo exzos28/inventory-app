@@ -12,6 +12,7 @@ export type MenuScreenProps = {
   goToFindUser: () => void;
   goToFindItem: () => void;
   goToCreateItem: () => void;
+  goToSelectUserToTransfer: () => void;
 };
 
 export default observer(function MenuScreen({
@@ -19,6 +20,7 @@ export default observer(function MenuScreen({
   goToFindUser,
   goToFindItem,
   goToCreateItem,
+  goToSelectUserToTransfer,
 }: MenuScreenProps) {
   const strings = useStrings();
   return (
@@ -47,6 +49,7 @@ export default observer(function MenuScreen({
                   <MenuItem
                     title={strings['menuScreen.goodsAndMaterials.transfer']}
                     accessoryLeft={UploadOutlineIcon}
+                    onPress={goToSelectUserToTransfer}
                   />
                   <MenuItem
                     title={strings['menuScreen.goodsAndMaterials.receive']}

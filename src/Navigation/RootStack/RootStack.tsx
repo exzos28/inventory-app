@@ -14,11 +14,25 @@ import ItemDetailsBinding, {ItemDetailsHeader} from './ItemDetailsBinding';
 import CreateItemBinding from './CreateItemBinding';
 import PickFieldNameBinding from './PickFieldNameBinding';
 import EditItemBinding from './EditItemBinding';
+import SelectUserToTransferBinding from './SelectUserToTransferBinding';
+import {ItemId, UserId} from '../../tempTypes';
+import ItemsSelectionForUserBinding from './ItemsSelectionForUserBinding';
+import ConfirmItemsTransferBinding from './ConfirmItemsTransferBinding';
 
 export type RootParamList = {
   Menu: undefined;
+  SelectUserToTransfer: undefined;
+  ItemsSelectionForUser: {
+    forUser: UserId;
+  };
+  ConfirmItemsTransfer: {
+    items: ItemId[];
+    forUser: UserId;
+  };
   FindItem: undefined;
-  ItemDetails: undefined;
+  ItemDetails: {
+    id: ItemId;
+  };
 
   CreateItem:
     | {
@@ -29,16 +43,14 @@ export type RootParamList = {
           | undefined;
       }
     | undefined;
-  EditItem:
-    | {
-        pickedValue:
-          | {
-              label: string;
-            }
-          | undefined;
-        // id: number; // TODO Pass id
-      }
-    | undefined;
+  EditItem: {
+    pickedValue?:
+      | {
+          label: string;
+        }
+      | undefined;
+    id: ItemId;
+  };
   PickFieldName: {
     fromScreen: 'CreateItem' | 'EditItem';
   };
@@ -73,7 +85,7 @@ export const RootStack = observer(() => {
         <Screen
           name="Settings"
           options={{
-            title: 'Settings',
+            title: strings['settings.headerTitle'],
           }}
           component={SettingsBinding}
         />
@@ -109,16 +121,37 @@ export const RootStack = observer(() => {
         <Screen
           name="FindUser"
           options={{
-            title: 'Find user',
+            title: strings['findUserScreen.headerTitle'],
           }}
           component={FindUserBinding}
         />
         <Screen
           options={{
-            title: 'Scan QR',
+            title: strings['scanQrScreen.headerTitle'],
           }}
           name="ScanQR"
           component={ScanQRBinding}
+        />
+        <Screen
+          options={{
+            title: strings['selectUserToTransferScreen.headerTitle'],
+          }}
+          name="SelectUserToTransfer"
+          component={SelectUserToTransferBinding}
+        />
+        <Screen
+          options={{
+            title: strings['itemsSelectionForUserScreen.headerTitle'],
+          }}
+          name="ItemsSelectionForUser"
+          component={ItemsSelectionForUserBinding}
+        />
+        <Screen
+          options={{
+            title: strings['confirmItemsTransferScreen.headerTitle'],
+          }}
+          name="ConfirmItemsTransfer"
+          component={ConfirmItemsTransferBinding}
         />
       </Group>
       <Group

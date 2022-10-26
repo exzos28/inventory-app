@@ -22,11 +22,16 @@ export default observer(function MenuScreenBinding({
     () => navigation.navigate('CreateItem'),
     [navigation],
   );
+  const goToSelectUserToTransfer = useCallback(
+    () => navigation.navigate('SelectUserToTransfer'),
+    [navigation],
+  );
   return (
     <MenuScreen
       goToFindUser={goToFindUser}
       goToFindItem={goToFindItem}
       goToCreateItem={goToCreateItem}
+      goToSelectUserToTransfer={goToSelectUserToTransfer}
       onScanPress={onScanPress}
     />
   );

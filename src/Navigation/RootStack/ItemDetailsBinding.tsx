@@ -11,24 +11,30 @@ import {
   TopNavigationAction,
   TopNavigationActionProps,
 } from '@ui-kitten/components';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+
+export type ItemDetailsBindingProps = RootStackBindingProps<'ItemDetails'>;
 
 export default observer(function ItemDetailsBinding({
-  navigation,
-}: RootStackBindingProps<'ItemDetails'>) {
-  return (
-    <ItemDetailsScreen item={ITEMS[0]} onTransferPress={navigation.goBack} />
-  );
+  route,
+}: ItemDetailsBindingProps) {
+  const itemId = route.params.id;
+  const item = ITEMS.find(_ => _.id === itemId);
+  if (!item) {
+    return null;
+  }
+  return <ItemDetailsScreen item={item} />;
 });
 
 export const ItemDetailsHeader = observer((props: HeaderProps) => {
-  const navigation =
-    useNavigation<RootStackBindingProps<'ItemDetails'>['navigation']>();
+  const navigation = useNavigation<ItemDetailsBindingProps['navigation']>();
+  const route = useRoute<ItemDetailsBindingProps['route']>();
+  const id = route.params.id;
   return (
     <Header
       {...props}
       accessoryRight={
-        <EditAction onPress={() => navigation.navigate('EditItem')} />
+        <EditAction onPress={() => navigation.navigate('EditItem', {id})} />
       }
     />
   );

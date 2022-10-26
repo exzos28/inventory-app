@@ -6,15 +6,19 @@ import {Alert} from 'react-native';
 import usePromisifyNavigation from './usePromisifyNavigation';
 import {InputsResult} from '../../scenes/ItemFormScene';
 import {EditItemScreen} from '../../screens/EditItemScreen';
+import {ITEMS} from '../../MOCK';
 
 type EditItemBindingProps = RootStackBindingProps<'EditItem'>;
 
 export default observer(function EditItemBinding({
   navigation,
+  route,
 }: EditItemBindingProps) {
   const {promisifyNavigate} = usePromisifyNavigation<
     EditItemBindingProps['route']
   >(() => navigation.navigate('PickFieldName', {fromScreen: 'EditItem'}));
+  const id = route.params.id;
+  const item = ITEMS.find(_ => _.id === id);
 
   const onNewFieldNameRequest = useCallback(async () => {
     const response = await promisifyNavigate();
@@ -32,10 +36,15 @@ export default observer(function EditItemBinding({
     Alert.alert('Result', str);
   }, []);
 
+  if (!item) {
+    return null;
+  }
+
   return (
     <EditItemScreen
       onNewFieldNameRequest={onNewFieldNameRequest}
       onCreatePress={edit}
+      item={item}
     />
   );
 });
