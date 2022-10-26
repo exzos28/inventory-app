@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import {createStackNavigator} from '@react-navigation/stack';
-import React, {useCallback} from 'react';
+import React from 'react';
 import {useStrings} from '../../core';
 import {AuthHeader} from '../../components/AuthHeader';
 import SignInBinding from './SignInBinding';
@@ -13,18 +13,13 @@ const {Navigator, Screen} = createStackNavigator<AuthParamList>();
 
 export default observer(function AuthStack() {
   const strings = useStrings();
-  const goToChangeLanguage = useCallback(() => {
-    // navigation.navigate('ChangeLanguage');
-  }, []);
   return (
     <Navigator
       initialRouteName="SignIn"
       screenOptions={{
         cardShadowEnabled: true,
         title: strings['authorization.title'],
-        header: props => (
-          <AuthHeader {...props} onLanguagePress={goToChangeLanguage} />
-        ),
+        header: props => <AuthHeader {...props} />,
         headerMode: 'float',
       }}>
       <Screen name="SignIn" component={SignInBinding} />
