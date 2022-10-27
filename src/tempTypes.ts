@@ -10,6 +10,12 @@ export type ItemType = {
     label: string;
     value: string;
   }[];
+  qrData: null | string;
+};
+
+export type ProjectType = {
+  id: ProjectId;
+  name: string;
 };
 
 export type UserType = {
@@ -30,3 +36,6 @@ export type ItemId = Opaque<string, typeof ITEM_ID>;
 
 export const USER_ID = Symbol.for('User id');
 export type UserId = Opaque<string, typeof USER_ID>;
+
+export const PROJECT_ID = Symbol.for('Project id');
+export type ProjectId = Opaque<string, typeof PROJECT_ID>;

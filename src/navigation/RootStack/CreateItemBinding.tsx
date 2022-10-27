@@ -5,7 +5,8 @@ import {RootStackBindingProps} from './RootStackBindingProps';
 import {error, success} from '../../core';
 import {Alert} from 'react-native';
 import usePromisifyNavigation from './usePromisifyNavigation';
-import {InputsResult} from '../../scenes/ItemFormScene';
+import {InputsResult} from '../../components/scenes/ItemFormScene';
+import {ITEMS} from '../../MOCK';
 
 type CreateItemBindingProps = RootStackBindingProps<'CreateItem'>;
 
@@ -27,10 +28,14 @@ export default observer(function CreateItemBinding({
     return error(undefined);
   }, [promisifyNavigate]);
 
-  const create = useCallback((_: InputsResult) => {
-    const str = JSON.stringify(_, null, 1);
-    Alert.alert('Result', str);
-  }, []);
+  const create = useCallback(
+    (_: InputsResult) => {
+      const str = JSON.stringify(_, null, 1);
+      Alert.alert('Result', str);
+      navigation.replace('ItemDetails', {id: ITEMS[0].id});
+    },
+    [navigation],
+  );
 
   return (
     <CreateItemScreen

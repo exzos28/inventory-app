@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, View} from 'react-native';
-import {Text} from '@ui-kitten/components';
+import {Button, Divider, Icon, IconProps, Text} from '@ui-kitten/components';
 import {Bubble, Gutter, Space} from '../../components';
 import {useStrings, variance} from '../../core';
 import StepList, {Step} from './StepList';
@@ -9,8 +9,6 @@ import dayjs from 'dayjs';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ItemType} from '../../tempTypes';
-
-const ACTIONS_HEIGHT = 75;
 
 export type ItemDetailsScreenProps = {
   item: ItemType;
@@ -21,9 +19,7 @@ export default function ItemDetailsScreen({item}: ItemDetailsScreenProps) {
   return (
     <RootView>
       <ScrollView>
-        <SafeAreaView
-          style={{paddingBottom: ACTIONS_HEIGHT}}
-          edges={['bottom']}>
+        <SafeAreaView edges={['bottom']}>
           <ItemImage source={{uri: item.image}} />
           <Bubble>
             <Space gutter={Gutter.Middle}>
@@ -44,19 +40,25 @@ export default function ItemDetailsScreen({item}: ItemDetailsScreenProps) {
               <StepList steps={DATA} />
             </Space>
           </Bubble>
+          <Divider />
+          <Bubble>
+            <Button
+              status={item.qrData ? 'basic' : 'primary'}
+              accessoryLeft={QrIcon}>
+              {item.qrData
+                ? strings['itemDetailsScreen.replaceQrButton']
+                : strings['itemDetailsScreen.addQrButton']}
+            </Button>
+          </Bubble>
         </SafeAreaView>
       </ScrollView>
-
-      {/*<AbsoluteActionsView gutter={[0, Gutter.Middle]}>*/}
-      {/*  <AbsoluteActionsContentView edges={['bottom']}>*/}
-      {/*    <Button accessoryLeft={CornerRightUpIcon} onPress={onTransferPress}>*/}
-      {/*      {strings['itemDetailsScreen.transfer']}*/}
-      {/*    </Button>*/}
-      {/*  </AbsoluteActionsContentView>*/}
-      {/*</AbsoluteActionsView>*/}
     </RootView>
   );
 }
+
+const QrIcon = (props: IconProps) => (
+  <Icon name="qr" pack="assets" {...props} />
+);
 
 const DATA: Step[] = range(10).map(_ => ({title: 'Title_' + _, date: dayjs()}));
 

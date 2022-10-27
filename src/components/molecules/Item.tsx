@@ -2,13 +2,13 @@ import React from 'react';
 import {IconProps, Layout, Text} from '@ui-kitten/components';
 import {observer} from 'mobx-react-lite';
 import {Image, StyleSheet} from 'react-native';
-import RippleButton, {RippleButtonProps} from '../../RippleButton';
-import {ItemType} from '../../../tempTypes';
-import Bubble from '../../Bubble';
-import {AlignItems, Gutter} from '../../types';
-import {Url, variance} from '../../../core';
-import Grid, {Cell} from '../../Grid';
-import Space from '../../Space';
+import RippleButton, {RippleButtonProps} from '../RippleButton';
+import {ItemType} from '../../tempTypes';
+import Bubble from '../Bubble';
+import {AlignItems, Gutter} from '../types';
+import {Url, variance} from '../../core';
+import Grid, {Cell} from '../Grid';
+import Space from '../Space';
 
 export type ExternalItemProps = {
   rightAccessory?: (item: ItemType) => React.ReactNode;

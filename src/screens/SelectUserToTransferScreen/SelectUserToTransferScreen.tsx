@@ -2,43 +2,32 @@ import React from 'react';
 
 import {observer} from 'mobx-react-lite';
 
-import {useTheme, variance} from '../../core/styling';
-import {Icon, Layout} from '@ui-kitten/components';
-import {UserList, UserListProps} from '../../components/modules/UserList';
+import {useTheme} from '../../core/styling';
+import {Icon} from '@ui-kitten/components';
 import {StyleSheet} from 'react-native';
 import Leveler from '../../components/Leveler';
 import {JustifyContent} from '../../components';
-import {NavigationIQKeyboardManager} from '../../Navigation/components';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {
+  FindUserScene,
+  FindUserSceneProps,
+} from '../../components/scenes/FindUserScene';
 
-export type SelectUserToTransferScreenProps = Exclude<
-  UserListProps,
-  'rightAccessory'
-> & {};
+export type SelectUserToTransferScreenProps = FindUserSceneProps & {};
 
-export default observer(function SelectUserToTransferScreen({
-  onChangeText,
-  searchValue,
-  data,
-  onItemPress,
-}: SelectUserToTransferScreenProps) {
+export default observer(function SelectUserToTransferScreen(
+  props: SelectUserToTransferScreenProps,
+) {
   const insets = useSafeAreaInsets();
   const paddingBottom = insets.bottom;
   return (
-    <RootNavigationIQKeyboardManager>
-      <RootLayout>
-        <UserList
-          onChangeText={onChangeText}
-          searchValue={searchValue}
-          onItemPress={onItemPress}
-          data={data}
-          rightAccessory={() => <RightAccessory />}
-          contentContainerStyle={{paddingBottom}}
-          initialNumToRender={30}
-          maxToRenderPerBatch={30}
-        />
-      </RootLayout>
-    </RootNavigationIQKeyboardManager>
+    <FindUserScene
+      {...props}
+      rightAccessory={() => <RightAccessory />}
+      contentContainerStyle={{paddingBottom}}
+      initialNumToRender={30}
+      maxToRenderPerBatch={30}
+    />
   );
 });
 
@@ -61,17 +50,3 @@ const styles = StyleSheet.create({
     height: 25,
   },
 });
-
-const RootNavigationIQKeyboardManager = variance(NavigationIQKeyboardManager)(
-  () => ({
-    root: {
-      flex: 1,
-    },
-  }),
-);
-
-const RootLayout = variance(Layout)(() => ({
-  root: {
-    flex: 1,
-  },
-}));

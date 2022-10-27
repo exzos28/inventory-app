@@ -18,7 +18,7 @@ export default observer(function AuthStack() {
       initialRouteName="SignIn"
       screenOptions={{
         cardShadowEnabled: true,
-        title: strings['authorization.title'],
+        title: strings['authorizationScreen.title'],
         header: props => <AuthHeader {...props} />,
         headerMode: 'float',
       }}>

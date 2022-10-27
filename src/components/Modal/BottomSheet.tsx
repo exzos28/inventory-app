@@ -98,12 +98,7 @@ const renderHandle: BottomSheetProps['handleComponent'] = props => (
   </View>
 );
 const styles = StyleSheet.create({
-  handle: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    left: 0,
-  },
+  handle: {},
 });
 
 const Handle = observer((props: BottomSheetHandleProps) => {

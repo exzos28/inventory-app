@@ -9,18 +9,20 @@ import {Bubble, Gutter, Space} from '../../components';
 
 export type MenuScreenProps = {
   onScanPress: () => void;
-  goToFindUser: () => void;
-  goToFindItem: () => void;
-  goToCreateItem: () => void;
-  goToSelectUserToTransfer: () => void;
+  onFindUserPress: () => void;
+  onFindItemPress: () => void;
+  onCreateItemPress: () => void;
+  onSelectUserToTransferPress: () => void;
+  onSelectItemForQrMarking: () => void;
 };
 
 export default observer(function MenuScreen({
   onScanPress,
-  goToFindUser,
-  goToFindItem,
-  goToCreateItem,
-  goToSelectUserToTransfer,
+  onFindUserPress,
+  onFindItemPress,
+  onCreateItemPress,
+  onSelectUserToTransferPress,
+  onSelectItemForQrMarking,
 }: MenuScreenProps) {
   const strings = useStrings();
   return (
@@ -39,17 +41,17 @@ export default observer(function MenuScreen({
                   <MenuItem
                     title={strings['menuScreen.goodsAndMaterials.find']}
                     accessoryLeft={SearchIcon}
-                    onPress={goToFindItem}
+                    onPress={onFindItemPress}
                   />
                   <MenuItem
                     title={strings['menuScreen.goodsAndMaterials.create']}
                     accessoryLeft={PlusOutlineIcon}
-                    onPress={goToCreateItem}
+                    onPress={onCreateItemPress}
                   />
                   <MenuItem
                     title={strings['menuScreen.goodsAndMaterials.transfer']}
                     accessoryLeft={UploadOutlineIcon}
-                    onPress={goToSelectUserToTransfer}
+                    onPress={onSelectUserToTransferPress}
                   />
                   <MenuItem
                     title={strings['menuScreen.goodsAndMaterials.receive']}
@@ -71,6 +73,7 @@ export default observer(function MenuScreen({
                     accessoryLeft={CameraIcon}
                   />
                   <MenuItem
+                    onPress={onSelectItemForQrMarking}
                     title={strings['menuScreen.scanning.qrMarking']}
                     accessoryLeft={ArrowheadDownOutlineIcon}
                   />
@@ -85,7 +88,7 @@ export default observer(function MenuScreen({
                   <MenuItem
                     title={strings['menuScreen.users.find']}
                     accessoryLeft={SearchIcon}
-                    onPress={goToFindUser}
+                    onPress={onFindUserPress}
                   />
                   <MenuItem
                     title={strings['menuScreen.users.invite']}

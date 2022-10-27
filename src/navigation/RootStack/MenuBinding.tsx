@@ -26,12 +26,17 @@ export default observer(function MenuScreenBinding({
     () => navigation.navigate('SelectUserToTransfer'),
     [navigation],
   );
+  const goToSelectItemForQrMarking = useCallback(
+    () => navigation.navigate('SelectItemForQrMarking'),
+    [navigation],
+  );
   return (
     <MenuScreen
-      goToFindUser={goToFindUser}
-      goToFindItem={goToFindItem}
-      goToCreateItem={goToCreateItem}
-      goToSelectUserToTransfer={goToSelectUserToTransfer}
+      onFindUserPress={goToFindUser}
+      onFindItemPress={goToFindItem}
+      onCreateItemPress={goToCreateItem}
+      onSelectUserToTransferPress={goToSelectUserToTransfer}
+      onSelectItemForQrMarking={goToSelectItemForQrMarking}
       onScanPress={onScanPress}
     />
   );

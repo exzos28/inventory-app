@@ -1,15 +1,15 @@
 import React, {useCallback} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Button, Icon, IconProps, Input} from '@ui-kitten/components';
-import {Bubble, Space} from '../../components';
-import {Either, useStrings, variance} from '../../core';
+import {Bubble, Space} from '../../index';
+import {Either, useStrings, variance} from '../../../core';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
 import {launchImageLibraryAsync, MediaTypeOptions} from 'expo-image-picker';
 import {Controller, useForm} from 'react-hook-form';
 import CustomFieldList from './CustomFieldList';
 import {Inputs, InputsResult} from './types';
-import {NavigationIQKeyboardManager} from '../../Navigation/components';
+import {NavigationIQKeyboardManager} from '../../../navigation/components';
 import {observer} from 'mobx-react-lite';
 
 export type ItemFormSceneProps = {

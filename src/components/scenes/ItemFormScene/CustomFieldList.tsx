@@ -3,12 +3,12 @@ import {View, TouchableWithoutFeedback} from 'react-native';
 
 import {observer} from 'mobx-react-lite';
 
-import {variance} from '../../core/styling';
+import {variance} from '../../../core/styling';
 import {Control, Controller, useFieldArray} from 'react-hook-form';
 import {Button, Icon, IconProps, Input} from '@ui-kitten/components';
-import {Space} from '../../components';
+import {Space} from '../../index';
 import {Inputs} from './types';
-import {Either, useStrings} from '../../core';
+import {Either, useStrings} from '../../../core';
 
 export type CustomFieldListProps = {
   control: Control<Inputs>;

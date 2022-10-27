@@ -13,10 +13,10 @@ import {
   RippleButton,
   Space,
 } from '../../components';
-import {ItemList, ItemListProps} from '../../components/modules/ItemList';
+import {ItemList, ItemListProps} from '../../components/organisms/ItemList';
 import {ItemType, UserType} from '../../tempTypes';
-import {translateUserRole} from '../../components/modules/UserList/UserItem';
 import {useStrings} from '../../core';
+import {translateUserRole} from '../../tempHelper';
 
 export type ConfirmItemsScreenProps = Exclude<
   ItemListProps,
@@ -64,7 +64,9 @@ export default observer(function ConfirmItemsScreen({
               <Bubble>
                 <Space gutter={Gutter.Tiny} align={AlignItems.Center}>
                   <Text category="h6">{user.name}</Text>
-                  <Text category="c2">{translateUserRole(user.role)}</Text>
+                  <Text category="c2">
+                    {translateUserRole(user.role, strings)}
+                  </Text>
                 </Space>
               </Bubble>
             </RippleButton>

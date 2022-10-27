@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {observer} from 'mobx-react-lite';
 import {
   Divider,
@@ -8,52 +8,45 @@ import {
   Layout,
   List,
 } from '@ui-kitten/components';
-import Item, {ExternalItemProps} from './Item';
-import {FlatListProps, StyleSheet} from 'react-native';
 import {useStrings, variance} from '../../../core';
-import {ItemType} from '../../../tempTypes';
+import {FlatListProps, StyleSheet} from 'react-native';
+import {UserType} from '../../../tempTypes';
+import UserItem, {ExternalItemProps} from '../../molecules/UserItem';
 
-export type ItemListProps = Omit<ListProps, 'renderItem'> &
+export type UserListProps = Omit<ListProps, 'renderItem'> &
   ExternalItemProps & {
     searchValue?: string;
     onChangeText?: (_: string) => void;
     withSearch?: boolean;
   };
 
-export default observer(function ItemList({
-  data,
+export default observer(function UserList({
   searchValue,
   onChangeText,
-  onItemPress,
-  onItemLongPress,
+  data,
   rightAccessory,
+  onItemPress,
   contentContainerStyle,
   withSearch = true,
-  ...rest
-}: ItemListProps) {
+}: UserListProps) {
   const strings = useStrings();
-  const renderItem: ListProps['renderItem'] = useCallback(
-    ({item}) => (
-      <Item
-        rightAccessory={rightAccessory}
-        onItemPress={onItemPress}
-        onItemLongPress={onItemLongPress}
-        item={item}
-      />
-    ),
-    [onItemLongPress, onItemPress, rightAccessory],
+  const renderItem: ListProps['renderItem'] = ({item}) => (
+    <UserItem
+      onItemPress={onItemPress}
+      item={item}
+      rightAccessory={rightAccessory}
+    />
   );
   return (
     <List
       data={data}
       stickyHeaderIndices={withSearch ? [0] : []}
-      contentContainerStyle={[styles.container, contentContainerStyle]}
       ListHeaderComponent={
         withSearch ? (
           <SearchView level="1">
             <Input
               size="large"
-              placeholder={strings['findItemScreen.input']}
+              placeholder={strings['findUserScreen.input']}
               value={searchValue}
               onChangeText={onChangeText}
               accessoryLeft={SearchIcon}
@@ -64,20 +57,20 @@ export default observer(function ItemList({
       ItemSeparatorComponent={Divider}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
-      {...rest}
+      contentContainerStyle={[styles.container, contentContainerStyle]}
     />
   );
 });
-
-type ListProps = FlatListProps<ItemType>;
-
-const keyExtractor: ListProps['keyExtractor'] = item => String(item.id);
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
   },
 });
+
+type ListProps = FlatListProps<UserType>;
+
+const keyExtractor: ListProps['keyExtractor'] = item => String(item.id);
 
 const SearchIcon = (props: IconProps) => (
   <Icon {...props} name="search-outline" />

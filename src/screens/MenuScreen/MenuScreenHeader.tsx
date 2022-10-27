@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   Divider,
   Icon,
@@ -8,35 +8,53 @@ import {
   Text,
   TopNavigation,
   TopNavigationAction,
-  TextProps,
 } from '@ui-kitten/components';
 import {StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {observer} from 'mobx-react-lite';
 import {useNavigation} from '@react-navigation/native';
-import {RootStackBindingProps} from '../../Navigation/RootStack/RootStackBindingProps';
-import {useStrings} from '../../core';
+import {RootStackBindingProps} from '../../navigation/RootStack/RootStackBindingProps';
+import {useStrings, useTheme, variance} from '../../core';
+import {
+  AlignItems,
+  Bubble,
+  Direction,
+  Gutter,
+  RippleButton,
+  Space,
+} from '../../components';
+import {PROJECTS, USERS} from '../../MOCK';
+import {translateUserRole} from '../../tempHelper';
 
 export default observer(function MenuScreenHeader() {
+  const theme = useTheme();
+  const strings = useStrings();
   const navigation =
     useNavigation<RootStackBindingProps<'Menu'>['navigation']>();
-  const [menuVisible, setMenuVisible] = React.useState(false);
-  const toggleMenu = useCallback(() => {
-    setMenuVisible(!menuVisible);
-  }, [menuVisible]);
-  const renderMenuAction = useCallback(
-    () => <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />,
-    [toggleMenu],
-  );
+  const [menuVisible, setMenuVisible] = useState(false);
+
   const goToSettings = useCallback(() => {
     setMenuVisible(false);
     navigation.navigate('Settings');
   }, [navigation]);
+  const goToChangeProject = useCallback(
+    () => navigation.navigate('ChangeProject'),
+    [navigation],
+  );
   const goToAuth = useCallback(() => {
     setMenuVisible(false);
-    navigation.replace('Auth');
-  }, [navigation]);
-  const strings = useStrings();
+    // TODO Logout
+  }, []);
+
+  const toggleMenu = useCallback(
+    () => setMenuVisible(!menuVisible),
+    [menuVisible],
+  );
+  const renderMenuAction = useCallback(
+    () => <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />,
+    [toggleMenu],
+  );
+
   const renderOverflowMenuAction = useCallback(
     () => (
       <React.Fragment>
@@ -66,14 +84,36 @@ export default observer(function MenuScreenHeader() {
       toggleMenu,
     ],
   );
+
   const renderTitle = useCallback(
-    (props?: TextProps) => (
-      <View style={styles.titleContainer}>
-        <Text {...props}>Test User</Text>
-      </View>
+    () => (
+      <Space>
+        <ProjectButton onPress={goToChangeProject}>
+          <Bubble gutter={[Gutter.Tiny, Gutter.Small]}>
+            <Space
+              direction={Direction.Row}
+              align={AlignItems.Center}
+              gutter={Gutter.Small}>
+              <Space gutter={Gutter.Tiny}>
+                <ProjectIcon
+                  style={styles.projectIcon}
+                  fill={theme.palette['color-basic-800']}
+                />
+              </Space>
+              <Space gutter={Gutter.Tiny}>
+                <Text category="s1">{PROJECTS[0].name}</Text>
+                <Text category="s2">
+                  {USERS[0].name}, {translateUserRole(USERS[0].role, strings)}
+                </Text>
+              </Space>
+            </Space>
+          </Bubble>
+        </ProjectButton>
+      </Space>
     ),
-    [],
+    [goToChangeProject, strings, theme],
   );
+
   const insets = useSafeAreaInsets();
   return (
     <View style={{paddingTop: insets.top}}>
@@ -86,6 +126,9 @@ export default observer(function MenuScreenHeader() {
   );
 });
 
+const ProjectIcon = (props: IconProps) => (
+  <Icon {...props} name="arrow-ios-downward-outline" />
+);
 const MenuIcon = (props: IconProps) => <Icon {...props} name="more-vertical" />;
 
 const LogoutIcon = (props: IconProps) => <Icon {...props} name="log-out" />;
@@ -94,9 +137,15 @@ const SettingsIcon = (props: IconProps) => (
 );
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 16,
+  projectIcon: {
+    width: 18,
+    height: 18,
   },
 });
+
+const ProjectButton = variance(RippleButton)(() => ({
+  root: {
+    borderRadius: 10,
+    paddingRight: 10,
+  },
+}));

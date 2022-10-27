@@ -3,11 +3,12 @@ import {Dictionary} from './types';
 const pl: Dictionary = {
   'actions.save': 'Zapisać',
   'createItemScreen.createFieldButton': 'Utwórz pole',
-  'authorization.title': 'Autoryzacja',
+  'authorizationScreen.title': 'Autoryzacja',
+  'authorizationScreen.socialTitle':
+    'Zaloguj się za pomocą sieci społecznościowej:',
   'changeLanguage.title': 'Zmiana języka',
   'onboarding.button': 'Next',
-  'account.headerTitle': 'Account',
-  'settings.headerTitle': 'Settings',
+  'settingsScreen.headerTitle': 'Settings',
   'menuScreen.header.menu.settings': 'Settings',
   'menuScreen.header.menu.logout': 'Logout',
   'menuScreen.goodsAndMaterials.title': 'Towary i materiały',

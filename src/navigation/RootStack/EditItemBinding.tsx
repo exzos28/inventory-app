@@ -4,7 +4,7 @@ import {RootStackBindingProps} from './RootStackBindingProps';
 import {error, success} from '../../core';
 import {Alert} from 'react-native';
 import usePromisifyNavigation from './usePromisifyNavigation';
-import {InputsResult} from '../../scenes/ItemFormScene';
+import {InputsResult} from '../../components/scenes/ItemFormScene';
 import {EditItemScreen} from '../../screens/EditItemScreen';
 import {ITEMS} from '../../MOCK';
 

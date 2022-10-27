@@ -2,6 +2,7 @@ import React from 'react';
 import {observer} from 'mobx-react-lite';
 import {IconProps, Layout, Menu, MenuItem} from '@ui-kitten/components';
 import {StyleSheet} from 'react-native';
+import {useStrings} from '../../core';
 
 export type SettingsScreenProps = {
   onSelectLanguagePress: () => void;
@@ -16,17 +17,18 @@ export default observer(function SettingsScreen({
   LanguageIcon,
   ThemeIcon,
 }: SettingsScreenProps) {
+  const strings = useStrings();
   return (
     <Layout style={styles.root} level="1">
       <Menu style={styles.list}>
         <MenuItem
           onPress={onSelectLanguagePress}
-          title="Language"
+          title={strings['settingsScreen.languageItem']}
           accessoryRight={LanguageIcon}
         />
         <MenuItem
           onPress={onThemePress}
-          title="Theme"
+          title={strings['settingsScreen.themeItem']}
           accessoryRight={ThemeIcon}
         />
       </Menu>

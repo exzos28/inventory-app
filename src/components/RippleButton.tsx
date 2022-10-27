@@ -14,23 +14,29 @@ export type RippleButtonProps = RectButtonProps & {
 export default observer(function RippleButton({
   onLongPress,
   longPressTimeout = 500,
+  onPress,
   ...rest
 }: RippleButtonProps) {
   const theme = useTheme();
   const underlayColor = theme.palette['color-primary-400'];
   const rippleColor = theme.chroma(underlayColor).alpha(0.1).hex();
   const timerRef = useRef<NodeJS.Timeout>();
+  const longPressCalled = useRef(false);
   const handleHandlerStateChange = useCallback(
     (event: HandlerStateChangeEvent) => {
       const {state} = event.nativeEvent;
       clearTimeout(timerRef.current);
-      if (state === 4) {
+      if (state === 5 && !longPressCalled.current) {
+        onPress?.(true);
+      } else if (state === 4) {
+        longPressCalled.current = false;
         timerRef.current = setTimeout(() => {
+          longPressCalled.current = true;
           onLongPress?.();
         }, longPressTimeout);
       }
     },
-    [longPressTimeout, onLongPress],
+    [longPressTimeout, onLongPress, onPress],
   );
   return (
     <RectButton

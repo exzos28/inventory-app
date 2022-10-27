@@ -1,71 +1,66 @@
 import React from 'react';
-import {View} from 'react-native';
-import {
-  Button,
-  StyleService,
-  Text,
-  useStyleSheet,
-  Icon,
-  IconProps,
-} from '@ui-kitten/components';
+import {StyleSheet} from 'react-native';
+import {Button, Text, Icon, IconProps, Layout} from '@ui-kitten/components';
 import {observer} from 'mobx-react-lite';
-import CustomKeyboardAvoidingView from '../../components/CustomKeyboardAvoidingView';
 import {ScrollView} from 'react-native-gesture-handler';
 import useOnLogInPress, {OAuthVariant} from './useOnLogInPress';
+import {useStrings, variance} from '../../core';
+import {AlignItems, Bubble, Gutter, Space} from '../../components';
+import Leveler from '../../components/Leveler';
 
-export type SignInScreenProps = {
-  onSignUpPress: () => void;
-};
+export type SignInScreenProps = {};
 
 export default observer(function SignInScreen({}: SignInScreenProps) {
   const onPress = useOnLogInPress();
-  const styles = useStyleSheet(themedStyles);
-
+  const strings = useStrings();
   return (
-    <CustomKeyboardAvoidingView style={styles.root}>
+    <RootLayout>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.container}>
-        <View style={styles.headerView}>
-          <Text category="h1" status="control">
-            Hello
-          </Text>
-          <Text style={styles.signInLabel} category="s1" status="control">
-            Sign in to your account
-          </Text>
-        </View>
+        <HeaderView>
+          <Bubble>
+            <Leveler align={AlignItems.Center}>
+              <Text category="h1" status="control">
+                Hello
+              </Text>
+            </Leveler>
+          </Bubble>
+        </HeaderView>
 
-        <View style={styles.socialAuthContainer}>
-          <Text
-            style={styles.socialAuthHintText}
-            appearance="hint"
-            category="c2">
-            Sign In using Social Media
-          </Text>
-          <View style={styles.socialAuthButtonsContainer}>
-            <Button
-              appearance="ghost"
-              status="basic"
-              size="giant"
-              accessoryLeft={GoogleIcon}
-              onPress={() => onPress(OAuthVariant.Google)}
-            />
-            <Button
-              appearance="ghost"
-              status="basic"
-              size="giant"
-              accessoryLeft={FacebookIcon}
-            />
-            <Button
-              appearance="ghost"
-              status="basic"
-              size="giant"
-              accessoryLeft={AppleIcon}
-            />
-          </View>
-        </View>
+        <ContentBubble>
+          <Space>
+            <SignInHelperText appearance="hint" category="c2">
+              {strings['authorizationScreen.socialTitle']}
+            </SignInHelperText>
+            <Space gutter={Gutter.Middle}>
+              <Button
+                status="info"
+                size="large"
+                onPress={() => onPress(OAuthVariant.Google)}
+                accessoryLeft={GoogleIcon}>
+                Google
+              </Button>
+
+              <Button
+                size="large"
+                onPress={() => onPress(OAuthVariant.Google)}
+                accessoryLeft={FacebookIcon}>
+                Facebook
+              </Button>
+
+              <Button
+                status="basic"
+                size="large"
+                onPress={() => onPress(OAuthVariant.Apple)}
+                accessoryLeft={AppleIcon}>
+                Apple
+              </Button>
+            </Space>
+          </Space>
+        </ContentBubble>
       </ScrollView>
-    </CustomKeyboardAvoidingView>
+    </RootLayout>
   );
 });
 
@@ -75,55 +70,35 @@ const AppleIcon = (props: IconProps) => (
 );
 const GoogleIcon = (props: IconProps) => <Icon {...props} name="google" />;
 
-const themedStyles = StyleService.create({
-  root: {
-    flex: 1,
-    backgroundColor: 'background-basic-color-1',
-  },
+const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
   },
-  headerView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: 150,
-    backgroundColor: 'color-primary-default',
-  },
-  formView: {
-    flex: 1,
-    paddingTop: 32,
-    paddingHorizontal: 16,
-  },
-  signInLabel: {
-    marginTop: 16,
-  },
-  signInButton: {
-    marginHorizontal: 16,
-    marginTop: 24,
-  },
-  signUpButton: {
-    marginVertical: 12,
-    marginHorizontal: 16,
-  },
-  forgotPasswordView: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  passwordInput: {
-    marginTop: 16,
-  },
-  forgotPasswordButton: {
-    paddingHorizontal: 0,
-  },
-  socialAuthContainer: {
-    marginTop: 32,
-  },
-  socialAuthButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  socialAuthHintText: {
-    alignSelf: 'center',
-    marginBottom: 16,
-  },
 });
+
+const RootLayout = variance(Layout)(() => ({
+  root: {
+    flex: 1,
+  },
+}));
+
+const HeaderView = variance(Layout)(theme => ({
+  root: {
+    backgroundColor: theme.palette['color-primary-400'],
+  },
+}));
+
+const ContentBubble = variance(Bubble)(() => ({
+  root: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+}));
+
+const SignInHelperText = variance(Text)(theme => ({
+  root: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: theme.palette['text-basic-color'],
+  },
+}));

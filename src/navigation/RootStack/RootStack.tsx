@@ -18,9 +18,14 @@ import SelectUserToTransferBinding from './SelectUserToTransferBinding';
 import {ItemId, UserId} from '../../tempTypes';
 import ItemsSelectionForUserBinding from './ItemsSelectionForUserBinding';
 import ConfirmItemsTransferBinding from './ConfirmItemsTransferBinding';
+import SelectItemForQrMarkingBinding from './SelectItemForQrMarkingBinding';
+import QrItemMarkingBinding from './QrItemMarkingBinding';
+import ChangeProjectBinding from './ChangeProjectBinding';
 
 export type RootParamList = {
   Menu: undefined;
+  //
+  //
   SelectUserToTransfer: undefined;
   ItemsSelectionForUser: {
     forUser: UserId;
@@ -30,30 +35,40 @@ export type RootParamList = {
     forUser: UserId;
   };
   FindItem: undefined;
+  //
+  //
   ItemDetails: {
     id: ItemId;
   };
-
-  CreateItem:
-    | {
-        pickedValue:
-          | {
-              label: string;
-            }
-          | undefined;
-      }
-    | undefined;
-  EditItem: {
+  CreateItem: {
     pickedValue?:
       | {
           label: string;
         }
       | undefined;
-    id: ItemId;
   };
+  EditItem: {
+    pickedValue?:
+      | {
+          label: string;
+          id?: ItemId;
+        }
+      | undefined;
+  };
+  //
+  //
   PickFieldName: {
     fromScreen: 'CreateItem' | 'EditItem';
   };
+  ChangeProject: undefined;
+  //
+  //
+  SelectItemForQrMarking: undefined;
+  QrItemMarking: {
+    id: ItemId;
+  };
+  //
+  //
 
   FindUser: undefined;
 
@@ -85,7 +100,7 @@ export const RootStack = observer(() => {
         <Screen
           name="Settings"
           options={{
-            title: strings['settings.headerTitle'],
+            title: strings['settingsScreen.headerTitle'],
           }}
           component={SettingsBinding}
         />
@@ -153,6 +168,21 @@ export const RootStack = observer(() => {
           name="ConfirmItemsTransfer"
           component={ConfirmItemsTransferBinding}
         />
+
+        <Screen
+          options={{
+            title: strings['selectItemForQrMarkingScreen.headerTitle'],
+          }}
+          name="SelectItemForQrMarking"
+          component={SelectItemForQrMarkingBinding}
+        />
+        <Screen
+          options={{
+            title: strings['qrItemMarkingBindingScreen.headerTitle'],
+          }}
+          name="QrItemMarking"
+          component={QrItemMarkingBinding}
+        />
       </Group>
       <Group
         screenOptions={{
@@ -177,6 +207,7 @@ export const RootStack = observer(() => {
           presentation: 'transparentModal',
         }}>
         <Screen name="PickFieldName" component={PickFieldNameBinding} />
+        <Screen name="ChangeProject" component={ChangeProjectBinding} />
       </Group>
     </Navigator>
   );

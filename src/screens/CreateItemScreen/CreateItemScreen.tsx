@@ -1,6 +1,9 @@
 import React from 'react';
 import {Either, useStrings} from '../../core';
-import {ItemFormScene, InputsResult} from '../../scenes/ItemFormScene';
+import {
+  ItemFormScene,
+  InputsResult,
+} from '../../components/scenes/ItemFormScene';
 
 export type CreateItemScreenProps = {
   onCreatePress: (_: InputsResult) => void;

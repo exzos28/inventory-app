@@ -1,6 +1,9 @@
 import React from 'react';
 import {Either, useStrings} from '../../core';
-import {InputsResult, ItemFormScene} from '../../scenes/ItemFormScene';
+import {
+  InputsResult,
+  ItemFormScene,
+} from '../../components/scenes/ItemFormScene';
 import {ItemType} from '../../tempTypes';
 
 export type EditItemScreenProps = {

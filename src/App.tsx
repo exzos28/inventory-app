@@ -2,7 +2,7 @@ import React from 'react';
 import {observer} from 'mobx-react-lite';
 import {StatusBar, View} from 'react-native';
 import {useRoot, useTheme, variance} from './core';
-import {NavigationRoot} from './Navigation';
+import {NavigationRoot} from './navigation';
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';

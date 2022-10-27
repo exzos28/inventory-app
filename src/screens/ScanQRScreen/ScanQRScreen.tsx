@@ -1,76 +1,176 @@
-import React, {useCallback} from 'react';
-import {Button, Layout} from '@ui-kitten/components';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Button, Icon, IconProps, Layout, Text} from '@ui-kitten/components';
 import {observer} from 'mobx-react-lite';
-import {StyleSheet} from 'react-native';
+import {Linking, Platform, StyleSheet, View} from 'react-native';
 import {
   BarCodeScanningResult,
   Camera,
   CameraType,
+  getCameraPermissionsAsync,
   PermissionResponse,
+  requestCameraPermissionsAsync,
 } from 'expo-camera';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import {useThrottledCallback} from 'use-debounce';
-import {useWindowDimensions} from '../../core/WindowDimensions';
 import {expr} from 'mobx-utils';
+import {useRoot, useStrings, variance} from '../../core';
+import {Space} from '../../components';
+import {reaction} from 'mobx';
+import {PermissionStatus} from 'expo-modules-core';
+import {APP_WINDOW_ACTIVE} from '../../core/AppWindow';
 
 const BAR_CODE_SCANNER_SETTINGS = {
   barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
 };
 
 export type ScanQRScreenProps = {
+  getIsFocused: () => boolean;
   onBarCodeScanned: (data: BarCodeScanningResult) => void;
   getIsTransitioning: () => boolean;
-  cameraPermissions: PermissionResponse | undefined;
-  onRequestPermissionPress: () => void;
 };
 
 export default observer(function ScanQRScreen({
-  onBarCodeScanned,
+  getIsFocused,
   getIsTransitioning,
-  cameraPermissions,
-  onRequestPermissionPress,
+  onBarCodeScanned,
 }: ScanQRScreenProps) {
+  const strings = useStrings();
+  const {appWindow} = useRoot();
+  const [cameraPermissions, setCameraPermissions] =
+    useState<PermissionResponse>();
+  const requestPermission = useCallback(async () => {
+    try {
+      const response = await requestCameraPermissionsAsync();
+      setCameraPermissions(response);
+    } catch (ignore) {}
+  }, []);
+
+  useEffect(
+    () =>
+      reaction(
+        () => getIsFocused(),
+        async isFocused => {
+          if (isFocused) {
+            try {
+              const response = await getCameraPermissionsAsync();
+              setCameraPermissions(response);
+              if (
+                response.canAskAgain &&
+                response.status === PermissionStatus.UNDETERMINED
+              ) {
+                await requestPermission();
+              }
+            } catch (ignore) {}
+          }
+        },
+        {fireImmediately: true},
+      ),
+    [getIsFocused, requestPermission],
+  );
+  useEffect(
+    () =>
+      appWindow.updates.listen(APP_WINDOW_ACTIVE, async () => {
+        try {
+          const response = await getCameraPermissionsAsync();
+          setCameraPermissions(response);
+        } catch (ignore) {}
+      }),
+    [appWindow],
+  );
+
+  const onRequestPermissionPress = useCallback(async () => {
+    if (cameraPermissions?.canAskAgain) {
+      await requestPermission();
+    } else {
+      if (Platform.OS === 'ios') {
+        await Linking.openURL('app-settings:');
+      } else if (Platform.OS === 'android') {
+        await Linking.openSettings();
+      }
+    }
+  }, [cameraPermissions, requestPermission]);
+
   const handleBarCodeScanned = useCallback(
     (data: BarCodeScanningResult) => onBarCodeScanned(data),
     [onBarCodeScanned],
   );
+
   const handleBarCodeScannedThrottled = useThrottledCallback(
     handleBarCodeScanned,
     1000,
     {trailing: false},
   );
   const title = cameraPermissions?.canAskAgain
-    ? 'Grant access to camera'
-    : 'Open settings';
+    ? strings['scanQrScreen.grantAccessButton']
+    : strings['scanQrScreen.openSettingsButton'];
   const isGranted = expr(() => cameraPermissions?.granted || false);
   const visibleCamera = expr(() => !getIsTransitioning());
-  const {width, height} = useWindowDimensions();
-  const size = expr(() => Math.min(width, height) * 0.8);
+
   return (
-    <Layout style={styles.root} level="1">
+    <RootLayout style={styles.root} level="1">
       {isGranted ? (
         visibleCamera && (
-          <Layout level="4" style={{width: size, height: size}}>
+          <CameraLayout level="4">
             <Camera
               type={CameraType.back}
               barCodeScannerSettings={BAR_CODE_SCANNER_SETTINGS}
               onBarCodeScanned={handleBarCodeScannedThrottled}
               style={StyleSheet.absoluteFillObject}
             />
-          </Layout>
+          </CameraLayout>
         )
       ) : (
-        <Button onPress={onRequestPermissionPress}>{title}</Button>
+        <ButtonView>
+          <Space>
+            <WarningText category="label">
+              Ещё минутка! {'\n'}Необходимо разрешить доступ к камере.
+            </WarningText>
+            <Button
+              size="large"
+              accessoryLeft={SettingsIcon}
+              onPress={onRequestPermissionPress}>
+              {title}
+            </Button>
+          </Space>
+        </ButtonView>
       )}
-    </Layout>
+    </RootLayout>
   );
 });
+
+const SettingsIcon = (props: IconProps) => (
+  <Icon name="settings-2-outline" {...props} />
+);
+
+const RootLayout = variance(Layout)(() => ({
+  root: {
+    flex: 1,
+  },
+}));
+
+const CameraLayout = variance(Layout)(() => ({
+  root: {
+    flex: 1,
+  },
+}));
+
+const ButtonView = variance(View)(() => ({
+  root: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+}));
+
+const WarningText = variance(Text)(() => ({
+  root: {
+    fontSize: 20,
+  },
+}));
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   list: {
     flex: 1,

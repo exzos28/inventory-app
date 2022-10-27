@@ -1,51 +1,12 @@
 import React from 'react';
 import {observer} from 'mobx-react-lite';
-import {NavigationIQKeyboardManager} from '../../Navigation/components';
-import FindItemList, {
-  ItemListProps,
-} from '../../components/modules/ItemList/ItemList';
-import {variance} from '../../core';
-import {Layout} from '@ui-kitten/components';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {
+  FindItemScene,
+  FindItemSceneProps,
+} from '../../components/scenes/FindItemScene';
 
-export type FindUserScreenProps = ItemListProps & {
-  searchValue: string;
-  onChangeText: (_: string) => void;
-};
+export type FindUserScreenProps = FindItemSceneProps & {};
 
-export default observer(function FindUserScreen({
-  searchValue,
-  onChangeText,
-  onItemPress,
-  data,
-}: FindUserScreenProps) {
-  const insets = useSafeAreaInsets();
-  const paddingBottom = insets.bottom;
-  return (
-    <RootNavigationIQKeyboardManager>
-      <RootLayout>
-        <FindItemList
-          searchValue={searchValue}
-          onChangeText={onChangeText}
-          onItemPress={onItemPress}
-          data={data}
-          contentContainerStyle={{paddingBottom}}
-        />
-      </RootLayout>
-    </RootNavigationIQKeyboardManager>
-  );
+export default observer(function FindUserScreen(props: FindUserScreenProps) {
+  return <FindItemScene {...props} />;
 });
-
-const RootNavigationIQKeyboardManager = variance(NavigationIQKeyboardManager)(
-  () => ({
-    root: {
-      flex: 1,
-    },
-  }),
-);
-
-const RootLayout = variance(Layout)(() => ({
-  root: {
-    flex: 1,
-  },
-}));

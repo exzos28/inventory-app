@@ -5,7 +5,6 @@ import {useBottomSheetDynamicSnapPoints} from '@gorhom/bottom-sheet';
 import {observer} from 'mobx-react-lite';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import {Gutter} from '../types';
 import AdaptiveModal, {ModalProps, ModalRef} from './Modal';
 
 export type AutoHeightModal = Omit<
@@ -44,6 +43,5 @@ export default observer<AutoHeightModal, ModalRef>(
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingTop: Gutter.Middle,
   },
 });
