@@ -1,6 +1,6 @@
 import React from 'react';
 import {observer} from 'mobx-react-lite';
-import {StatusBar, View} from 'react-native';
+import {Platform, StatusBar, View} from 'react-native';
 import {useRoot, useTheme, variance} from './core';
 import {NavigationRoot} from './navigation';
 import * as eva from '@eva-design/eva';
@@ -16,9 +16,11 @@ export default observer(function App() {
       <IconRegistry icons={[EvaIconsPack, AssetIconsPack, FlagsIconsPack]} />
       <ApplicationProvider {...eva} theme={theme.palette}>
         <Root>
-          <StatusBar
-            barStyle={appearance.isDark ? 'light-content' : 'dark-content'}
-          />
+          {Platform.OS === 'ios' && (
+            <StatusBar
+              barStyle={appearance.isDark ? 'light-content' : 'dark-content'}
+            />
+          )}
           <NavigationRoot />
         </Root>
       </ApplicationProvider>

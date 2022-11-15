@@ -1,6 +1,21 @@
 import {Dictionary} from './types';
 
 const pl: Dictionary = {
+  'scanQrScreen.warningTitle':
+    'Poczekaj chwilę! \nMusisz zezwolić na dostęp do kamery.',
+  'itemDetailsScreen.addQrButton': 'Znakowanie QR',
+  'itemDetailsScreen.replaceQrButton': 'Zmień QR',
+  'qrItemMarkingBindingScreen.headerTitle': 'Znakowanie QR',
+  'role.admin': 'Admin',
+  'role.manager': 'Manager',
+  'role.owner': 'Właściciel',
+  'role.user': 'Użytkownik',
+  'scanQrScreen.grantAccessButton': 'Nadać dostęp',
+  'scanQrScreen.openSettingsButton': 'Ustawienia',
+  'selectItemForQrMarkingScreen.headerTitle':
+    'Wybierz przedmiot do oznaczenia QR',
+  'settingsScreen.languageItem': 'Język',
+  'settingsScreen.themeItem': 'Motyw',
   'actions.save': 'Zapisać',
   'createItemScreen.createFieldButton': 'Utwórz pole',
   'authorizationScreen.title': 'Autoryzacja',
@@ -8,9 +23,9 @@ const pl: Dictionary = {
     'Zaloguj się za pomocą sieci społecznościowej:',
   'changeLanguage.title': 'Zmiana języka',
   'onboarding.button': 'Next',
-  'settingsScreen.headerTitle': 'Settings',
-  'menuScreen.header.menu.settings': 'Settings',
-  'menuScreen.header.menu.logout': 'Logout',
+  'settingsScreen.headerTitle': 'Ustawienia',
+  'menuScreen.header.menu.settings': 'Ustawienia',
+  'menuScreen.header.menu.logout': 'Wyloguj',
   'menuScreen.goodsAndMaterials.title': 'Towary i materiały',
   'menuScreen.goodsAndMaterials.find': 'Szukać',
   'menuScreen.goodsAndMaterials.create': 'Tworzyć',
@@ -23,7 +38,7 @@ const pl: Dictionary = {
   'menuScreen.stocktaking': 'Inwentaryzacja',
   'menuScreen.users.title': 'Użytkownicy',
   'menuScreen.users.find': 'Szukać',
-  'menuScreen.users.invite': 'Zaprość',
+  'menuScreen.users.invite': 'Zaproś',
   'menuScreen.reports.title': 'Raporty',
   'menuScreen.reports.getReport': 'Uzyskaj raport Excela',
   'findItemScreen.headerTitle': 'Wyszukiwanie przedmiotów',

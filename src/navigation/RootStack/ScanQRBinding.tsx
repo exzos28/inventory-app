@@ -12,7 +12,7 @@ export default observer(function ScanQRBinding(props: ScanQRBindingProps) {
   const {navigation} = props;
   const getIsTransitioning = useNavigationGetIsTransitioning(navigation);
   const getIsFocused = useNavigationGetIsFocused();
-  const onBarCodeScanned = useCallback((data: BarCodeScanningResult) => {
+  const onBarCodeScanned = useCallback(({data}: BarCodeScanningResult) => {
     Alert.alert('Result', JSON.stringify(data));
   }, []);
 

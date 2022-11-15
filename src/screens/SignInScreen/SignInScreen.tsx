@@ -22,7 +22,7 @@ export default observer(function SignInScreen({}: SignInScreenProps) {
           <Bubble>
             <Leveler align={AlignItems.Center}>
               <Text category="h1" status="control">
-                Hello
+                Hello!
               </Text>
             </Leveler>
           </Bubble>

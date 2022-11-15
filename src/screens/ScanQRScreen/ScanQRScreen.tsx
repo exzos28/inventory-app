@@ -29,6 +29,7 @@ export type ScanQRScreenProps = {
   getIsTransitioning: () => boolean;
 };
 
+// TODO move to scene
 export default observer(function ScanQRScreen({
   getIsFocused,
   getIsTransitioning,
@@ -123,7 +124,7 @@ export default observer(function ScanQRScreen({
         <ButtonView>
           <Space>
             <WarningText category="label">
-              Ещё минутка! {'\n'}Необходимо разрешить доступ к камере.
+              {strings['scanQrScreen.warningTitle']}
             </WarningText>
             <Button
               size="large"

@@ -13,9 +13,16 @@ export default observer(function QrItemMarkingBinding({
   const getIsTransitioning = useNavigationGetIsTransitioning(navigation);
   const getIsFocused = useNavigationGetIsFocused();
   const onBarCodeScanned = useCallback(
-    (data: BarCodeScanningResult) => {
-      Alert.alert('Result', JSON.stringify(data));
-      navigation.popToTop();
+    ({data}: BarCodeScanningResult) => {
+      Alert.alert(
+        'Ostrzeżenie',
+        'Czy na pewno chcesz przypisać ten kod QR do tego przedmiotu?',
+        [
+          {text: 'Nie', style: 'destructive'},
+          {text: 'Tak', onPress: () => navigation.popToTop()},
+        ],
+      );
+      console.log(data);
     },
     [navigation],
   );

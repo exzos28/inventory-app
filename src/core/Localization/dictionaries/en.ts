@@ -35,6 +35,8 @@ const en = {
   'scanQrScreen.headerTitle': 'Scan QR',
   'scanQrScreen.openSettingsButton': 'Open settings',
   'scanQrScreen.grantAccessButton': 'Grant access',
+  'scanQrScreen.warningTitle':
+    'One more minute! \nYou need to allow access to the camera.',
   'selectUserToTransferScreen.headerTitle': 'Select user',
   'itemsSelectionForUserScreen.headerTitle': 'Items selection',
   'itemsSelectionForUserScreen.transferButton': 'Transfer',
