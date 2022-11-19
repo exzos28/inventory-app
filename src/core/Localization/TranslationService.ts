@@ -2,9 +2,9 @@ import {computed} from 'mobx';
 import {Locale, PreferencesService} from '../Preferences';
 import {Translation} from './Translation';
 import {template, TemplateExecutor} from 'lodash';
-import Localization from './Localization';
 import {LocaleDict, LocaleKeys} from './LocaleStrings';
 import {de, en, pl} from './dictionaries';
+import {Localization} from './Localization';
 
 export default class TranslationService implements Translation {
   constructor(
@@ -84,6 +84,6 @@ export const translateLocale = (locale: string) => {
   }
 };
 
-export type LocaleTag = 'de' | 'en' | 'ru' | 'pl';
+export type LocaleTag = 'de' | 'en' | 'pl';
 
 export const TEMPLATE_INTERPOLATE = /{([\s\S]+?)}/g;

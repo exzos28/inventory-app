@@ -60,6 +60,11 @@ const en = {
   'pickFieldNameModal.button': 'Save',
   'editItemScreen.headerTitle': 'Edit item',
   'editItemScreen.editButton': 'Save',
+  'navigation.authorizationError': 'Authorization Error',
+  'errorScreen.description': 'Please try again later or contact support',
+  'errorScreen.feedbackButton': 'Feedback',
+  'errorScreen.returnButton': 'Return',
+  'errorScreen.title': 'Something went wrong',
 };
 
 export default en;

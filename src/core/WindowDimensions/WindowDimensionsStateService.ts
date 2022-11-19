@@ -1,19 +1,22 @@
-import {Service} from '../structure';
-import {action, observable} from 'mobx';
-import {Dimensions, WindowDimensions} from './WindowDimensions';
 import {ScaledSize} from 'react-native';
+
+import {action, makeAutoObservable, observable} from 'mobx';
+
+import {Service} from '../structure';
+import {Dimensions, WindowDimensions} from './WindowDimensions';
 import {WindowDimensionsState} from './WindowDimensionsState';
 import WindowDimensionsStatic from './WindowDimensionsStatic';
 
 export default class WindowDimensionsStateService
   implements WindowDimensionsState, Service
 {
-  @observable private _dimensions: Dimensions;
+  @observable.ref private _dimensions: Dimensions;
 
   constructor(
     private readonly _root: {readonly windowDimensions: WindowDimensions},
   ) {
     this._dimensions = WindowDimensionsStatic.getInitialDimensions();
+    makeAutoObservable(this);
   }
 
   get window(): ScaledSize {

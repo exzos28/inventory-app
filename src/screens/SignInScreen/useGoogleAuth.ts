@@ -5,7 +5,6 @@ import {useIdTokenAuthRequest} from 'expo-auth-session/providers/google';
 import {useRoot} from '../../core/Root/hooks';
 import shouldUseNativeAuth from './shouldUseNativeAuth';
 import useNativeGoogleAuth from './useNativeGoogleAuth';
-import {Alert} from 'react-native';
 
 export default function useGoogleAuth(
   onGoogleIdTokenReceived: (idToken: string) => void,
@@ -26,7 +25,6 @@ export default function useGoogleAuth(
       // https://github.com/expo/expo/issues/12808
       if (params.id_token) {
         const responseRaw = JSON.stringify(browserResponse, null, 1);
-        Alert.alert('Response', responseRaw);
         console.log(responseRaw);
         onGoogleIdTokenReceived(params.id_token);
       }

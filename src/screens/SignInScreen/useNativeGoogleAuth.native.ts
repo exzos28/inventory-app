@@ -3,7 +3,6 @@ import {useCallback, useEffect} from 'react';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {useRoot} from '../../core/Root/hooks';
-import {Alert} from 'react-native';
 
 export default function useNativeGoogleAuth(
   onGoogleIdTokenReceived: (token: string) => void,
@@ -24,7 +23,6 @@ export default function useNativeGoogleAuth(
     const userInfo = await GoogleSignin.signIn();
     if (userInfo.idToken) {
       const responseRaw = JSON.stringify(userInfo, null, 1);
-      Alert.alert('Result', responseRaw);
       console.log(responseRaw);
       onGoogleIdTokenReceived(userInfo.idToken);
     }

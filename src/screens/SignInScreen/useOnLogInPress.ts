@@ -1,7 +1,8 @@
 import {useCallback} from 'react';
 
-// import {useRoot} from '../../core/Root/hooks';
+import {useRoot} from '../../core/Root/hooks';
 import useGoogleAuth from './useGoogleAuth';
+import {GoogleIdToken} from '../../core';
 
 export enum OAuthVariant {
   Apple,
@@ -9,17 +10,16 @@ export enum OAuthVariant {
 }
 
 export default function useOnLogInPress() {
-  // const {authHelper, appleOAuth2Provider} = useRoot();
-  // const signInWithGoogle = useCallback(
-  //   (idToken: string) =>
-  //     authHelper.signInByOAuth2({
-  //       provider: 'google',
-  //       token: idToken as GoogleIdToken,
-  //     }),
-  //   [authHelper],
-  // );
-  // const initiateGoogleAuth = useGoogleAuth(signInWithGoogle);
-  const initiateGoogleAuth = useGoogleAuth(() => {});
+  const {authHelper} = useRoot();
+  const signInWithGoogle = useCallback(
+    (idToken: string) =>
+      authHelper.signInByOAuth2({
+        provider: 'google',
+        id_token: idToken as GoogleIdToken,
+      }),
+    [authHelper],
+  );
+  const initiateGoogleAuth = useGoogleAuth(signInWithGoogle);
   return useCallback(
     async (_: OAuthVariant) => {
       switch (_) {

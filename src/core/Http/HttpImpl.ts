@@ -1,3 +1,7 @@
+import {NETWORK_ERROR, NetworkError} from '../Error';
+import {ErrorRepository} from '../ErrorRepository';
+import {Either, error, success} from '../fp';
+import {RouterImpl} from '../structure';
 import {
   CorrelationId,
   Http,
@@ -8,14 +12,10 @@ import {
   ResponseBodyParams,
   ResponseParams,
 } from './Http';
-import {RouterImpl} from '../structure';
-import {success, error, Either} from '../fp';
-import {ErrorRepository} from '../ErrorRepository';
-import {NETWORK_ERROR, NetworkError} from '../Error';
 
 export default class HttpImpl implements Http {
   constructor(
-    protected readonly _root: {readonly errorRepository: ErrorRepository},
+    private readonly _root: {readonly errorRepository: ErrorRepository},
   ) {}
 
   private _correlationId = 0 as CorrelationId;
@@ -29,7 +29,7 @@ export default class HttpImpl implements Http {
     init?: RequestInit,
   ): Promise<Either<Response, NetworkError>> {
     const correlationId = this._generateCorrelationId();
-    this.io.send(REQUEST, {correlationId, input, init});
+    this._io.send(REQUEST, {correlationId, input, init});
     let response: Response;
     try {
       response = await fetch(input, init);
@@ -38,26 +38,31 @@ export default class HttpImpl implements Http {
         this._root.errorRepository.create({kind: NETWORK_ERROR, raw}),
       );
     }
-    this.io.send(RESPONSE, {correlationId, response});
+    this._io.send(RESPONSE, {correlationId, response});
     const boundResponse = response.clone();
     // fixme mock other methods of the response body
     boundResponse.json = async () => {
       const content = await response.json();
       const responseBody = JSON.stringify(content, undefined, 2);
-      this.io.send(RESPONSE_BODY, {correlationId, responseBody});
+      this._io.send(RESPONSE_BODY, {correlationId, responseBody});
       return content;
     };
     boundResponse.text = async () => {
       const content = await response.text();
-      this.io.send(RESPONSE_BODY, {correlationId, responseBody: content});
+      this._io.send(RESPONSE_BODY, {correlationId, responseBody: content});
       return content;
     };
     return success(boundResponse);
   }
 
-  public io = new RouterImpl<{
-    [REQUEST]: RequestParams;
-    [RESPONSE]: ResponseParams;
-    [RESPONSE_BODY]: ResponseBodyParams;
+  // eslint-disable-next-line no-spaced-func
+  private readonly _io = new RouterImpl<{
+    [REQUEST]: (params: RequestParams) => void;
+    [RESPONSE]: (params: ResponseParams) => void;
+    [RESPONSE_BODY]: (params: ResponseBodyParams) => void;
   }>();
+
+  get io(): Http['io'] {
+    return this._io;
+  }
 }

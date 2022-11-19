@@ -1,13 +1,19 @@
-import {Disposer, Service} from '../structure';
 import {Dimensions as RNDimensions} from 'react-native';
+
 import {action} from 'mobx';
-import {Dimensions, WindowDimensions} from './WindowDimensions';
+
+import {Disposer, Service} from '../structure';
 import {BusImpl} from '../structure/Bus';
+import {
+  Dimensions,
+  WindowDimensions,
+  WindowDimensionsUpdatesListener,
+} from './WindowDimensions';
 
 export default class WindowDimensionsService
   implements WindowDimensions, Service
 {
-  private readonly _updates = new BusImpl<Dimensions>();
+  private readonly _updates = new BusImpl<WindowDimensionsUpdatesListener>();
 
   get updates() {
     return this._updates;

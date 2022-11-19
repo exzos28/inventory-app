@@ -14,7 +14,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {observer} from 'mobx-react-lite';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackBindingProps} from '../../navigation/RootStack/RootStackBindingProps';
-import {useStrings, useTheme, variance} from '../../core';
+import {useRoot, useStrings, useTheme, variance} from '../../core';
 import {
   AlignItems,
   Bubble,
@@ -31,6 +31,7 @@ export default observer(function MenuScreenHeader() {
   const strings = useStrings();
   const navigation =
     useNavigation<RootStackBindingProps<'Menu'>['navigation']>();
+  const {authHelper} = useRoot();
   const [menuVisible, setMenuVisible] = useState(false);
 
   const goToSettings = useCallback(() => {
@@ -41,10 +42,10 @@ export default observer(function MenuScreenHeader() {
     () => navigation.navigate('ChangeProject'),
     [navigation],
   );
-  const goToAuth = useCallback(() => {
+  const goToAuth = useCallback(async () => {
     setMenuVisible(false);
-    // TODO Logout
-  }, []);
+    await authHelper.signOut();
+  }, [authHelper]);
 
   const toggleMenu = useCallback(
     () => setMenuVisible(!menuVisible),

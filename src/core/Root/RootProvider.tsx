@@ -4,9 +4,9 @@ import {autorun} from 'mobx';
 import {ThemeProvider} from '../styling';
 import {observer} from 'mobx-react-lite';
 import {CoreService} from '../Core';
-import {RootServiceFactory} from './RootServiceFactory';
 import {Root} from './Root';
 import {Service} from '../structure';
+import RootServiceFactory from './RootServiceFactory';
 
 export type RootProviderProps = {
   children?: React.ReactNode;

@@ -1,17 +1,7 @@
-import {DeviceId} from '../units';
-import {JsonString} from '../Json';
-import {AccessToken} from '../LikesFasterServer';
+import {Millisecond} from '../Time';
 
 export type KeyValueMap = {
   [K in string]: string;
-} & {
-  auth: JsonString<AuthRecord>;
-  device: JsonString<DeviceRecord>;
-};
+} & {};
 
-export type AuthRecord = {
-  token: AccessToken;
-  prefix: 'Bearer';
-};
-
-export type DeviceRecord = {id: DeviceId};
+export type AddressHistoryEntry = [address: string, updatedAt: Millisecond];

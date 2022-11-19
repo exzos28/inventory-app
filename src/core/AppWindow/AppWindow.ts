@@ -5,8 +5,11 @@ export interface AppWindow {
   getStatus(): AppWindowStatus;
 }
 
-export type AppWindowStateRouterMap = Record<AppWindowStatus, AppWindowStatus> &
-  Record<AppFocusStatus, boolean>;
+export type AppWindowStateRouterMap = Record<
+  AppWindowStatus,
+  (status: AppWindowStatus) => void
+> &
+  Record<AppFocusStatus, (isFocused: boolean) => void>;
 
 export type AppFocusStatus = typeof APP_WINDOW_FOCUS | typeof APP_WINDOW_BLUR;
 

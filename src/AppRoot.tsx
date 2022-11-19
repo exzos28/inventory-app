@@ -1,10 +1,9 @@
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {MobileRootServiceFactoryImpl} from './Root';
-import {RootProvider} from './core';
 import App from './App';
+import {RootProvider, RootServiceFactory} from './core/Root';
 
-const factory = new MobileRootServiceFactoryImpl();
+const factory = new RootServiceFactory();
 
 export default () => {
   return (

@@ -1,28 +1,70 @@
 import {observer} from 'mobx-react-lite';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {useStrings} from '../../core';
+import {FULFILLED, PENDING, REJECTED, useRoot, useStrings} from '../../core';
 import {AuthHeader} from '../../components/AuthHeader';
 import SignInBinding from './SignInBinding';
+import {UNAUTHORIZED} from '../../core/Auth';
+import AuthorizationErrorBinding from './AuthorizationErrorBinding';
 
 export type AuthParamList = {
+  Loader: undefined;
   SignIn: undefined;
+  AuthorizationError: undefined;
 };
 
 const {Navigator, Screen} = createStackNavigator<AuthParamList>();
 
 export default observer(function AuthStack() {
+  const {authState} = useRoot();
   const strings = useStrings();
+  let screens: React.ReactNode = null;
+
+  if (!authState.latest || authState.latest.status === PENDING) {
+    screens = null;
+  } else if (authState.latest.status === FULFILLED) {
+    if (authState.latest.result.kind === UNAUTHORIZED) {
+      screens = (
+        <>
+          <Screen
+            name="SignIn"
+            component={SignInBinding}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+        </>
+      );
+    }
+  } else if (authState.latest.status === REJECTED) {
+    screens = (
+      <>
+        <Screen
+          name="AuthorizationError"
+          options={{
+            title: strings['navigation.authorizationError'],
+          }}
+          component={AuthorizationErrorBinding}
+        />
+      </>
+    );
+  }
+
   return (
-    <Navigator
-      initialRouteName="SignIn"
-      screenOptions={{
-        cardShadowEnabled: true,
-        title: strings['authorizationScreen.title'],
-        header: props => <AuthHeader {...props} />,
-        headerMode: 'float',
-      }}>
-      <Screen name="SignIn" component={SignInBinding} />
-    </Navigator>
+    screens && (
+      <Navigator
+        initialRouteName="SignIn"
+        screenOptions={{
+          cardShadowEnabled: true,
+          title: strings['authorizationScreen.title'],
+          header: props => <AuthHeader {...props} />,
+          headerMode: 'float',
+        }}>
+        {screens}
+      </Navigator>
+    )
   );
 });
+
+// const noHeaderOptions = {headerShown: false};
+// const noTitleOptions = {headerTitle: () => null};

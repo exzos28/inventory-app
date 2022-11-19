@@ -7,6 +7,9 @@ export * from './Modal';
 export * from './Bubble';
 export {default as Bubble} from './Bubble';
 
+export * from './Leveler';
+export {default as Leveler} from './Leveler';
+
 export * from './Grid';
 export {default as Grid} from './Grid';
 

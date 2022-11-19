@@ -1,21 +1,23 @@
-import {RouterSource} from '../structure';
 import {Opaque} from 'type-fest';
-import {Either} from '../fp';
+
 import {GlobalError} from '../Error';
+import {Either} from '../fp';
+import {RouterSource} from '../structure';
 
 export const REQUEST = Symbol();
 export const RESPONSE = Symbol();
 export const RESPONSE_BODY = Symbol();
+export const NEW_WEB_SOCKET = Symbol();
 
 export interface Http {
   fetch(
     input: RequestInfo,
     init?: RequestInit,
   ): Promise<Either<Response, GlobalError>>;
-  io: RouterSource<{
-    [REQUEST]: RequestParams;
-    [RESPONSE]: ResponseParams;
-    [RESPONSE_BODY]: ResponseBodyParams;
+  readonly io: RouterSource<{
+    [REQUEST]: (params: RequestParams) => void;
+    [RESPONSE]: (params: ResponseParams) => void;
+    [RESPONSE_BODY]: (params: ResponseBodyParams) => void;
   }>;
 }
 

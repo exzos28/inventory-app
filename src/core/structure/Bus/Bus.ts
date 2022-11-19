@@ -1,16 +1,19 @@
 import {Disposer} from '../Service';
 
-export interface Bus<T> extends BusSource<T>, BusSink<T> {}
+export interface Bus<L extends BaseListener> extends BusSource<L>, BusSink<L> {}
 
-export interface BusSource<T> {
-  listen(listener: Listener<T>): Disposer;
-  forget(listener: Listener<T>): void;
+export interface BusSource<L extends BaseListener> {
+  readonly listeners: ReadonlySet<L>;
+  readonly isBeingListened: boolean;
+  readonly afterBeingListened: BusSource<(listener: L) => void>;
+  readonly beforeBeingForgot: BusSource<(listener: L) => void>;
+  listen(listener: L): Disposer;
+  once(listener: L): Disposer;
+  forget(listener: L): void;
 }
 
-export interface BusSink<T> {
-  send(event: T): void;
+export interface BusSink<L extends BaseListener> {
+  send(...args: Parameters<L>): void;
 }
 
-export interface Listener<T> {
-  (event: T): void;
-}
+export type BaseListener = (...args: any[]) => any;

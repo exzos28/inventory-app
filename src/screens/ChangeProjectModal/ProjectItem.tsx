@@ -34,7 +34,7 @@ export default observer(function ProjectItem({
   ...rest
 }: ProjectItemProps) {
   return (
-    <RootLayout onLayout={e => console.log(e.nativeEvent.layout)}>
+    <RootLayout>
       <RippleButton
         enabled={onItemPress !== undefined}
         onPress={() => onItemPress?.(item)}

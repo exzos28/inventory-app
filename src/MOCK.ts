@@ -11,8 +11,6 @@ import {
 import {Url} from './core';
 import {nanoid} from 'nanoid/non-secure';
 
-console.log(nanoid());
-
 const generateItems = (): ItemType[] => [
   {
     fields: [

@@ -1,7 +1,17 @@
-import {Root} from './Root';
-import {Service} from '../structure';
-import {Core} from '../Core';
+import {Platform} from 'react-native';
 
-export interface RootServiceFactory {
-  create(core: Core): Root & Service;
+import {Core} from '../Core';
+import {Service} from '../structure';
+import MobileRootService from './MobileRootService';
+import WebRootService from './WebRootService';
+import {Root} from './Root';
+
+export default class RootServiceFactory {
+  create(core: Core): Root & Service {
+    if (Platform.OS === 'web') {
+      return new WebRootService(core);
+    } else {
+      return new MobileRootService(core);
+    }
+  }
 }

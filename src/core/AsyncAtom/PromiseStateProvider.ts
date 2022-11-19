@@ -1,5 +1,5 @@
-import {PromiseState} from './PromiseState';
 import {Either} from '../fp';
+import {PromiseState} from './PromiseState';
 
 export interface PromiseStateProvider<R, E> {
   readonly state: PromiseState<R, E | PromiseCancellationError> | undefined;

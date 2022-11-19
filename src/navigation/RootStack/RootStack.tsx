@@ -40,13 +40,13 @@ export type RootParamList = {
   ItemDetails: {
     id: ItemId;
   };
-  CreateItem: {
-    pickedValue?:
-      | {
+  CreateItem:
+    | {
+        pickedValue?: {
           label: string;
-        }
-      | undefined;
-  };
+        };
+      }
+    | undefined;
   EditItem: {
     pickedValue?:
       | {

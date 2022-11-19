@@ -1,2 +1,2 @@
 export * from './Http';
-export {default as HttpImpl} from './HttpImpl';
+export {default as HttpFactory} from './MobileHttpFactory';

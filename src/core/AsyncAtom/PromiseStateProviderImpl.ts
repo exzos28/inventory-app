@@ -1,11 +1,12 @@
+import {makeObservable, observable, runInAction, when} from 'mobx';
+
+import {Either, error} from '../fp';
+import {FULFILLED, PENDING, PromiseState, REJECTED} from './PromiseState';
 import {
   PROMISE_CANCELLATION_ERROR,
   PromiseCancellationError,
   PromiseStateProvider,
 } from './PromiseStateProvider';
-import {makeObservable, observable, runInAction, when} from 'mobx';
-import {FULFILLED, PENDING, PromiseState, REJECTED} from './PromiseState';
-import {Either, error} from '../fp';
 
 export default class PromiseStateProviderImpl<R, E>
   implements PromiseStateProvider<R, E>
