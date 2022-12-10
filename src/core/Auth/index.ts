@@ -9,3 +9,5 @@ export {default as AuthStateService} from './AuthStateService';
 export * from './AuthRestClientHelper';
 export {default as AuthRestClientHelperImpl} from './AuthRestClientHelperImpl';
 export {default as JwtHelperImpl} from './JwtHelperImpl';
+
+export {default as AuthedFetchImpl} from './AuthedFetchImpl';

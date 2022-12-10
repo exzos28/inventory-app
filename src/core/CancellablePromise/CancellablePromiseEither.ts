@@ -1,8 +1,8 @@
-import {CancellationError} from '../Error';
+import {PromiseCancellationError} from '../Error';
 import {Either} from '../fp';
 
 export type CancellablePromiseEither<R, E> = Promise<
-  Either<R, E | CancellationError>
+  Either<R, E | PromiseCancellationError>
 > &
   CancellablePromiseMixin;
 

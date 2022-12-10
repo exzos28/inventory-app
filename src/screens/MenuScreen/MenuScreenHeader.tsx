@@ -14,7 +14,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {observer} from 'mobx-react-lite';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackBindingProps} from '../../navigation/RootStack/RootStackBindingProps';
-import {useRoot, useStrings, useTheme, variance} from '../../core';
+import {FULFILLED, useRoot, useStrings, useTheme, variance} from '../../core';
 import {
   AlignItems,
   Bubble,
@@ -23,7 +23,7 @@ import {
   RippleButton,
   Space,
 } from '../../components';
-import {PROJECTS, USERS} from '../../MOCK';
+import {USERS} from '../../MOCK';
 import {translateUserRole} from '../../tempHelper';
 
 export default observer(function MenuScreenHeader() {
@@ -31,7 +31,7 @@ export default observer(function MenuScreenHeader() {
   const strings = useStrings();
   const navigation =
     useNavigation<RootStackBindingProps<'Menu'>['navigation']>();
-  const {authHelper} = useRoot();
+  const {authHelper, accountStore, projectStore} = useRoot();
   const [menuVisible, setMenuVisible] = useState(false);
 
   const goToSettings = useCallback(() => {
@@ -58,23 +58,21 @@ export default observer(function MenuScreenHeader() {
 
   const renderOverflowMenuAction = useCallback(
     () => (
-      <React.Fragment>
-        <OverflowMenu
-          anchor={renderMenuAction}
-          visible={menuVisible}
-          onBackdropPress={toggleMenu}>
-          <MenuItem
-            onPress={goToSettings}
-            accessoryLeft={SettingsIcon}
-            title={strings['menuScreen.header.menu.settings']}
-          />
-          <MenuItem
-            onPress={goToAuth}
-            accessoryLeft={LogoutIcon}
-            title={strings['menuScreen.header.menu.logout']}
-          />
-        </OverflowMenu>
-      </React.Fragment>
+      <OverflowMenu
+        anchor={renderMenuAction}
+        visible={menuVisible}
+        onBackdropPress={toggleMenu}>
+        <MenuItem
+          onPress={goToSettings}
+          accessoryLeft={SettingsIcon}
+          title={strings['menuScreen.header.menu.settings']}
+        />
+        <MenuItem
+          onPress={goToAuth}
+          accessoryLeft={LogoutIcon}
+          title={strings['menuScreen.header.menu.logout']}
+        />
+      </OverflowMenu>
     ),
     [
       goToAuth,
@@ -101,18 +99,34 @@ export default observer(function MenuScreenHeader() {
                   fill={theme.palette['color-basic-800']}
                 />
               </Space>
+
               <Space gutter={Gutter.Tiny}>
-                <Text category="s1">{PROJECTS[0].name}</Text>
-                <Text category="s2">
-                  {USERS[0].name}, {translateUserRole(USERS[0].role, strings)}
-                </Text>
+                {projectStore.state?.status === FULFILLED &&
+                  projectStore.selectedProject && (
+                    <Text category="s1">
+                      {projectStore.selectedProject.name}
+                    </Text>
+                  )}
+                {accountStore.state?.status === FULFILLED && (
+                  <Text category="s2">
+                    {accountStore.state.result.nickname},{' '}
+                    {translateUserRole(USERS[0].role, strings)}
+                  </Text>
+                )}
               </Space>
             </Space>
           </Bubble>
         </ProjectButton>
       </Space>
     ),
-    [goToChangeProject, strings, theme],
+    [
+      accountStore.state,
+      projectStore.state,
+      projectStore.selectedProject,
+      goToChangeProject,
+      strings,
+      theme.palette,
+    ],
   );
 
   const insets = useSafeAreaInsets();

@@ -1,6 +1,6 @@
 import {BaseErrorBody} from './BaseError';
 
-export const CANCELLATION_ERROR = Symbol();
-export type CancellationError = {
-  kind: typeof CANCELLATION_ERROR;
+export const PROMISE_CANCELLATION_ERROR = Symbol();
+export type PromiseCancellationError = {
+  kind: typeof PROMISE_CANCELLATION_ERROR;
 } & BaseErrorBody;

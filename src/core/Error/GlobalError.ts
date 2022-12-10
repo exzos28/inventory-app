@@ -1,5 +1,5 @@
 import {NotAuthorizedError, NotFoundLinkedAccounts} from './AuthError';
-import {CancellationError} from './CancellablePromiseError';
+import {PromiseCancellationError} from './CancellablePromiseError';
 import {JsonStringifyError, JsonParseError} from './JsonError';
 import {JwtParseError} from './JwtError';
 import {
@@ -24,7 +24,7 @@ import {SpecializedShadesResponseError} from './SpecializedShadesResponseError';
 
 export type GlobalError =
   | NotAuthorizedError
-  | CancellationError
+  | PromiseCancellationError
   | EncodeError
   | DecodeError
   | JsonStringifyError

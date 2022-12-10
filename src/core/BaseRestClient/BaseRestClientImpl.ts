@@ -7,7 +7,7 @@ import {
 } from '../Error';
 import {ErrorRepository} from '../ErrorRepository';
 import {Either, error, success} from '../fp';
-import {Http} from '../Http';
+import {Fetch} from '../Http';
 import {Json, JsonSerializable} from '../Json';
 import {Millisecond} from '../Time';
 import {Url} from '../units';
@@ -24,8 +24,8 @@ export default abstract class BaseRestClientImpl {
     protected readonly _root: {
       readonly errorRepository: ErrorRepository;
       readonly json: Json;
-      readonly http: Http;
     },
+    readonly fetch: Fetch,
   ) {}
 
   protected abstract get _base(): Url;
@@ -49,7 +49,7 @@ export default abstract class BaseRestClientImpl {
       }
       body = body_.right;
     }
-    const fetchPromise = this._root.http.fetch(`${this._base}${endpoint}`, {
+    const fetchPromise = this.fetch.fetch(`${this._base}${endpoint}`, {
       method,
       body,
       headers: {

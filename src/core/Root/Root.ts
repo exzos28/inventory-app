@@ -13,8 +13,14 @@ import {AppWindow, AppWindowState} from '../AppWindow';
 import {WindowDimensions, WindowDimensionsState} from '../WindowDimensions';
 import {Configuration} from '../Configuration';
 import {AuthHelper, AuthState} from '../Auth';
+import {AccountStore} from '../AccountStore';
+import {ProjectStore} from '../ProjectStore';
+import {ProjectRestClientHelper} from '../ProjectRestClientHelper';
 
 export interface Root {
+  readonly accountStore: AccountStore;
+  readonly projectStore: ProjectStore;
+
   readonly appLifecycle: AppLifecycle;
   readonly navigationContainer: NavigationContainer;
   readonly navigationContainerBinding: NavigationContainerBinding;
@@ -22,6 +28,7 @@ export interface Root {
   // readonly location: Location;
   // readonly linkingOptionsProvider: LinkingOptionsProvider;
   readonly authHelper: AuthHelper;
+
   readonly authState: AuthState;
   readonly appState: AppState;
   readonly localization: Localization;
@@ -29,6 +36,8 @@ export interface Root {
   readonly translation: Translation;
   readonly navigationContainerTheme: NavigationContainerTheme;
   // readonly deviceInfo: DeviceInfo;
+
+  readonly projectRestClientHelper: ProjectRestClientHelper;
 
   readonly appWindow: AppWindow;
   readonly appWindowState: AppWindowState;

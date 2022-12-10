@@ -5,14 +5,16 @@ import {observer} from 'mobx-react-lite';
 
 import {useRoot} from '../core/Root/hooks';
 import {RootStack} from './RootStack';
+import {FULFILLED} from '../core';
 
 export default observer(function AppNavigatorRoot() {
-  const {navigationContainerBinding, navigationContainerTheme} = useRoot();
+  const {navigationContainerBinding, navigationContainerTheme, authState} =
+    useRoot();
   return (
     <NavigationContainer
       theme={navigationContainerTheme.theme}
       {...navigationContainerBinding.props}>
-      <RootStack />
+      {authState.latest?.status === FULFILLED && <RootStack />}
     </NavigationContainer>
   );
 });

@@ -20,10 +20,14 @@ import {Button, Text} from '@ui-kitten/components';
 
 export type ErrorScreenProps = {
   onReturnPress: () => void;
+  raw?: unknown;
+  description?: string;
 };
 
 export default observer(function ErrorScreen({
   onReturnPress,
+  raw,
+  description,
 }: ErrorScreenProps) {
   const strings = useStrings();
   return (
@@ -35,8 +39,13 @@ export default observer(function ErrorScreen({
               <Space>
                 <TitleText>{strings['errorScreen.title']}</TitleText>
                 <DescriptionText>
-                  {strings['errorScreen.description']}
+                  {description !== undefined
+                    ? description
+                    : strings['errorScreen.description']}
                 </DescriptionText>
+                {raw !== undefined && (
+                  <Text>{JSON.stringify(raw, null, 2)}</Text>
+                )}
               </Space>
             </HeaderSpace>
           </Cell>

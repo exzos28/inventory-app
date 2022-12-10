@@ -24,6 +24,7 @@ import {Rfc4648Impl} from '../Rfc4648';
 import {TextEndecImpl} from '../TextEndec';
 import {JwtImpl} from '../Jwt';
 import {
+  AuthedFetchImpl,
   AuthHelperImpl,
   AuthQueryImpl,
   AuthRestClientHelperImpl,
@@ -35,7 +36,12 @@ import {ErrorParserImpl} from '../ErrorParser';
 import {AuthRestClientImpl} from '../AuthRestClient';
 import {OAuth2ConsumerService} from '../OAuth2Consumer';
 import {AppleOAuth2Provider} from '../OAuth2Provider';
-import {Http} from '../Http';
+import {HttpFactory} from '../Http';
+import {UserRestClientImpl} from '../UserRestClient';
+import {AccountStoreService} from '../AccountStore';
+import {ProjectRestClientImpl} from '../ProjectRestClient';
+import {ProjectStoreService} from '../ProjectStore';
+import {ProjectRestClientHelperImpl} from '../ProjectRestClientHelper';
 
 export default abstract class BaseRootService implements Root, Service {
   constructor(protected readonly _core: Core) {}
@@ -54,15 +60,34 @@ export default abstract class BaseRootService implements Root, Service {
   get errorRepository() {
     return this._core.errorRepository;
   }
+  readonly authedFetch = new AuthedFetchImpl(this);
+  readonly http = new HttpFactory(this).create();
+
   readonly errorParser = new ErrorParserImpl(this);
+
   readonly time = new TimeImpl();
   readonly rfc4648 = new Rfc4648Impl(this);
   readonly textEndec = new TextEndecImpl(this);
   readonly jwt = new JwtImpl(this);
   readonly jwtHelper = new JwtHelperImpl(this);
 
-  readonly authRestClient = new AuthRestClientImpl(this);
+  //
+  readonly authRestClient = new AuthRestClientImpl(this, this.http);
   readonly authRestClientHelper = new AuthRestClientHelperImpl(this);
+  readonly userRestClient = new UserRestClientImpl(this, this.authedFetch);
+
+  readonly projectRestClient = new ProjectRestClientImpl(
+    this,
+    this.authedFetch,
+  );
+  readonly projectRestClientHelper = new ProjectRestClientHelperImpl(this);
+  //
+
+  //
+  readonly projectStore = new ProjectStoreService(this);
+  readonly accountStore = new AccountStoreService(this);
+  //
+
   readonly authClient = new LocalAuthClientService(this);
   readonly authHelper = new AuthHelperImpl(this);
   readonly authQuery = new AuthQueryImpl(this);
@@ -88,19 +113,23 @@ export default abstract class BaseRootService implements Root, Service {
 
   subscribe() {
     return batchDisposers(
-      this.appState.subscribe(),
       this.authClient.subscribe(),
       this.authState.subscribe(),
-      this.appWindow.subscribe(),
-      this.appWindowState.subscribe(),
+
+      this.accountStore.subscribe(),
+      this.projectStore.subscribe(),
+
       this.localization.subscribe(),
       this.preferences.subscribe(),
+
+      this.appState.subscribe(),
+      this.appWindow.subscribe(),
+      this.appWindowState.subscribe(),
       this.windowDimensions.subscribe(),
       this.windowDimensionsState.subscribe(),
     );
   }
 
-  abstract readonly http: Http;
   abstract readonly appleOAuth2Provider: AppleOAuth2Provider;
   abstract readonly deviceInfo: DeviceInfo;
   abstract readonly jsonKeyValueStore: JsonKeyValueStore<JsonKeyValueMap>;

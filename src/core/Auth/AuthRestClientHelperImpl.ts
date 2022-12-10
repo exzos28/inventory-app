@@ -1,13 +1,14 @@
 import {
   AuthRestClient,
+  AuthResponse,
   OAuth2ProviderMap,
   OAuth2RefreshParams,
   OAuth2SignInParams,
+  RefreshResponse,
 } from '../AuthRestClient';
 import {Credentials} from '../Credentials';
 import {GlobalError} from '../Error';
 import {Either, success} from '../fp';
-import {AuthResult, RefreshResult} from '../ShadesServer';
 import {AuthRestClientHelper} from './AuthRestClientHelper';
 
 export default class AuthRestClientHelperImpl implements AuthRestClientHelper {
@@ -32,9 +33,8 @@ export default class AuthRestClientHelperImpl implements AuthRestClientHelper {
   async signIn<T extends keyof OAuth2ProviderMap>(
     params: OAuth2SignInParams<T>,
   ): Promise<Either<Credentials, GlobalError>> {
-    // console.log('params', params);
     const outcome = await this._root.authRestClient.signIn(params);
-    // console.log('outcome', outcome);
+    console.log('outcome', outcome);
     if (!outcome.success) {
       return outcome;
     }
@@ -43,13 +43,13 @@ export default class AuthRestClientHelperImpl implements AuthRestClientHelper {
     );
   }
 
-  private static _translateAuthResult(_: AuthResult): Credentials {
+  private static _translateAuthResult(_: AuthResponse): Credentials {
     return {
       refreshToken: _.refresh_token,
       accessToken: _.access_token,
     };
   }
-  private static _translateRefreshResult(_: RefreshResult): Credentials {
+  private static _translateRefreshResult(_: RefreshResponse): Credentials {
     return {
       refreshToken: _.refresh,
       accessToken: _.access,

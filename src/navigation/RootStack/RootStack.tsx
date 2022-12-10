@@ -21,6 +21,8 @@ import ConfirmItemsTransferBinding from './ConfirmItemsTransferBinding';
 import SelectItemForQrMarkingBinding from './SelectItemForQrMarkingBinding';
 import QrItemMarkingBinding from './QrItemMarkingBinding';
 import ChangeProjectBinding from './ChangeProjectBinding';
+import CreateProjectBinding from './CreateProjectBinding';
+import UnknownErrorBinding from './UnknownErrorBinding';
 
 export type RootParamList = {
   Menu: undefined;
@@ -62,6 +64,20 @@ export type RootParamList = {
   };
   ChangeProject: undefined;
   //
+
+  //
+  CreateProject: undefined;
+  //
+
+  //
+  UnknownError:
+    | {
+        raw?: unknown;
+        description?: string;
+      }
+    | undefined;
+  //
+
   //
   SelectItemForQrMarking: undefined;
   QrItemMarking: {
@@ -168,6 +184,10 @@ export const RootStack = observer(() => {
           name="ConfirmItemsTransfer"
           component={ConfirmItemsTransferBinding}
         />
+        {/*TODO l10n */}
+        <Screen name="CreateProject" component={CreateProjectBinding} />
+
+        <Screen name="UnknownError" component={UnknownErrorBinding} />
 
         <Screen
           options={{

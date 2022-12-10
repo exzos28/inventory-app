@@ -1,6 +1,5 @@
 import {Core} from '../Core';
 import {MobileDeviceInfoImpl} from '../DeviceInfo';
-import MobileHttpFactory from '../Http/MobileHttpFactory';
 import {JsonKeyValueMap, JsonKeyValueStoreService} from '../JsonKeyValueStore';
 import {
   KeyValueMap,
@@ -40,7 +39,6 @@ export default class MobileRootService
   private readonly _appleOAuth2ProviderFactory =
     new MobileAppleOAuth2ProviderServiceFactory(this);
   readonly appleOAuth2Provider = this._appleOAuth2ProviderFactory.create();
-  readonly http = new MobileHttpFactory(this).create();
 
   subscribe() {
     return batchDisposers(super.subscribe());

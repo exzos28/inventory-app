@@ -1,4 +1,4 @@
-import {ErrorResponse} from '../ShadesServer';
+import {ErrorResponse} from '../HadesServer';
 import {BaseErrorBody} from './BaseError';
 
 export const SPECIALIZED_SHADES_RESPONSE_ERROR = Symbol();

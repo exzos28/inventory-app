@@ -12,19 +12,19 @@ import {
   RippleButtonProps,
   Space,
 } from '../../components';
-import {ProjectType} from '../../tempTypes';
 import {variance} from '../../core';
+import {ProjectResponse} from '../../core/ProjectRestClient';
 
 export type ExternalProjectItemProps = {
-  rightAccessory?: (item: ProjectType) => void;
-  onItemPress?: (item: ProjectType) => void;
+  rightAccessory?: (item: ProjectResponse) => void;
+  onItemPress?: (item: ProjectResponse) => void;
 };
 
 export const PROJECT_ITEM_HEIGHT = 55;
 
 export type ProjectItemProps = Exclude<RippleButtonProps, 'onPress'> &
   ExternalProjectItemProps & {
-    item: ProjectType;
+    item: ProjectResponse;
   };
 
 export default observer(function ProjectItem({

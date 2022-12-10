@@ -2,11 +2,8 @@ import {makeObservable, observable, runInAction, when} from 'mobx';
 
 import {Either, error} from '../fp';
 import {FULFILLED, PENDING, PromiseState, REJECTED} from './PromiseState';
-import {
-  PROMISE_CANCELLATION_ERROR,
-  PromiseCancellationError,
-  PromiseStateProvider,
-} from './PromiseStateProvider';
+import {PromiseStateProvider} from './PromiseStateProvider';
+import {PROMISE_CANCELLATION_ERROR, PromiseCancellationError} from '../Error';
 
 export default class PromiseStateProviderImpl<R, E>
   implements PromiseStateProvider<R, E>
@@ -15,6 +12,8 @@ export default class PromiseStateProviderImpl<R, E>
 
   private static readonly CANCELLATION_ERROR = {
     kind: PROMISE_CANCELLATION_ERROR,
+    description: 'Promise was cancel',
+    raw: undefined,
   } as const;
 
   private static readonly CANCELLED_STATE = {

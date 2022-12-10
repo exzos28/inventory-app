@@ -1,4 +1,3 @@
-import HttpImpl from '../Http/HttpImpl';
 import {
   JsonKeyValueMap,
   JsonKeyValueStore,
@@ -32,7 +31,6 @@ export default class WebRootService
   readonly jsonSecureKeyValueStore = this
     .jsonKeyValueStore as unknown as JsonKeyValueStore<JsonSecureKeyValueMap>;
   readonly appleOAuth2Provider = new WebAppleOAuth2ProviderService(this);
-  readonly http = new HttpImpl(this);
 
   subscribe() {
     return batchDisposers(

@@ -6,7 +6,14 @@ export interface RestClient {
   generalizeError(e: GlobalError | HttpRestClientError): GlobalError;
 }
 
-export type RestMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
+export type RestMethod =
+  | 'GET'
+  | 'HEAD'
+  | 'POST'
+  | 'PUT'
+  | 'PATCH'
+  | 'DELETE'
+  | 'OPTIONS';
 
 export const HTTP_REST_CLIENT_ERROR = Symbol();
 export type HttpRestClientError<E extends JsonSerializable = JsonSerializable> =

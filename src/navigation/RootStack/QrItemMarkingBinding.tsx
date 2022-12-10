@@ -14,6 +14,7 @@ export default observer(function QrItemMarkingBinding({
   const getIsFocused = useNavigationGetIsFocused();
   const onBarCodeScanned = useCallback(
     ({data}: BarCodeScanningResult) => {
+      // TODO l10n
       Alert.alert(
         'Ostrzeżenie',
         'Czy na pewno chcesz przypisać ten kod QR do tego przedmiotu?',

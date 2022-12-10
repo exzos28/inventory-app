@@ -6,9 +6,9 @@ import {
 } from '../Error';
 import {ErrorRepository} from '../ErrorRepository';
 import {Either, error} from '../fp';
-import {Http} from '../Http';
+import {Fetch} from '../Http';
 import {Json, JsonSerializable} from '../Json';
-import {ErrorResponse} from '../ShadesServer';
+import {ErrorResponse} from '../HadesServer';
 import {Url} from '../units';
 
 export default abstract class BaseRoboxRestClientImpl extends BaseRestClientImpl {
@@ -16,10 +16,10 @@ export default abstract class BaseRoboxRestClientImpl extends BaseRestClientImpl
     protected readonly _root: {
       readonly errorRepository: ErrorRepository;
       readonly json: Json;
-      readonly http: Http;
     },
+    readonly fetch: Fetch,
   ) {
-    super(_root);
+    super(_root, fetch);
   }
 
   protected async _fetch<

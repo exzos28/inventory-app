@@ -9,16 +9,19 @@ export const RESPONSE = Symbol();
 export const RESPONSE_BODY = Symbol();
 export const NEW_WEB_SOCKET = Symbol();
 
-export interface Http {
-  fetch(
-    input: RequestInfo,
-    init?: RequestInit,
-  ): Promise<Either<Response, GlobalError>>;
+export interface Http extends Fetch {
   readonly io: RouterSource<{
     [REQUEST]: (params: RequestParams) => void;
     [RESPONSE]: (params: ResponseParams) => void;
     [RESPONSE_BODY]: (params: ResponseBodyParams) => void;
   }>;
+}
+
+export interface Fetch {
+  fetch(
+    input: RequestInfo,
+    init?: RequestInit,
+  ): Promise<Either<Response, GlobalError>>;
 }
 
 export interface RequestParams {

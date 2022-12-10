@@ -1,7 +1,8 @@
-import {Millisecond} from '../Time';
+import {ProjectId} from '../HadesServer';
+import {JsonString} from '../Json';
 
 export type KeyValueMap = {
   [K in string]: string;
-} & {};
-
-export type AddressHistoryEntry = [address: string, updatedAt: Millisecond];
+} & {
+  selectedProjectId: JsonString<ProjectId>;
+};

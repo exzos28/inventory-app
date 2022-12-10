@@ -1,5 +1,8 @@
 import {CancellablePromiseEither} from '../../CancellablePromise';
-import {CANCELLATION_ERROR, CancellationError} from '../../Error';
+import {
+  PROMISE_CANCELLATION_ERROR,
+  PromiseCancellationError,
+} from '../../Error';
 import {ErrorRepository} from '../../ErrorRepository';
 import {Either, error, success} from '../../fp';
 import {BaseListener, BusSource} from '../Bus';
@@ -19,27 +22,27 @@ export default class BusHelperImpl<L extends BaseListener>
     condition?: (...args: Parameters<L>) => boolean,
   ): CancellablePromiseEither<Parameters<L>, never> {
     let cancel: () => void;
-    const promise = new Promise<Either<Parameters<L>, CancellationError>>(
-      resolve => {
-        const listener = ((...args: Parameters<L>) => {
-          if (condition === undefined || condition(...args)) {
-            this._source.forget(listener);
-            resolve(success(args));
-          }
-        }) as L;
-        cancel = () => {
+    const promise = new Promise<
+      Either<Parameters<L>, PromiseCancellationError>
+    >(resolve => {
+      const listener = ((...args: Parameters<L>) => {
+        if (condition === undefined || condition(...args)) {
           this._source.forget(listener);
-          resolve(
-            error(
-              this._root.errorRepository.create<CancellationError>({
-                kind: CANCELLATION_ERROR,
-              }),
-            ),
-          );
-        };
-        this._source.listen(listener);
-      },
-    );
+          resolve(success(args));
+        }
+      }) as L;
+      cancel = () => {
+        this._source.forget(listener);
+        resolve(
+          error(
+            this._root.errorRepository.create<PromiseCancellationError>({
+              kind: PROMISE_CANCELLATION_ERROR,
+            }),
+          ),
+        );
+      };
+      this._source.listen(listener);
+    });
     Reflect.set(promise, 'cancel', () => cancel());
     return promise as CancellablePromiseEither<Parameters<L>, never>;
   }

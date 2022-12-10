@@ -1,6 +1,6 @@
 import {BaseErrorOptions, ErrorRepository} from './ErrorRepository';
 import {
-  CANCELLATION_ERROR,
+  PROMISE_CANCELLATION_ERROR,
   JSON_PARSE_ERROR,
   JSON_STRINGIFY_ERROR,
   JWT_PARSE_ERROR,
@@ -23,7 +23,8 @@ import {
 export default class ErrorRepositoryImpl implements ErrorRepository {
   private static readonly _KIND_DESCRIPTION_DICTIONARY = {
     [NOT_AUTHORIZED_ERROR]: 'Not authorized to perform an action',
-    [CANCELLATION_ERROR]: 'The async task has been cancelled programmatically',
+    [PROMISE_CANCELLATION_ERROR]:
+      'The async task has been cancelled programmatically',
     [JSON_PARSE_ERROR]: 'Cannot parse JSON from a string',
     [JSON_STRINGIFY_ERROR]: 'Cannot stringify a value to the JSON string',
     [JWT_PARSE_ERROR]: 'Cannot parse JWT from a string',

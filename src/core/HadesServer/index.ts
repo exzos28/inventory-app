@@ -1,2 +1,2 @@
-export * from './Auth';
 export * from './Response';
+export * from './Project';
