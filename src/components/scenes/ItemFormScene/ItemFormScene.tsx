@@ -2,21 +2,24 @@ import React, {useCallback} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Button, Icon, IconProps, Input} from '@ui-kitten/components';
 import {Bubble, Space} from '../../index';
-import {Either, useStrings, variance} from '../../../core';
+import {Either, Uri, useStrings, variance} from '../../../core';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
 import {launchImageLibraryAsync, MediaTypeOptions} from 'expo-image-picker';
 import {Controller, useForm} from 'react-hook-form';
 import CustomFieldList from './CustomFieldList';
-import {Inputs, InputsResult} from './types';
+import {ItemFormValues} from './types';
 import {NavigationIQKeyboardManager} from '../../../navigation/components';
 import {observer} from 'mobx-react-lite';
 
 export type ItemFormSceneProps = {
-  onSubmitPress: (_: InputsResult) => void;
+  onSubmitPress: (
+    values: ItemFormValues,
+    touchedKeys: keyof ItemFormValues,
+  ) => void;
   onNewFieldNameRequest: () => Promise<Either<string, void>>;
   submitTitle: string;
-  defaultValues?: Inputs;
+  defaultValues?: ItemFormValues;
 };
 
 export default function ItemFormScene({
@@ -28,13 +31,28 @@ export default function ItemFormScene({
   const strings = useStrings();
   const {
     control,
-    formState: {errors},
+    formState: {errors, touchedFields},
     handleSubmit,
     setValue,
     watch,
-  } = useForm<Inputs>({
+  } = useForm<ItemFormValues>({
     defaultValues: defaultValues,
   });
+  const handleSubmitPress = useCallback(
+    (values: ItemFormValues) => {
+      const touchedKey = Object.entries(touchedFields).flatMap(
+        ([key, value]) => {
+          if (value) {
+            return [key as keyof ItemFormValues];
+          }
+          return [];
+        },
+      );
+      const keys = touchedKey as unknown as keyof ItemFormValues;
+      onSubmitPress(values, keys);
+    },
+    [onSubmitPress, touchedFields],
+  );
   const deleteImage = useCallback(() => {
     setValue('image', undefined);
   }, [setValue]);
@@ -42,20 +60,23 @@ export default function ItemFormScene({
     const result = await launchImageLibraryAsync({
       mediaTypes: MediaTypeOptions.All,
       allowsEditing: false,
-      quality: 1,
+      quality: 0.2,
     });
     if (!result.cancelled) {
-      setValue('image', result);
+      setValue('image', result.uri as Uri);
     }
   }, [setValue]);
   const imageValue = watch('image');
   return (
     <RootIQKeyboardManager>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="always">
         <ContentSafeAreaView edges={['bottom']}>
           <ItemFormImage
             deleteImage={deleteImage}
-            imageValue={imageValue}
+            uri={imageValue}
             pickImage={pickImage}
           />
           <ContentBubble>
@@ -67,7 +88,7 @@ export default function ItemFormScene({
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
-                    label={strings['createItemScreen.itemNameLabel']}
+                    label={strings['createItemScreen.itemNameLabel'] + '*'}
                     placeholder="HP Neverstop Laser"
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -84,7 +105,7 @@ export default function ItemFormScene({
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
-                    label={strings['createItemScreen.serialNumberLabel']}
+                    label={strings['createItemScreen.serialNumberLabel'] + '*'}
                     placeholder="4QD21A"
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -104,7 +125,7 @@ export default function ItemFormScene({
           </ContentBubble>
           <Bubble>
             <SubmitButton
-              onPress={handleSubmit(onSubmitPress)}
+              onPress={handleSubmit(handleSubmitPress)}
               accessoryLeft={CheckmarkIcon}>
               {submitTitle}
             </SubmitButton>
@@ -116,20 +137,20 @@ export default function ItemFormScene({
 }
 
 export type ItemFormImageProps = {
-  imageValue?: {uri: string};
+  uri?: Uri;
   pickImage: () => void;
   deleteImage: () => void;
 };
 
 const ItemFormImage = observer(
-  ({imageValue, pickImage, deleteImage}: ItemFormImageProps) => {
+  ({uri, pickImage, deleteImage}: ItemFormImageProps) => {
     const strings = useStrings();
-    return imageValue ? (
+    return uri ? (
       <View>
         <ItemImage
           resizeMode="contain"
           source={{
-            uri: imageValue.uri,
+            uri: uri,
           }}
         />
         <DeleteItemImageButton

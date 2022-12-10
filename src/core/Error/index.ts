@@ -14,3 +14,4 @@ export * from './TimeoutError';
 export * from './CookieError';
 export * from './InstagramError';
 export * from './SpecializedShadesResponseError';
+export * from './ProjectError';

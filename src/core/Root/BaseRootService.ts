@@ -42,6 +42,8 @@ import {AccountStoreService} from '../AccountStore';
 import {ProjectRestClientImpl} from '../ProjectRestClient';
 import {ProjectStoreService} from '../ProjectStore';
 import {ProjectRestClientHelperImpl} from '../ProjectRestClientHelper';
+import {ItemRestClientImpl} from '../ItemRestClient';
+import {ItemRestClientHelperImpl} from '../ItemRestClientHelper';
 
 export default abstract class BaseRootService implements Root, Service {
   constructor(protected readonly _core: Core) {}
@@ -81,6 +83,8 @@ export default abstract class BaseRootService implements Root, Service {
     this.authedFetch,
   );
   readonly projectRestClientHelper = new ProjectRestClientHelperImpl(this);
+  readonly itemRestClient = new ItemRestClientImpl(this, this.authedFetch);
+  readonly itemRestClientHelper = new ItemRestClientHelperImpl(this);
   //
 
   //

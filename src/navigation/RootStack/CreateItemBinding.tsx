@@ -2,21 +2,22 @@ import React, {useCallback} from 'react';
 import {observer} from 'mobx-react-lite';
 import {CreateItemScreen} from '../../screens/CreateItemScreen';
 import {RootStackBindingProps} from './RootStackBindingProps';
-import {error, success} from '../../core';
-import {Alert} from 'react-native';
+import {error, success, useRoot} from '../../core';
 import usePromisifyNavigation from './usePromisifyNavigation';
-import {InputsResult} from '../../components/scenes/ItemFormScene';
-import {ITEMS} from '../../MOCK';
+import {ItemFormValues} from '../../components/scenes/ItemFormScene';
+import useGoToUnknownError from './useGoToUnknownError';
 
 type CreateItemBindingProps = RootStackBindingProps<'CreateItem'>;
 
 export default observer(function CreateItemBinding({
   navigation,
 }: CreateItemBindingProps) {
+  const {itemRestClientHelper} = useRoot();
   const {promisifyNavigate} = usePromisifyNavigation<
     CreateItemBindingProps['route']
   >(() => navigation.navigate('PickFieldName', {fromScreen: 'CreateItem'}));
 
+  const goToUnknownError = useGoToUnknownError(navigation);
   const onNewFieldNameRequest = useCallback(async () => {
     const response = await promisifyNavigate();
     if (response.success) {
@@ -29,12 +30,23 @@ export default observer(function CreateItemBinding({
   }, [promisifyNavigate]);
 
   const create = useCallback(
-    (_: InputsResult) => {
-      const str = JSON.stringify(_, null, 1);
-      Alert.alert('Result', str);
-      navigation.replace('ItemDetails', {id: ITEMS[0].id});
+    async (_: ItemFormValues) => {
+      console.log(_);
+      const create_ = await itemRestClientHelper.create({
+        item: {
+          image: _.image,
+          name: _.name,
+          serialNumber: _.serialNumber,
+          customFields: _.customFields,
+        },
+      });
+      console.log(create_);
+      if (!create_.success) {
+        return goToUnknownError(create_.left);
+      }
+      navigation.goBack();
     },
-    [navigation],
+    [goToUnknownError, itemRestClientHelper, navigation],
   );
 
   return (

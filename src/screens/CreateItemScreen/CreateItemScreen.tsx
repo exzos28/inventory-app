@@ -2,11 +2,11 @@ import React from 'react';
 import {Either, useStrings} from '../../core';
 import {
   ItemFormScene,
-  InputsResult,
+  ItemFormValues,
 } from '../../components/scenes/ItemFormScene';
 
 export type CreateItemScreenProps = {
-  onCreatePress: (_: InputsResult) => void;
+  onCreatePress: (_: ItemFormValues) => void;
   onNewFieldNameRequest: () => Promise<Either<string, void>>;
 };
 

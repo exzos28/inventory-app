@@ -1,6 +1,9 @@
 import {Url} from './core';
 import {Opaque} from 'type-fest';
 
+/**
+ * @deprecated
+ */
 export type ItemType = {
   id: ItemId;
   image?: Url;
@@ -13,17 +16,18 @@ export type ItemType = {
   qrData: null | string;
 };
 
-export type ProjectType = {
-  id: ProjectId;
-  name: string;
-};
-
+/**
+ * @deprecated
+ */
 export type UserType = {
   id: UserId;
   name: string;
   role: UserRole;
 };
 
+/**
+ * @deprecated
+ */
 export enum UserRole {
   Owner,
   Admin,
@@ -31,11 +35,20 @@ export enum UserRole {
   User,
 }
 
+/**
+ * @deprecated
+ */
 export const ITEM_ID = Symbol.for('Item id');
+/**
+ * @deprecated
+ */
 export type ItemId = Opaque<string, typeof ITEM_ID>;
 
+/**
+ * @deprecated
+ */
 export const USER_ID = Symbol.for('User id');
+/**
+ * @deprecated
+ */
 export type UserId = Opaque<string, typeof USER_ID>;
-
-export const PROJECT_ID = Symbol.for('Project id');
-export type ProjectId = Opaque<string, typeof PROJECT_ID>;

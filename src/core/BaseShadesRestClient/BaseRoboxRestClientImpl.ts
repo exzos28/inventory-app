@@ -29,8 +29,14 @@ export default abstract class BaseRoboxRestClientImpl extends BaseRestClientImpl
     method: RestMethod,
     endpoint: Url,
     params?: P,
+    contentType?: 'json' | 'form-data',
   ): Promise<Either<R, GlobalError>> {
-    const response = await super._call<P, R>(method, endpoint, params);
+    const response = await super._call<P, R>(
+      method,
+      endpoint,
+      params,
+      contentType,
+    );
     if (response.success) {
       const errorResponse = this._isErrorResponse(response.right);
       if (errorResponse) {

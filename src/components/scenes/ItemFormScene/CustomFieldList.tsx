@@ -7,11 +7,11 @@ import {variance} from '../../../core/styling';
 import {Control, Controller, useFieldArray} from 'react-hook-form';
 import {Button, Icon, IconProps, Input} from '@ui-kitten/components';
 import {Space} from '../../index';
-import {Inputs} from './types';
+import {ItemFormValues} from './types';
 import {Either, useStrings} from '../../../core';
 
 export type CustomFieldListProps = {
-  control: Control<Inputs>;
+  control: Control<ItemFormValues>;
   onNewFieldNameRequest: () => Promise<Either<string, void>>;
 };
 
@@ -20,14 +20,14 @@ export default observer(function CustomFieldList({
   onNewFieldNameRequest,
 }: CustomFieldListProps) {
   const strings = useStrings();
-  const {fields, append, remove} = useFieldArray<Inputs>({
+  const {fields, append, remove} = useFieldArray<ItemFormValues>({
     control,
-    name: 'fields',
+    name: 'customFields',
   });
   const onAppendPress = useCallback(async () => {
     const response = await onNewFieldNameRequest();
     if (response.success) {
-      append({label: response.right});
+      append({label: response.right, value: ''});
     }
   }, [append, onNewFieldNameRequest]);
   const accessoryRight = useCallback(
@@ -57,7 +57,7 @@ export default observer(function CustomFieldList({
                     accessoryRight={props => accessoryRight(props, index)}
                   />
                 )}
-                name={`fields.${index}`}
+                name={`customFields.${index}`}
                 control={control}
               />
             ))}

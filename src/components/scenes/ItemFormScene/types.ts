@@ -1,19 +1,13 @@
-export type Inputs = {
-  image?: {uri: string};
-  name: string;
-  serialNumber: string;
-  fields: {
-    label: string;
-    value: string;
-  }[];
-};
+import {Uri} from '../../../core';
 
-export type InputsResult = {
-  image?: {uri: string};
+export type ItemFormValues = {
+  image: Uri | undefined;
   name: string;
-  serialNumber: string;
-  fields: {
-    label: string;
-    value: string;
-  }[];
+  serialNumber: string | undefined;
+  customFields:
+    | {
+        label: string;
+        value: string;
+      }[]
+    | undefined;
 };

@@ -27,6 +27,7 @@ export default observer(function CreateProjectScreen({
   return (
     <RootIQKeyboardManager>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="always">
         <Bubble>

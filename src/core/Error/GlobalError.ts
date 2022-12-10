@@ -21,6 +21,7 @@ import {
 } from './CookieError';
 import {GetInstagramDataError, InstagramUnknownError} from './InstagramError';
 import {SpecializedShadesResponseError} from './SpecializedShadesResponseError';
+import {ProjectError} from './ProjectError';
 
 export type GlobalError =
   | NotAuthorizedError
@@ -45,4 +46,5 @@ export type GlobalError =
   | InstagramUnknownError
   | GetInstagramDataError
   | NotFoundLinkedAccounts
-  | SpecializedShadesResponseError;
+  | SpecializedShadesResponseError
+  | ProjectError;

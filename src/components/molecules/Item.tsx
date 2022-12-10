@@ -3,22 +3,22 @@ import {IconProps, Layout, Text} from '@ui-kitten/components';
 import {observer} from 'mobx-react-lite';
 import {Image, StyleSheet} from 'react-native';
 import RippleButton, {RippleButtonProps} from '../RippleButton';
-import {ItemType} from '../../tempTypes';
 import Bubble from '../Bubble';
 import {AlignItems, Gutter} from '../types';
 import {Url, variance} from '../../core';
 import Grid, {Cell} from '../Grid';
 import Space from '../Space';
+import {Item} from '../../core/ItemRestClientHelper';
 
 export type ExternalItemProps = {
-  rightAccessory?: (item: ItemType) => React.ReactNode;
-  onItemPress?: (item: ItemType) => void;
-  onItemLongPress?: (item: ItemType) => void;
+  rightAccessory?: (item: Item) => React.ReactNode;
+  onItemPress?: (item: Item) => void;
+  onItemLongPress?: (item: Item) => void;
 };
 
 export type ItemProps = Exclude<RippleButtonProps, 'onPress'> &
   ExternalItemProps & {
-    item: ItemType;
+    item: Item;
   };
 
 export default observer(

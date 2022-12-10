@@ -8,17 +8,22 @@ import {range} from 'lodash';
 import dayjs from 'dayjs';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
-import {ItemType} from '../../tempTypes';
+import {Item} from '../../core/ItemRestClientHelper';
 
 export type ItemDetailsScreenProps = {
-  item: ItemType;
+  item: Item;
+  onDeletePress: () => void;
 };
 
-export default function ItemDetailsScreen({item}: ItemDetailsScreenProps) {
+// TODO l10n
+export default function ItemDetailsScreen({
+  item,
+  onDeletePress,
+}: ItemDetailsScreenProps) {
   const strings = useStrings();
   return (
     <RootView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <SafeAreaView edges={['bottom']}>
           <ItemImage source={{uri: item.image}} />
           <Bubble>
@@ -26,11 +31,13 @@ export default function ItemDetailsScreen({item}: ItemDetailsScreenProps) {
               <Space>
                 <Space gutter={Gutter.Small}>
                   <Text category="h6">{item.name}</Text>
-                  <Text appearance="hint" category="c1">
-                    {strings['itemDetailsScreen.serialNumber']}{' '}
-                    {item.serialNumber}
-                  </Text>
-                  {item.fields.map((_, index) => (
+                  {item.serialNumber !== undefined && (
+                    <Text appearance="hint" category="c1">
+                      {strings['itemDetailsScreen.serialNumber']}{' '}
+                      {item.serialNumber}
+                    </Text>
+                  )}
+                  {item.customFields?.map((_, index) => (
                     <Text key={index} appearance="hint" category="c1">
                       {_.label}: {_.value}
                     </Text>
@@ -42,13 +49,21 @@ export default function ItemDetailsScreen({item}: ItemDetailsScreenProps) {
           </Bubble>
           <Divider />
           <Bubble>
-            <Button
-              status={item.qrData ? 'basic' : 'primary'}
-              accessoryLeft={QrIcon}>
-              {item.qrData
-                ? strings['itemDetailsScreen.replaceQrButton']
-                : strings['itemDetailsScreen.addQrButton']}
-            </Button>
+            <Space>
+              <Button
+                status={item.qrKey ? 'basic' : 'primary'}
+                accessoryLeft={QrIcon}>
+                {item.qrKey
+                  ? strings['itemDetailsScreen.replaceQrButton']
+                  : strings['itemDetailsScreen.addQrButton']}
+              </Button>
+              <Button
+                onPress={onDeletePress}
+                status="danger"
+                accessoryLeft={TrashIcon}>
+                Delete
+              </Button>
+            </Space>
           </Bubble>
         </SafeAreaView>
       </ScrollView>
@@ -58,6 +73,10 @@ export default function ItemDetailsScreen({item}: ItemDetailsScreenProps) {
 
 const QrIcon = (props: IconProps) => (
   <Icon name="qr" pack="assets" {...props} />
+);
+
+const TrashIcon = (props: IconProps) => (
+  <Icon name="trash-outline" {...props} />
 );
 
 const DATA: Step[] = range(10).map(_ => ({title: 'Title_' + _, date: dayjs()}));

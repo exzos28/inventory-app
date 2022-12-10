@@ -18,6 +18,7 @@ import {
   RestClientCallError,
   RestMethod,
 } from './RestClient';
+import {isObject} from 'lodash';
 
 export default abstract class BaseRestClientImpl {
   protected constructor(
@@ -40,22 +41,43 @@ export default abstract class BaseRestClientImpl {
     method: RestMethod,
     endpoint: Url,
     params?: P,
+    contentType?: 'json' | 'form-data',
   ): Promise<Either<R, RestClientCallError<E>>> {
-    let body;
+    let data;
+    const formData = new FormData();
+    const isFormData = contentType === 'form-data';
     if (params) {
-      const body_ = await this._root.json.stringify(params);
-      if (!body_.success) {
-        return body_;
+      if (isFormData) {
+        if (isObject(params)) {
+          Object.keys(params).forEach(key => {
+            // @ts-ignore TODO Fix this Typescript
+            const value = params[key];
+            if (value !== undefined) {
+              formData.append(key, value);
+            }
+          });
+        }
+      } else {
+        const body_ = await this._root.json.stringify(params);
+        if (!body_.success) {
+          return body_;
+        }
+        data = body_.right;
       }
-      body = body_.right;
     }
+    const headers = isFormData
+      ? {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        }
+      : {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        };
     const fetchPromise = this.fetch.fetch(`${this._base}${endpoint}`, {
       method,
-      body,
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
+      body: isFormData ? formData : data,
+      headers: headers,
     });
     const response_ =
       this._timeout === undefined || !isFinite(this._timeout)

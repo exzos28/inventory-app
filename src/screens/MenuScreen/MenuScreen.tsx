@@ -27,7 +27,9 @@ export default observer(function MenuScreen({
   const strings = useStrings();
   return (
     <Layout style={styles.root} level="1">
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.container}>
         <SafeAreaView edges={['bottom']}>
           <Bubble gutter={[Gutter.Middle, 0]}>
             <Space>

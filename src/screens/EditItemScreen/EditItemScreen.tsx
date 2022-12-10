@@ -1,15 +1,18 @@
 import React from 'react';
 import {Either, useStrings} from '../../core';
 import {
-  InputsResult,
+  ItemFormValues,
   ItemFormScene,
 } from '../../components/scenes/ItemFormScene';
-import {ItemType} from '../../tempTypes';
+import {Item} from '../../core/ItemRestClientHelper';
 
 export type EditItemScreenProps = {
-  onCreatePress: (_: InputsResult) => void;
+  onCreatePress: (
+    values: ItemFormValues,
+    touchedKeys: keyof ItemFormValues,
+  ) => void;
   onNewFieldNameRequest: () => Promise<Either<string, void>>;
-  item: ItemType;
+  item: Item;
 };
 
 export default function EditItemScreen({
@@ -23,10 +26,7 @@ export default function EditItemScreen({
       onSubmitPress={onCreatePress}
       onNewFieldNameRequest={onNewFieldNameRequest}
       submitTitle={strings['editItemScreen.editButton']}
-      defaultValues={{
-        ...item,
-        image: item.image ? {uri: item.image} : undefined,
-      }}
+      defaultValues={item}
     />
   );
 }

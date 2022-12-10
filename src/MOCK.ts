@@ -1,13 +1,5 @@
 import {range} from 'lodash';
-import {
-  ItemId,
-  ItemType,
-  ProjectId,
-  ProjectType,
-  UserId,
-  UserRole,
-  UserType,
-} from './tempTypes';
+import {ItemId, ItemType, UserId, UserRole, UserType} from './tempTypes';
 import {Url} from './core';
 import {nanoid} from 'nanoid/non-secure';
 
@@ -104,14 +96,6 @@ export const ITEMS: ItemType[] = [
   ...generateItems(),
   ...generateItems(),
 ];
-
-//
-//
-
-export const PROJECTS: ProjectType[] = range(1, 3).map(_ => ({
-  id: nanoid() as ProjectId,
-  name: 'Project #' + _,
-}));
 
 //
 //

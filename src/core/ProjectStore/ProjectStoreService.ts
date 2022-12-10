@@ -1,7 +1,6 @@
-import {ProjectStore} from './ProjectStore';
+import {Project, ProjectStore} from './ProjectStore';
 import {batchDisposers, Service} from '../structure';
 import {AuthClient, AUTHORIZED} from '../Auth';
-import {ProjectResponse} from '../ProjectRestClient';
 import {GlobalError} from '../Error';
 import PromiseStateProviderImpl from '../AsyncAtom/PromiseStateProviderImpl';
 import {PromiseStateProvider} from '../AsyncAtom/PromiseStateProvider';
@@ -16,10 +15,7 @@ import {JsonKeyValueMap, JsonKeyValueStore} from '../JsonKeyValueStore';
 export default class ProjectStoreService implements ProjectStore, Service {
   @observable private _selectedProjectId?: ProjectId;
 
-  private readonly _promiseState: PromiseStateProvider<
-    ProjectResponse[],
-    GlobalError
-  >;
+  private readonly _promiseState: PromiseStateProvider<Project[], GlobalError>;
 
   constructor(
     private readonly _root: {
@@ -29,10 +25,12 @@ export default class ProjectStoreService implements ProjectStore, Service {
     },
   ) {
     makeObservable(this);
-    this._promiseState = new PromiseStateProviderImpl(
-      this._root.projectRestClientHelper.getAll,
-    );
+    this._promiseState = new PromiseStateProviderImpl(this._fetchData);
   }
+
+  private _fetchData = bind(() => {
+    return this._root.projectRestClientHelper.getAll();
+  }, this);
 
   fetch = bind(async () => {
     const response_ = await this._promiseState.fetch();
@@ -51,6 +49,10 @@ export default class ProjectStoreService implements ProjectStore, Service {
     await this._root.jsonKeyValueStore.set('selectedProjectId', id);
   });
 
+  private _setProjectId = action((id: ProjectId) => {
+    this._selectedProjectId = id;
+  });
+
   private _selectProjectOnFulfilled() {
     return reaction(
       () => this._promiseState.state,
@@ -62,13 +64,13 @@ export default class ProjectStoreService implements ProjectStore, Service {
           if (prevSelected.success) {
             const exists = state.result.find(_ => _.id === prevSelected.right);
             if (exists && prevSelected.right) {
-              this._selectedProjectId = prevSelected.right;
+              this._setProjectId(prevSelected.right);
               return;
             }
           }
           const firstItem = first(state.result);
           if (firstItem) {
-            this._selectedProjectId = firstItem.id;
+            this._setProjectId(firstItem.id);
           }
         }
       },

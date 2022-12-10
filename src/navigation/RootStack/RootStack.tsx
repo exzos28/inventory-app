@@ -15,7 +15,6 @@ import CreateItemBinding from './CreateItemBinding';
 import PickFieldNameBinding from './PickFieldNameBinding';
 import EditItemBinding from './EditItemBinding';
 import SelectUserToTransferBinding from './SelectUserToTransferBinding';
-import {ItemId, UserId} from '../../tempTypes';
 import ItemsSelectionForUserBinding from './ItemsSelectionForUserBinding';
 import ConfirmItemsTransferBinding from './ConfirmItemsTransferBinding';
 import SelectItemForQrMarkingBinding from './SelectItemForQrMarkingBinding';
@@ -23,6 +22,8 @@ import QrItemMarkingBinding from './QrItemMarkingBinding';
 import ChangeProjectBinding from './ChangeProjectBinding';
 import CreateProjectBinding from './CreateProjectBinding';
 import UnknownErrorBinding from './UnknownErrorBinding';
+import {UserId} from '../../tempTypes';
+import {ItemId} from '../../core/HadesServer';
 
 export type RootParamList = {
   Menu: undefined;
@@ -50,6 +51,7 @@ export type RootParamList = {
       }
     | undefined;
   EditItem: {
+    id: ItemId;
     pickedValue?:
       | {
           label: string;

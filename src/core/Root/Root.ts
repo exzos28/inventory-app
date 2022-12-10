@@ -16,6 +16,7 @@ import {AuthHelper, AuthState} from '../Auth';
 import {AccountStore} from '../AccountStore';
 import {ProjectStore} from '../ProjectStore';
 import {ProjectRestClientHelper} from '../ProjectRestClientHelper';
+import {ItemRestClientHelper} from '../ItemRestClientHelper';
 
 export interface Root {
   readonly accountStore: AccountStore;
@@ -38,6 +39,7 @@ export interface Root {
   // readonly deviceInfo: DeviceInfo;
 
   readonly projectRestClientHelper: ProjectRestClientHelper;
+  readonly itemRestClientHelper: ItemRestClientHelper;
 
   readonly appWindow: AppWindow;
   readonly appWindowState: AppWindowState;

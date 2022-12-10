@@ -2,7 +2,7 @@ import {
   CreateProjectParams,
   ProjectRestClientHelper,
 } from './ProjectRestClientHelper';
-import {bind, success} from '../fp';
+import {success} from '../fp';
 import {GetProjectParams, ProjectRestClient} from '../ProjectRestClient';
 import {GENERAL_REST_CLIENT_ERROR} from '../Error';
 
@@ -15,16 +15,16 @@ export default class ProjectRestClientHelperImpl
     },
   ) {}
 
-  create = bind((params: CreateProjectParams) => {
+  create(params: CreateProjectParams) {
     // TODO Delete company_name
     return this._root.projectRestClient.create({...params, company_name: ''});
-  }, this);
+  }
 
-  get = bind((params: GetProjectParams) => {
+  get(params: GetProjectParams) {
     return this._root.projectRestClient.get(params);
-  }, this);
+  }
 
-  getAll = bind(() => {
+  getAll() {
     return this._root.projectRestClient.getAll().then(response => {
       if (!response.success) {
         const isNotFound =
@@ -36,5 +36,5 @@ export default class ProjectRestClientHelperImpl
       }
       return response;
     });
-  }, this);
+  }
 }

@@ -34,7 +34,6 @@ export default class AuthRestClientHelperImpl implements AuthRestClientHelper {
     params: OAuth2SignInParams<T>,
   ): Promise<Either<Credentials, GlobalError>> {
     const outcome = await this._root.authRestClient.signIn(params);
-    console.log('outcome', outcome);
     if (!outcome.success) {
       return outcome;
     }
