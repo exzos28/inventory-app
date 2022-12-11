@@ -1,7 +1,7 @@
 import {FindItemState} from './FindItemState';
 import {PromiseStateProvider} from '../AsyncAtom/PromiseStateProvider';
 import {GlobalError} from '../Error';
-import {Item, ItemRestClientHelper} from '../ItemRestClientHelper';
+import {Item, ItemHelper} from '../ItemHelper';
 import PromiseStateProviderImpl from '../AsyncAtom/PromiseStateProviderImpl';
 import {bind, success} from '../fp';
 import {computed, makeObservable} from 'mobx';
@@ -11,7 +11,7 @@ export default class FindItemStateImpl implements FindItemState {
 
   constructor(
     private readonly _root: {
-      readonly itemRestClientHelper: ItemRestClientHelper;
+      readonly itemHelper: ItemHelper;
     },
   ) {
     makeObservable(this);
@@ -32,6 +32,6 @@ export default class FindItemStateImpl implements FindItemState {
   }, this);
 
   private _fetch = bind(() => {
-    return this._root.itemRestClientHelper.getAll();
+    return this._root.itemHelper.getAll();
   }, this);
 }

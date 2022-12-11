@@ -1,7 +1,8 @@
 import {range} from 'lodash';
-import {ItemId, ItemType, UserId, UserRole, UserType} from './tempTypes';
+import {ItemId, ItemType, UserType} from './tempTypes';
 import {Url} from './core';
 import {nanoid} from 'nanoid/non-secure';
+import {UserId, UserRole} from './core/HadesServer';
 
 const generateItems = (): ItemType[] => [
   {

@@ -11,10 +11,10 @@ import {
 } from '@ui-kitten/components';
 import Item, {ExternalItemProps} from '../../molecules/Item';
 import {FlatListProps, StyleSheet} from 'react-native';
-import {useStrings, variance} from '../../../core';
-import {Item as ItemType} from '../../../core/ItemRestClientHelper';
+import {useRoot, useStrings, variance} from '../../../core';
+import {Item as ItemType} from '../../../core/ItemHelper';
 import EmptyList from '../../EmptyList';
-import {expr} from 'mobx-utils';
+import {UserRole} from '../../../core/HadesServer';
 
 export type ItemListProps = Omit<ListProps, 'renderItem'> &
   ExternalItemProps & {
@@ -23,6 +23,7 @@ export type ItemListProps = Omit<ListProps, 'renderItem'> &
     withSearch?: boolean;
     data: ItemType[];
     onCreatePress: () => void;
+    visibleCreateButton?: boolean;
   };
 
 // TODO l10n
@@ -36,8 +37,12 @@ export default observer(function ItemList({
   contentContainerStyle,
   withSearch = true,
   onCreatePress,
+  visibleCreateButton = true,
   ...rest
 }: ItemListProps) {
+  const {
+    projectPermissionHelper: {isSomeRoleOrBetter},
+  } = useRoot();
   const strings = useStrings();
   const renderItem: ListProps['renderItem'] = useCallback(
     ({item}) => (
@@ -64,7 +69,6 @@ export default observer(function ItemList({
     }
     return sorted;
   }, [data, searchValue]);
-  const isEmpty = expr(() => filtered.length === 0);
   return (
     <List
       data={filtered}
@@ -73,12 +77,14 @@ export default observer(function ItemList({
       ListEmptyComponent={
         <EmptyListView>
           <EmptyList>
-            <Button onPress={onCreatePress}>Create</Button>
+            {visibleCreateButton && isSomeRoleOrBetter(UserRole.Manager) && (
+              <Button onPress={onCreatePress}>Create</Button>
+            )}
           </EmptyList>
         </EmptyListView>
       }
       ListHeaderComponent={
-        withSearch && !isEmpty ? (
+        withSearch ? (
           <SearchView level="1">
             <Input
               size="large"

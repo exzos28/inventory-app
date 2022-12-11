@@ -4,26 +4,23 @@ import {
   ItemFormValues,
   ItemFormScene,
 } from '../../components/scenes/ItemFormScene';
-import {Item} from '../../core/ItemRestClientHelper';
+import {Item} from '../../core/ItemHelper';
 
 export type EditItemScreenProps = {
-  onCreatePress: (
-    values: ItemFormValues,
-    touchedKeys: keyof ItemFormValues,
-  ) => void;
+  onEditPress: (values: ItemFormValues) => void;
   onNewFieldNameRequest: () => Promise<Either<string, void>>;
   item: Item;
 };
 
 export default function EditItemScreen({
-  onCreatePress,
+  onEditPress,
   onNewFieldNameRequest,
   item,
 }: EditItemScreenProps) {
   const strings = useStrings();
   return (
     <ItemFormScene
-      onSubmitPress={onCreatePress}
+      onSubmitPress={onEditPress}
       onNewFieldNameRequest={onNewFieldNameRequest}
       submitTitle={strings['editItemScreen.editButton']}
       defaultValues={item}

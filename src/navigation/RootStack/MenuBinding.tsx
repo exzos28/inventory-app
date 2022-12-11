@@ -3,8 +3,9 @@ import {observer} from 'mobx-react-lite';
 import {RootStackBindingProps} from './RootStackBindingProps';
 import {MenuScreen} from '../../screens/MenuScreen';
 import {NotFoundProjectScreen} from '../../screens/NotFoundProjectScreen';
-import {FULFILLED, REJECTED, useRoot} from '../../core';
+import {PENDING, REJECTED, useRoot} from '../../core';
 import {ErrorScreen} from '../../screens/ErrorScreen';
+import {noop} from 'lodash';
 
 export default observer(function MenuScreenBinding({
   navigation,
@@ -40,24 +41,32 @@ export default observer(function MenuScreenBinding({
     () => navigation.navigate('CreateProject'),
     [navigation],
   );
+  const goToInviteUserToProject = useCallback(
+    () => navigation.navigate('InviteUserToProject'),
+    [navigation],
+  );
   const {state} = projectStore;
 
-  if (state === undefined) {
+  if (state === undefined || state.status === PENDING) {
     return null;
   }
 
   if (state.status === REJECTED) {
     return (
       <ErrorScreen
-        onReturnPress={navigation.goBack}
+        onReturnPress={noop}
         description={state.error.description}
         raw={state.error}
+        visibleReturnButton={false}
       />
     );
   }
 
-  if (state.status === FULFILLED && state.result.length === 0) {
+  if (state.result.length === 0) {
     return <NotFoundProjectScreen onCreateProjectPress={goToCreateProject} />;
+  }
+  if (projectStore.selectedProject === undefined) {
+    return null;
   }
 
   return (
@@ -68,6 +77,7 @@ export default observer(function MenuScreenBinding({
       onSelectUserToTransferPress={goToSelectUserToTransfer}
       onSelectItemForQrMarking={goToSelectItemForQrMarking}
       onScanPress={onScanPress}
+      onInviteUserPress={goToInviteUserToProject}
     />
   );
 });

@@ -15,24 +15,25 @@ import CreateItemBinding from './CreateItemBinding';
 import PickFieldNameBinding from './PickFieldNameBinding';
 import EditItemBinding from './EditItemBinding';
 import SelectUserToTransferBinding from './SelectUserToTransferBinding';
-import ItemsSelectionForUserBinding from './ItemsSelectionForUserBinding';
+import SelectItemsForTransferBinding from './SelectItemsForTransferBinding';
 import ConfirmItemsTransferBinding from './ConfirmItemsTransferBinding';
 import SelectItemForQrMarkingBinding from './SelectItemForQrMarkingBinding';
 import QrItemMarkingBinding from './QrItemMarkingBinding';
 import ChangeProjectBinding from './ChangeProjectBinding';
 import CreateProjectBinding from './CreateProjectBinding';
 import UnknownErrorBinding from './UnknownErrorBinding';
-import {UserId} from '../../tempTypes';
-import {ItemId} from '../../core/HadesServer';
+import {ItemId, UserId} from '../../core/HadesServer';
+import InviteUserToProjectBinding from './InviteUserToProjectBinding';
 
 export type RootParamList = {
   Menu: undefined;
   //
   //
   SelectUserToTransfer: undefined;
-  ItemsSelectionForUser: {
+  SelectItemsForTransfer: {
     forUser: UserId;
   };
+
   ConfirmItemsTransfer: {
     items: ItemId[];
     forUser: UserId;
@@ -86,6 +87,8 @@ export type RootParamList = {
     id: ItemId;
   };
   //
+
+  InviteUserToProject: undefined;
   //
 
   FindUser: undefined;
@@ -176,8 +179,8 @@ export const RootStack = observer(() => {
           options={{
             title: strings['itemsSelectionForUserScreen.headerTitle'],
           }}
-          name="ItemsSelectionForUser"
-          component={ItemsSelectionForUserBinding}
+          name="SelectItemsForTransfer"
+          component={SelectItemsForTransferBinding}
         />
         <Screen
           options={{
@@ -188,6 +191,10 @@ export const RootStack = observer(() => {
         />
         {/*TODO l10n */}
         <Screen name="CreateProject" component={CreateProjectBinding} />
+        <Screen
+          name="InviteUserToProject"
+          component={InviteUserToProjectBinding}
+        />
 
         <Screen name="UnknownError" component={UnknownErrorBinding} />
 

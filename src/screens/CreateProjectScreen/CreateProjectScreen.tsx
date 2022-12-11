@@ -7,7 +7,7 @@ import {variance} from '../../core';
 import {NavigationIQKeyboardManager} from '../../navigation/components';
 import {Controller, useForm} from 'react-hook-form';
 
-export type NotFoundProjectScreenProps = {
+export type CreateProjectScreen = {
   onCreateProjectPress: (values: CreateProjectFormValues) => void;
 };
 
@@ -18,7 +18,7 @@ export type CreateProjectFormValues = {
 // TODO l10n
 export default observer(function CreateProjectScreen({
   onCreateProjectPress,
-}: NotFoundProjectScreenProps) {
+}: CreateProjectScreen) {
   const {
     control,
     formState: {errors},

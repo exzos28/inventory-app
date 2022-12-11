@@ -1,9 +1,9 @@
 import {GlobalError} from '../Error';
-import {Either} from '../fp';
 import {RouterSource} from '../structure';
+import {Maybe} from '../Maybe';
 
 export interface OAuth2Provider<T> {
-  signIn(): Either<void, GlobalError>;
+  signIn(): Maybe<void>;
   readonly outcome: RouterSource<OAuth2OutcomeMap<T>>;
 }
 

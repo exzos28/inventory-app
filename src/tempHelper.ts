@@ -1,6 +1,6 @@
-import {UserRole} from './tempTypes';
 import {ReadonlyDeep} from 'type-fest';
 import {LocaleDict} from './core/Localization/LocaleStrings';
+import {UserRole} from './core/HadesServer';
 
 export function translateUserRole(
   role: UserRole,

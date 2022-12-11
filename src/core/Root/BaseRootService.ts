@@ -41,9 +41,12 @@ import {UserRestClientImpl} from '../UserRestClient';
 import {AccountStoreService} from '../AccountStore';
 import {ProjectRestClientImpl} from '../ProjectRestClient';
 import {ProjectStoreService} from '../ProjectStore';
-import {ProjectRestClientHelperImpl} from '../ProjectRestClientHelper';
+import {ProjectHelperImpl} from '../ProjectHelper';
 import {ItemRestClientImpl} from '../ItemRestClient';
-import {ItemRestClientHelperImpl} from '../ItemRestClientHelper';
+import {ItemHelperImpl} from '../ItemHelper';
+import ProjectUsersRestClientImpl from '../ProjectUsersRestClient/ProjectUsersRestClientImpl';
+import {ProjectUsersHelperImpl} from '../ProjectUsersHelper';
+import {ProjectPermissionHelperImpl} from '../ProjectPermissionHelper';
 
 export default abstract class BaseRootService implements Root, Service {
   constructor(protected readonly _core: Core) {}
@@ -82,9 +85,18 @@ export default abstract class BaseRootService implements Root, Service {
     this,
     this.authedFetch,
   );
-  readonly projectRestClientHelper = new ProjectRestClientHelperImpl(this);
+  readonly projectHelper = new ProjectHelperImpl(this);
   readonly itemRestClient = new ItemRestClientImpl(this, this.authedFetch);
-  readonly itemRestClientHelper = new ItemRestClientHelperImpl(this);
+  readonly itemHelper = new ItemHelperImpl(this);
+  readonly projectUsersRestClient = new ProjectUsersRestClientImpl(
+    this,
+    this.authedFetch,
+  );
+  readonly projectUsersHelper = new ProjectUsersHelperImpl(this);
+
+  //
+  //
+  readonly projectPermissionHelper = new ProjectPermissionHelperImpl(this);
   //
 
   //

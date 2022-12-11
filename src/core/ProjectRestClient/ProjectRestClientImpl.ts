@@ -9,11 +9,13 @@ import {Url} from '../units';
 import {
   CreateProjectParams,
   DeleteProjectParams,
+  GetAllResponse,
   GetProjectParams,
-  ProjectResponse,
+  AggregatedProjectResponse,
   ProjectRestClient,
   UpdateProjectParams,
 } from './ProjectRestClient';
+import {Maybe} from '../Maybe';
 
 export default class ProjectRestClientImpl
   extends BaseShadesRestClientImpl
@@ -38,29 +40,31 @@ export default class ProjectRestClientImpl
     return this._root.configuration.current.values.shadesRestApiTimeout;
   }
 
-  async getAll(): Promise<Either<ProjectResponse[], GlobalError>> {
+  async getAll(): Promise<Either<GetAllResponse, GlobalError>> {
     return this._fetch('GET', 'projects' as Url);
   }
 
   async create(
     params: CreateProjectParams,
-  ): Promise<Either<ProjectResponse, GlobalError>> {
+  ): Promise<Either<void, GlobalError>> {
     return this._fetch('POST', 'projects' as Url, params);
   }
 
   async get({
     id,
-  }: GetProjectParams): Promise<Either<ProjectResponse, GlobalError>> {
-    return this._fetch('POST', `projects/${id}` as Url);
+  }: GetProjectParams): Promise<
+    Either<AggregatedProjectResponse, GlobalError>
+  > {
+    return this._fetch('GET', `projects/${id}` as Url);
   }
 
   async update(
     params: UpdateProjectParams,
-  ): Promise<Either<ProjectResponse, GlobalError>> {
+  ): Promise<Either<void, GlobalError>> {
     return this._fetch('PATCH', 'projects' as Url, params);
   }
 
-  async delete({id}: DeleteProjectParams): Promise<Either<void, GlobalError>> {
+  async delete({id}: DeleteProjectParams): Promise<Maybe<void>> {
     return this._fetch('DELETE', `projects/${id}` as Url);
   }
 }

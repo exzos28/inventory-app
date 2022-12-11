@@ -13,12 +13,12 @@ import {FlatListProps, StyleSheet, View} from 'react-native';
 import {expr} from 'mobx-utils';
 import {Gutter, JustifyContent} from '../../components';
 import Leveler from '../../components/Leveler';
-import {Project} from '../../core/ProjectStore';
+import {Project, SelectedProject} from '../../core/ProjectStore';
 import {ProjectId} from '../../core/HadesServer';
 
 export type ChangeProjectModalProps = Partial<ModalProps> & {
   projects: Project[];
-  selectedProject: Project | undefined;
+  selectedProject: SelectedProject | undefined;
   onProjectItemPress: (id: ProjectId) => void;
   onCreateButtonPress: () => void;
 };
@@ -60,7 +60,7 @@ const BottomSheetContent = observer(
         onItemPress={() => onProjectItemPress(item.id)}
         item={item}
         rightAccessory={() =>
-          item.id === selectedProject?.id && <RightAccessory />
+          item.id === selectedProject?.project.id && <RightAccessory />
         }
       />
     );

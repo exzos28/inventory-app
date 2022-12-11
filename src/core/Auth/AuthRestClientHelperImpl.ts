@@ -6,7 +6,7 @@ import {
   OAuth2SignInParams,
   RefreshResponse,
 } from '../AuthRestClient';
-import {Credentials} from '../Credentials';
+import {Credentials, RefreshCredentials} from '../Credentials';
 import {GlobalError} from '../Error';
 import {Either, success} from '../fp';
 import {AuthRestClientHelper} from './AuthRestClientHelper';
@@ -20,7 +20,7 @@ export default class AuthRestClientHelperImpl implements AuthRestClientHelper {
 
   async refresh(
     params: OAuth2RefreshParams,
-  ): Promise<Either<Credentials, GlobalError>> {
+  ): Promise<Either<RefreshCredentials, GlobalError>> {
     const outcome = await this._root.authRestClient.refresh(params);
     if (!outcome.success) {
       return outcome;
@@ -48,9 +48,10 @@ export default class AuthRestClientHelperImpl implements AuthRestClientHelper {
       accessToken: _.access_token,
     };
   }
-  private static _translateRefreshResult(_: RefreshResponse): Credentials {
+  private static _translateRefreshResult(
+    _: RefreshResponse,
+  ): RefreshCredentials {
     return {
-      refreshToken: _.refresh,
       accessToken: _.access,
     };
   }

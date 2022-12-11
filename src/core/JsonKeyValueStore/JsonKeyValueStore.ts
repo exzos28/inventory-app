@@ -2,6 +2,7 @@ import {GlobalError} from '../Error';
 import {Either} from '../fp';
 import {JsonString} from '../Json';
 import {RouterSource} from '../structure';
+import {Maybe} from '../Maybe';
 
 export interface JsonKeyValueStore<
   KV extends AbstractJsonKeyValueMap = AbstractJsonKeyValueMap,
@@ -12,8 +13,8 @@ export interface JsonKeyValueStore<
   set<K extends keyof KV>(
     key: K,
     value: KV[K]['__jsonSerialized__'],
-  ): Promise<Either<void, GlobalError>>;
-  delete<K extends keyof KV>(key: K): Promise<Either<void, GlobalError>>;
+  ): Promise<Maybe<void>>;
+  delete<K extends keyof KV>(key: K): Promise<Maybe<void>>;
   readonly sideUpdates: RouterSource<UpdatesJsonKeyValueMap<KV>>;
 }
 

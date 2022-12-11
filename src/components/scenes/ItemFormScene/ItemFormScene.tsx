@@ -13,10 +13,7 @@ import {NavigationIQKeyboardManager} from '../../../navigation/components';
 import {observer} from 'mobx-react-lite';
 
 export type ItemFormSceneProps = {
-  onSubmitPress: (
-    values: ItemFormValues,
-    touchedKeys: keyof ItemFormValues,
-  ) => void;
+  onSubmitPress: (values: ItemFormValues) => void;
   onNewFieldNameRequest: () => Promise<Either<string, void>>;
   submitTitle: string;
   defaultValues?: ItemFormValues;
@@ -31,28 +28,13 @@ export default function ItemFormScene({
   const strings = useStrings();
   const {
     control,
-    formState: {errors, touchedFields},
+    formState: {errors},
     handleSubmit,
     setValue,
     watch,
   } = useForm<ItemFormValues>({
     defaultValues: defaultValues,
   });
-  const handleSubmitPress = useCallback(
-    (values: ItemFormValues) => {
-      const touchedKey = Object.entries(touchedFields).flatMap(
-        ([key, value]) => {
-          if (value) {
-            return [key as keyof ItemFormValues];
-          }
-          return [];
-        },
-      );
-      const keys = touchedKey as unknown as keyof ItemFormValues;
-      onSubmitPress(values, keys);
-    },
-    [onSubmitPress, touchedFields],
-  );
   const deleteImage = useCallback(() => {
     setValue('image', undefined);
   }, [setValue]);
@@ -100,19 +82,13 @@ export default function ItemFormScene({
               />
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
-                    label={strings['createItemScreen.serialNumberLabel'] + '*'}
+                    label={strings['createItemScreen.serialNumberLabel']}
                     placeholder="4QD21A"
                     onChangeText={onChange}
                     onBlur={onBlur}
                     value={value}
-                    status={
-                      errors.serialNumber !== undefined ? 'danger' : 'basic'
-                    }
                   />
                 )}
                 name="serialNumber"
@@ -125,7 +101,7 @@ export default function ItemFormScene({
           </ContentBubble>
           <Bubble>
             <SubmitButton
-              onPress={handleSubmit(handleSubmitPress)}
+              onPress={handleSubmit(onSubmitPress)}
               accessoryLeft={CheckmarkIcon}>
               {submitTitle}
             </SubmitButton>

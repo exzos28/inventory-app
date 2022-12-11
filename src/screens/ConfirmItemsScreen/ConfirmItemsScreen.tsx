@@ -14,17 +14,19 @@ import {
   Space,
 } from '../../components';
 import {ItemList, ItemListProps} from '../../components/organisms/ItemList';
-import {ItemType, UserType} from '../../tempTypes';
 import {useStrings} from '../../core';
 import {translateUserRole} from '../../tempHelper';
+import {Item} from '../../core/ItemHelper';
+import {User} from '../../core/ProjectUsersHelper';
 
 export type ConfirmItemsScreenProps = Exclude<
   ItemListProps,
   'rightAccessory'
 > & {
   onSubmitPress: () => void;
-  onItemPress: (item: ItemType) => void;
-  user: UserType;
+  onItemPress: (item: Item) => void;
+  user: User;
+  onCreatePress: () => void;
 };
 
 const ABSOLUTE_BUTTON_HEIGHT = 85;
@@ -34,6 +36,7 @@ export default observer(function ConfirmItemsScreen({
   onSubmitPress,
   onItemPress,
   user,
+  onCreatePress,
 }: ConfirmItemsScreenProps) {
   const strings = useStrings();
   const theme = useTheme();
@@ -45,6 +48,8 @@ export default observer(function ConfirmItemsScreen({
   return (
     <RootLayout>
       <ItemList
+        visibleCreateButton={false}
+        onCreatePress={onCreatePress}
         withSearch={false}
         onItemPress={onItemPress}
         data={data}
@@ -63,7 +68,7 @@ export default observer(function ConfirmItemsScreen({
             <RippleButton onPress={() => {}}>
               <Bubble>
                 <Space gutter={Gutter.Tiny} align={AlignItems.Center}>
-                  <Text category="h6">{user.name}</Text>
+                  <Text category="h6">{user.username}</Text>
                   <Text category="c2">
                     {translateUserRole(user.role, strings)}
                   </Text>

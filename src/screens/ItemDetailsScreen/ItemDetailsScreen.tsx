@@ -2,25 +2,30 @@ import React from 'react';
 import {Image, View} from 'react-native';
 import {Button, Divider, Icon, IconProps, Text} from '@ui-kitten/components';
 import {Bubble, Gutter, Space} from '../../components';
-import {useStrings, variance} from '../../core';
+import {useRoot, useStrings, variance} from '../../core';
 import StepList, {Step} from './StepList';
 import {range} from 'lodash';
 import dayjs from 'dayjs';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
-import {Item} from '../../core/ItemRestClientHelper';
+import {DetailedItem} from '../../core/ItemDetailsState';
+import {UserRole} from '../../core/HadesServer';
 
 export type ItemDetailsScreenProps = {
-  item: Item;
+  detailedItem: DetailedItem;
   onDeletePress: () => void;
 };
 
 // TODO l10n
 export default function ItemDetailsScreen({
-  item,
+  detailedItem,
   onDeletePress,
 }: ItemDetailsScreenProps) {
   const strings = useStrings();
+  const {
+    projectPermissionHelper: {isSomeRoleOrBetter},
+  } = useRoot();
+  const {item, owner} = detailedItem;
   return (
     <RootView>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -37,6 +42,12 @@ export default function ItemDetailsScreen({
                       {item.serialNumber}
                     </Text>
                   )}
+                  {owner !== undefined && (
+                    <Text appearance="hint" category="c1">
+                      Current person in charge:{'\n'}
+                      {owner.username}
+                    </Text>
+                  )}
                   {item.customFields?.map((_, index) => (
                     <Text key={index} appearance="hint" category="c1">
                       {_.label}: {_.value}
@@ -48,23 +59,25 @@ export default function ItemDetailsScreen({
             </Space>
           </Bubble>
           <Divider />
-          <Bubble>
-            <Space>
-              <Button
-                status={item.qrKey ? 'basic' : 'primary'}
-                accessoryLeft={QrIcon}>
-                {item.qrKey
-                  ? strings['itemDetailsScreen.replaceQrButton']
-                  : strings['itemDetailsScreen.addQrButton']}
-              </Button>
-              <Button
-                onPress={onDeletePress}
-                status="danger"
-                accessoryLeft={TrashIcon}>
-                Delete
-              </Button>
-            </Space>
-          </Bubble>
+          {isSomeRoleOrBetter(UserRole.Manager) && (
+            <Bubble>
+              <Space>
+                <Button
+                  status={item.qrKey ? 'basic' : 'primary'}
+                  accessoryLeft={QrIcon}>
+                  {item.qrKey
+                    ? strings['itemDetailsScreen.replaceQrButton']
+                    : strings['itemDetailsScreen.addQrButton']}
+                </Button>
+                <Button
+                  onPress={onDeletePress}
+                  status="danger"
+                  accessoryLeft={TrashIcon}>
+                  Delete
+                </Button>
+              </Space>
+            </Bubble>
+          )}
         </SafeAreaView>
       </ScrollView>
     </RootView>

@@ -1,8 +1,8 @@
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 
-import {GlobalError, UNKNOWN_ERROR} from '../Error';
+import {UNKNOWN_ERROR} from '../Error';
 import {ErrorRepository} from '../ErrorRepository';
-import {Either, error, success} from '../fp';
+import {error, success} from '../fp';
 import {Disposer, RouterImpl, Service} from '../structure';
 import {AppleIdToken} from '../units';
 import {
@@ -10,6 +10,7 @@ import {
   AppleOAuth2Provider,
 } from './AppleOAuth2Provider';
 import {ERROR, OAuth2OutcomeMap, REVOKE, SUCCESS} from './OAuth2Provider';
+import {Maybe} from '../Maybe';
 
 export default class IosAppleOAuth2ProviderService
   implements AppleOAuth2Provider, Service
@@ -18,7 +19,7 @@ export default class IosAppleOAuth2ProviderService
     private readonly _root: {readonly errorRepository: ErrorRepository},
   ) {}
 
-  signIn(): Either<void, GlobalError> {
+  signIn(): Maybe<void> {
     try {
       appleAuth
         .performRequest({

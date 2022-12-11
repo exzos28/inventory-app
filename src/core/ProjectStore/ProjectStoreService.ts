@@ -1,27 +1,38 @@
-import {Project, ProjectStore} from './ProjectStore';
+import {Project, ProjectStore, SelectedProject} from './ProjectStore';
 import {batchDisposers, Service} from '../structure';
-import {AuthClient, AUTHORIZED} from '../Auth';
-import {GlobalError} from '../Error';
+import {AuthClient, AUTHORIZED, UNAUTHORIZED} from '../Auth';
+import {GlobalError, UNKNOWN_ERROR} from '../Error';
 import PromiseStateProviderImpl from '../AsyncAtom/PromiseStateProviderImpl';
 import {PromiseStateProvider} from '../AsyncAtom/PromiseStateProvider';
-import {ProjectRestClientHelper} from '../ProjectRestClientHelper';
-import {action, computed, makeObservable, observable, reaction} from 'mobx';
+import {ProjectHelper} from '../ProjectHelper';
+import {
+  computed,
+  makeObservable,
+  observable,
+  reaction,
+  runInAction,
+} from 'mobx';
 import {FULFILLED} from '../AsyncAtom';
 import {first} from 'lodash';
-import {bind, success} from '../fp';
+import {bind, error, success} from '../fp';
 import {ProjectId} from '../HadesServer';
 import {JsonKeyValueMap, JsonKeyValueStore} from '../JsonKeyValueStore';
+import {AccountStore} from '../AccountStore';
+import {Maybe} from '../Maybe';
+import {ErrorRepository} from '../ErrorRepository';
 
 export default class ProjectStoreService implements ProjectStore, Service {
-  @observable private _selectedProjectId?: ProjectId;
+  @observable private _selectedProject?: SelectedProject;
 
   private readonly _promiseState: PromiseStateProvider<Project[], GlobalError>;
 
   constructor(
     private readonly _root: {
       readonly authClient: AuthClient;
-      readonly projectRestClientHelper: ProjectRestClientHelper;
+      readonly accountStore: AccountStore;
+      readonly projectHelper: ProjectHelper;
       readonly jsonKeyValueStore: JsonKeyValueStore<JsonKeyValueMap>;
+      readonly errorRepository: ErrorRepository;
     },
   ) {
     makeObservable(this);
@@ -29,7 +40,7 @@ export default class ProjectStoreService implements ProjectStore, Service {
   }
 
   private _fetchData = bind(() => {
-    return this._root.projectRestClientHelper.getAll();
+    return this._root.projectHelper.getAll();
   }, this);
 
   fetch = bind(async () => {
@@ -40,18 +51,41 @@ export default class ProjectStoreService implements ProjectStore, Service {
     return response_;
   }, this);
 
-  selectProject = action(async (id: ProjectId) => {
+  async selectProject(id: ProjectId): Promise<Maybe<void>> {
     const exists = this.projects?.find(_ => _.id === id);
     if (!exists) {
-      return;
+      return error(this._root.errorRepository.create({kind: UNKNOWN_ERROR}));
     }
-    this._selectedProjectId = id;
-    await this._root.jsonKeyValueStore.set('selectedProjectId', id);
-  });
-
-  private _setProjectId = action((id: ProjectId) => {
-    this._selectedProjectId = id;
-  });
+    const userId =
+      this._root.accountStore.state?.status === FULFILLED
+        ? this._root.accountStore.state.result.id
+        : undefined;
+    if (userId === undefined) {
+      return error(this._root.errorRepository.create({kind: UNKNOWN_ERROR}));
+    }
+    const project_ = await this._root.projectHelper.get({
+      id,
+      currentUserId: userId,
+    });
+    if (!project_.success) {
+      return project_;
+    }
+    runInAction(
+      () =>
+        (this._selectedProject = {
+          project: project_.right.project,
+          role: project_.right.role,
+        }),
+    );
+    const set_ = await this._root.jsonKeyValueStore.set(
+      'selectedProjectId',
+      id,
+    );
+    if (!set_.success) {
+      return set_;
+    }
+    return success();
+  }
 
   private _selectProjectOnFulfilled() {
     return reaction(
@@ -61,16 +95,16 @@ export default class ProjectStoreService implements ProjectStore, Service {
           const prevSelected = await this._root.jsonKeyValueStore.get(
             'selectedProjectId',
           );
-          if (prevSelected.success) {
+          if (prevSelected.success && prevSelected.right) {
             const exists = state.result.find(_ => _.id === prevSelected.right);
             if (exists && prevSelected.right) {
-              this._setProjectId(prevSelected.right);
+              await this.selectProject(prevSelected.right);
               return;
             }
           }
           const firstItem = first(state.result);
           if (firstItem) {
-            this._setProjectId(firstItem.id);
+            await this.selectProject(firstItem.id);
           }
         }
       },
@@ -81,9 +115,8 @@ export default class ProjectStoreService implements ProjectStore, Service {
     return this._promiseState.state;
   }
 
-  @computed
   get selectedProject() {
-    return this.projects?.find(_ => _.id === this._selectedProjectId);
+    return this._selectedProject;
   }
 
   @computed
@@ -99,9 +132,19 @@ export default class ProjectStoreService implements ProjectStore, Service {
     );
   }
 
+  private _clearOnLogout() {
+    return this._root.authClient.responses.listen(UNAUTHORIZED, async _ => {
+      runInAction(() => {
+        this._selectedProject = undefined;
+      });
+      await this._root.jsonKeyValueStore.delete('selectedProjectId');
+    });
+  }
+
   subscribe() {
     return batchDisposers(
       this._fetchOnAuthorized(),
+      this._clearOnLogout(),
       this._selectProjectOnFulfilled(),
     );
   }

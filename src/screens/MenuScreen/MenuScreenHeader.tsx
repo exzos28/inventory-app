@@ -23,7 +23,6 @@ import {
   RippleButton,
   Space,
 } from '../../components';
-import {USERS} from '../../MOCK';
 import {translateUserRole} from '../../tempHelper';
 
 export default observer(function MenuScreenHeader() {
@@ -84,6 +83,26 @@ export default observer(function MenuScreenHeader() {
     ],
   );
 
+  const getProjectName = useCallback(() => {
+    if (projectStore.selectedProject) {
+      return projectStore.selectedProject.project.name;
+    }
+    return '';
+  }, [projectStore.selectedProject]);
+
+  const getDescribedUser = useCallback(() => {
+    if (
+      projectStore.selectedProject &&
+      accountStore.state?.status === FULFILLED
+    ) {
+      return `${accountStore.state.result.nickname}, ${translateUserRole(
+        projectStore.selectedProject.role,
+        strings,
+      )}`;
+    }
+    return '';
+  }, [accountStore.state, projectStore.selectedProject, strings]);
+
   const renderTitle = useCallback(
     () => (
       <Space>
@@ -101,44 +120,39 @@ export default observer(function MenuScreenHeader() {
               </Space>
 
               <Space gutter={Gutter.Tiny}>
-                {projectStore.state?.status === FULFILLED &&
-                  projectStore.selectedProject && (
-                    <Text category="s1">
-                      {projectStore.selectedProject.name}
-                    </Text>
-                  )}
-                {accountStore.state?.status === FULFILLED && (
-                  <Text category="s2">
-                    {accountStore.state.result.nickname},{' '}
-                    {translateUserRole(USERS[0].role, strings)}
-                  </Text>
-                )}
+                <Text category="s1">{getProjectName()}</Text>
+                <Text category="s2">{getDescribedUser()}</Text>
               </Space>
             </Space>
           </Bubble>
         </ProjectButton>
       </Space>
     ),
-    [
-      accountStore.state,
-      projectStore.state,
-      projectStore.selectedProject,
-      goToChangeProject,
-      strings,
-      theme.palette,
-    ],
+    [goToChangeProject, theme.palette, getProjectName, getDescribedUser],
   );
 
   const insets = useSafeAreaInsets();
   return (
     <View style={{paddingTop: insets.top}}>
-      <TopNavigation
-        title={renderTitle}
-        accessoryRight={renderOverflowMenuAction}
-      />
-      <Divider />
+      <View style={styles.content}>
+        <TopNavigation
+          title={renderTitle}
+          accessoryRight={renderOverflowMenuAction}
+        />
+        <Divider />
+      </View>
     </View>
   );
+});
+
+const styles = StyleSheet.create({
+  content: {
+    height: 65,
+  },
+  projectIcon: {
+    width: 18,
+    height: 18,
+  },
 });
 
 const ProjectIcon = (props: IconProps) => (
@@ -150,13 +164,6 @@ const LogoutIcon = (props: IconProps) => <Icon {...props} name="log-out" />;
 const SettingsIcon = (props: IconProps) => (
   <Icon {...props} name="settings-outline" />
 );
-
-const styles = StyleSheet.create({
-  projectIcon: {
-    width: 18,
-    height: 18,
-  },
-});
 
 const ProjectButton = variance(RippleButton)(() => ({
   root: {

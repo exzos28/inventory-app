@@ -6,6 +6,7 @@ import {ModalRef} from '../../components';
 import {ChangeProjectModal} from '../../screens/ChangeProjectModal';
 import {useRoot} from '../../core';
 import {ProjectId} from '../../core/HadesServer';
+import useGoToUnknownError from './useGoToUnknownError';
 
 export default observer(function ChangeProjectBinding({
   navigation,
@@ -17,9 +18,17 @@ export default observer(function ChangeProjectBinding({
     () => navigation.navigate('CreateProject'),
     [navigation],
   );
+  const goToUnknownError = useGoToUnknownError(navigation);
   const changeProject = useCallback(
-    (id: ProjectId) => selectProject(id),
-    [selectProject],
+    async (id: ProjectId) => {
+      const select_ = await selectProject(id);
+      if (!select_.success) {
+        return goToUnknownError(select_.left);
+      }
+      await modalRef.current?.close();
+      navigation.goBack();
+    },
+    [goToUnknownError, navigation, selectProject],
   );
   const modalRef = useRef<ModalRef>(null);
   return (

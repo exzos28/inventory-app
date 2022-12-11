@@ -1,7 +1,14 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import {RootStackBindingProps} from './RootStackBindingProps';
-import {error, PENDING, REJECTED, success, useRoot} from '../../core';
+import {
+  error,
+  FULFILLED,
+  PENDING,
+  REJECTED,
+  success,
+  useRoot,
+} from '../../core';
 import usePromisifyNavigation from './usePromisifyNavigation';
 import {ItemFormValues} from '../../components/scenes/ItemFormScene';
 import {EditItemScreen} from '../../screens/EditItemScreen';
@@ -22,7 +29,7 @@ export default observer(function EditItemBinding({
   >(() => navigation.navigate('PickFieldName', {fromScreen: 'EditItem'}));
   const itemId = route.params.id;
   const root = useRoot();
-  const {itemRestClientHelper} = root;
+  const {itemHelper} = root;
   const [pageState] = useState(() => new ItemDetailsStateImpl(root, itemId));
   const {state} = pageState;
   const busyRef = useRef(false);
@@ -50,16 +57,18 @@ export default observer(function EditItemBinding({
   }, [promisifyNavigate]);
 
   const edit = useCallback(
-    async (_: ItemFormValues, touchedKeys: keyof ItemFormValues) => {
-      console.log('VALUES', _);
-      const update_ = await itemRestClientHelper.update({
+    async (_: ItemFormValues) => {
+      if (state?.status !== FULFILLED) {
+        return;
+      }
+
+      const isNewImage = state.result.image !== _.image;
+      const imageWasDeleted =
+        state.result.image !== undefined && _.image === undefined;
+      const update_ = await itemHelper.update({
         id: itemId,
         item: {
-          image: touchedKeys.includes('image')
-            ? _.image
-            : _.image === undefined
-            ? null // for delete
-            : undefined,
+          image: imageWasDeleted ? null : isNewImage ? _.image : undefined,
           name: _.name,
           serialNumber: _.serialNumber,
           customFields: _.customFields,
@@ -70,7 +79,7 @@ export default observer(function EditItemBinding({
       }
       navigation.goBack();
     },
-    [goToUnknownError, itemId, itemRestClientHelper, navigation],
+    [goToUnknownError, itemId, itemHelper, navigation, state],
   );
 
   if (state === undefined || state.status === PENDING) {
@@ -89,7 +98,7 @@ export default observer(function EditItemBinding({
   return (
     <EditItemScreen
       onNewFieldNameRequest={onNewFieldNameRequest}
-      onCreatePress={edit}
+      onEditPress={edit}
       item={state.result}
     />
   );

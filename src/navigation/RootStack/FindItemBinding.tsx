@@ -2,10 +2,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import {FindItemScreen} from '../../screens/FindItemScreen';
 import {RootStackBindingProps} from './RootStackBindingProps';
-import {FULFILLED, REJECTED, useRoot} from '../../core';
+import {PENDING, REJECTED, useRoot} from '../../core';
 import {FindItemStateImpl} from '../../core/FindItemState';
 import {ErrorScreen} from '../../screens/ErrorScreen';
-import {Item} from '../../core/ItemRestClientHelper';
+import {Item} from '../../core/ItemHelper';
 import useNavigationGetIsFocused from '../useNavigationGetIsFocused';
 import {autorun} from 'mobx';
 
@@ -29,7 +29,7 @@ export default observer(function FindItemBinding({
     () => navigation.navigate('CreateItem'),
     [navigation],
   );
-  if (!state) {
+  if (state === undefined || state.status === PENDING) {
     return null;
   }
   if (state.status === REJECTED) {
@@ -40,9 +40,6 @@ export default observer(function FindItemBinding({
         description={state.error.description}
       />
     );
-  }
-  if (state.status !== FULFILLED) {
-    return null;
   }
   return (
     <FindItemScreen

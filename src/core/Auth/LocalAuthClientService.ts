@@ -1,5 +1,5 @@
 import {BaseOAuth2SignInParams, OAuth2ProviderMap} from '../AuthRestClient';
-import {Credentials} from '../Credentials';
+import {Credentials, RefreshCredentials} from '../Credentials';
 import {GlobalError, UNKNOWN_ERROR} from '../Error';
 import {ErrorRepository} from '../ErrorRepository';
 import {Either} from '../fp';
@@ -109,7 +109,7 @@ export default class LocalAuthClientService implements AuthClient, Service {
       const credentials_ = await this._root.authRestClientHelper.signIn({
         ...params,
       });
-      await this._processFreshCredentials(credentials_);
+      await this._processNewCredentials(credentials_);
     });
   };
 
@@ -164,12 +164,46 @@ export default class LocalAuthClientService implements AuthClient, Service {
 
   private async _refreshCredentials(_: RefreshToken) {
     const credentials_ = await this._root.authRestClientHelper.refresh({
-      token: _,
+      refresh: _,
     });
-    await this._processFreshCredentials(credentials_);
+    await this._processRefreshCredentials(credentials_);
   }
 
-  private async _processFreshCredentials(
+  private async _processRefreshCredentials(
+    credentials_: Either<RefreshCredentials, GlobalError>,
+  ) {
+    if (!credentials_.success) {
+      return this._errors.send(credentials_.left);
+    }
+    const get_ = await this._root.jsonSecureKeyValueStore.get('auth2');
+    if (!get_.success) {
+      return this._errors.send(get_.left);
+    }
+    const refreshToken = get_.right?.refreshToken;
+    if (!refreshToken) {
+      return this._errors.send(
+        this._root.errorRepository.create({
+          kind: UNKNOWN_ERROR,
+        }),
+      );
+    }
+    const newCredentials = {
+      refreshToken,
+      accessToken: credentials_.right.accessToken,
+    };
+    const set_ = await this._root.jsonSecureKeyValueStore.set(
+      'auth2',
+      newCredentials,
+    );
+    if (!set_.success) {
+      return this._errors.send(set_.left);
+    }
+    return this._responses.send(AUTHORIZED, {
+      kind: AUTHORIZED,
+      credentials: newCredentials,
+    });
+  }
+  private async _processNewCredentials(
     credentials_: Either<Credentials, GlobalError>,
   ) {
     if (!credentials_.success) {

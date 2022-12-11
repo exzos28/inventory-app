@@ -17,6 +17,7 @@ import {ErrorScreen} from '../../screens/ErrorScreen';
 import useNavigationGetIsFocused from '../useNavigationGetIsFocused';
 import {autorun} from 'mobx';
 import {Alert} from 'react-native';
+import {UserRole} from '../../core/HadesServer';
 
 export type ItemDetailsBindingProps = RootStackBindingProps<'ItemDetails'>;
 
@@ -25,19 +26,19 @@ export default observer(function ItemDetailsBinding({
   navigation,
 }: ItemDetailsBindingProps) {
   const root = useRoot();
-  const {itemRestClientHelper} = root;
+  const {itemHelper} = root;
   const itemId = route.params.id;
-  const [pageState] = useState(() => new ItemDetailsStateImpl(root, itemId));
+  const [pageState] = useState(() => new ItemDetailsStateImpl(root));
   const {state} = pageState;
   const getIsFocused = useNavigationGetIsFocused();
   useEffect(
-    () => autorun(() => getIsFocused() && pageState.fetch()),
-    [getIsFocused, pageState],
+    () => autorun(() => getIsFocused() && pageState.fetch(itemId)),
+    [getIsFocused, itemId, pageState],
   );
   const deleteItem = useCallback(async () => {
-    await itemRestClientHelper.delete({id: itemId});
+    await itemHelper.delete({id: itemId});
     navigation.goBack();
-  }, [itemId, itemRestClientHelper, navigation]);
+  }, [itemId, itemHelper, navigation]);
   // TODO l10n
   const promptDeleteItem = useCallback(async () => {
     return Alert.alert(
@@ -69,11 +70,17 @@ export default observer(function ItemDetailsBinding({
     );
   }
   return (
-    <ItemDetailsScreen item={state.result} onDeletePress={promptDeleteItem} />
+    <ItemDetailsScreen
+      detailedItem={state.result}
+      onDeletePress={promptDeleteItem}
+    />
   );
 });
 
 export const ItemDetailsHeader = observer((props: HeaderProps) => {
+  const {
+    projectPermissionHelper: {isSomeRoleOrBetter},
+  } = useRoot();
   const navigation = useNavigation<ItemDetailsBindingProps['navigation']>();
   const route = useRoute<ItemDetailsBindingProps['route']>();
   const id = route.params.id;
@@ -81,7 +88,9 @@ export const ItemDetailsHeader = observer((props: HeaderProps) => {
     <Header
       {...props}
       accessoryRight={
-        <EditAction onPress={() => navigation.navigate('EditItem', {id})} />
+        isSomeRoleOrBetter(UserRole.Manager) ? (
+          <EditAction onPress={() => navigation.navigate('EditItem', {id})} />
+        ) : undefined
       }
     />
   );

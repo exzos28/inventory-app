@@ -8,7 +8,7 @@ import {AlignItems, Gutter} from '../types';
 import {Url, variance} from '../../core';
 import Grid, {Cell} from '../Grid';
 import Space from '../Space';
-import {Item} from '../../core/ItemRestClientHelper';
+import {Item} from '../../core/ItemHelper';
 
 export type ExternalItemProps = {
   rightAccessory?: (item: Item) => React.ReactNode;

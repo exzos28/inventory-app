@@ -8,7 +8,7 @@ import {
   UserCancellationError,
 } from '../Error';
 import {ErrorRepository} from '../ErrorRepository';
-import {Either, error, success} from '../fp';
+import {error, success} from '../fp';
 import {Json} from '../Json';
 import {Translation} from '../Localization';
 import {LocaleTag} from '../Localization/TranslationService';
@@ -19,6 +19,7 @@ import {
   AppleOAuth2Provider,
 } from './AppleOAuth2Provider';
 import {ERROR, OAuth2OutcomeMap, SUCCESS} from './OAuth2Provider';
+import {Maybe} from '../Maybe';
 
 export default class WebAppleOAuth2ProviderService
   implements AppleOAuth2Provider, Service
@@ -32,7 +33,7 @@ export default class WebAppleOAuth2ProviderService
     },
   ) {}
 
-  signIn(): Either<void, GlobalError> {
+  signIn(): Maybe<void> {
     try {
       AppleID.auth
         .signIn()

@@ -13,6 +13,7 @@ export default observer(function FindUserScene(props: FindUserSceneProps) {
     </RootLayout>
   );
 });
+
 const RootLayout = variance(Layout)(() => ({
   root: {
     flex: 1,

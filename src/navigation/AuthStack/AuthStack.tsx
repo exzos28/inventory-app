@@ -10,7 +10,12 @@ import AuthorizationErrorBinding from './AuthorizationErrorBinding';
 export type AuthParamList = {
   Loader: undefined;
   SignIn: undefined;
-  AuthorizationError: undefined;
+  AuthorizationError:
+    | {
+        raw?: unknown;
+        description?: string;
+      }
+    | undefined;
 };
 
 const {Navigator, Screen} = createStackNavigator<AuthParamList>();
@@ -43,6 +48,10 @@ export default observer(function AuthStack() {
           name="AuthorizationError"
           options={{
             title: strings['navigation.authorizationError'],
+          }}
+          initialParams={{
+            raw: authState.latest.error,
+            description: authState.latest.error.description,
           }}
           component={AuthorizationErrorBinding}
         />

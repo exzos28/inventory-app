@@ -22,12 +22,14 @@ export type ErrorScreenProps = {
   onReturnPress: () => void;
   raw?: unknown;
   description?: string;
+  visibleReturnButton?: boolean;
 };
 
 export default observer(function ErrorScreen({
   onReturnPress,
   raw,
   description,
+  visibleReturnButton = true,
 }: ErrorScreenProps) {
   const strings = useStrings();
   return (
@@ -49,13 +51,15 @@ export default observer(function ErrorScreen({
               </Space>
             </HeaderSpace>
           </Cell>
-          <Cell justify={JustifyContent.End}>
-            <Space>
-              <Button onPress={onReturnPress}>
-                {strings['errorScreen.returnButton']}
-              </Button>
-            </Space>
-          </Cell>
+          {visibleReturnButton && (
+            <Cell justify={JustifyContent.End}>
+              <Space>
+                <Button onPress={onReturnPress}>
+                  {strings['errorScreen.returnButton']}
+                </Button>
+              </Space>
+            </Cell>
+          )}
         </RootGrid>
       </RootView>
     </ScrollView>

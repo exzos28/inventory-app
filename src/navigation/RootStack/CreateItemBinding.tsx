@@ -12,7 +12,7 @@ type CreateItemBindingProps = RootStackBindingProps<'CreateItem'>;
 export default observer(function CreateItemBinding({
   navigation,
 }: CreateItemBindingProps) {
-  const {itemRestClientHelper} = useRoot();
+  const {itemHelper} = useRoot();
   const {promisifyNavigate} = usePromisifyNavigation<
     CreateItemBindingProps['route']
   >(() => navigation.navigate('PickFieldName', {fromScreen: 'CreateItem'}));
@@ -31,8 +31,7 @@ export default observer(function CreateItemBinding({
 
   const create = useCallback(
     async (_: ItemFormValues) => {
-      console.log(_);
-      const create_ = await itemRestClientHelper.create({
+      const create_ = await itemHelper.create({
         item: {
           image: _.image,
           name: _.name,
@@ -40,13 +39,12 @@ export default observer(function CreateItemBinding({
           customFields: _.customFields,
         },
       });
-      console.log(create_);
       if (!create_.success) {
         return goToUnknownError(create_.left);
       }
       navigation.goBack();
     },
-    [goToUnknownError, itemRestClientHelper, navigation],
+    [goToUnknownError, itemHelper, navigation],
   );
 
   return (

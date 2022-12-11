@@ -57,14 +57,7 @@ export default class AuthedFetchImpl implements Fetch {
       return response;
     }
 
-    const refreshResponse = await this._root.authRestClient.refresh({
-      token: refreshToken,
-    });
-    if (refreshResponse.success) {
-      await this._root.authHelper.signInByRefreshToken(
-        refreshResponse.right.refresh,
-      );
-    }
+    await this._root.authHelper.fetch(true);
 
     return this._root.http.fetch(...this._getNewArgs(...args));
   }

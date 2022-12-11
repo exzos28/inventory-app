@@ -1,5 +1,6 @@
 import {Url} from './core';
 import {Opaque} from 'type-fest';
+import {UserId, UserRole} from './core/HadesServer';
 
 /**
  * @deprecated
@@ -28,27 +29,8 @@ export type UserType = {
 /**
  * @deprecated
  */
-export enum UserRole {
-  Owner,
-  Admin,
-  Manager,
-  User,
-}
-
-/**
- * @deprecated
- */
 export const ITEM_ID = Symbol.for('Item id');
 /**
  * @deprecated
  */
 export type ItemId = Opaque<string, typeof ITEM_ID>;
-
-/**
- * @deprecated
- */
-export const USER_ID = Symbol.for('User id');
-/**
- * @deprecated
- */
-export type UserId = Opaque<string, typeof USER_ID>;

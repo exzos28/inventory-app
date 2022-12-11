@@ -1,15 +1,15 @@
 import {Either} from '../fp';
 import {GlobalError} from '../Error';
-import {ItemId} from '../HadesServer';
-import {UserId} from '../../tempTypes';
+import {ItemId, UserId} from '../HadesServer';
 import {Uri} from '../units';
+import {Maybe} from '../Maybe';
 
-export interface ItemRestClientHelper {
+export interface ItemHelper {
   getAll(): Promise<Either<Item[], GlobalError>>;
-  create(params: CreateItemParams): Promise<Either<void, GlobalError>>;
+  create(params: CreateItemParams): Promise<Maybe<void>>;
   get(params: GetItemParams): Promise<Either<Item, GlobalError>>;
-  update(params: UpdateItemParams): Promise<Either<void, GlobalError>>;
-  delete(params: DeleteItemParams): Promise<Either<void, GlobalError>>;
+  update(params: UpdateItemParams): Promise<Maybe<void>>;
+  delete(params: DeleteItemParams): Promise<Maybe<void>>;
 }
 
 export type CreateItemParams = {
@@ -29,14 +29,15 @@ export type GetItemParams = {
 
 export type UpdateItemParams = {
   id: ItemId;
-  item: Pick<Item, 'name' | 'serialNumber'> &
-    Partial<{
+  item: Partial<
+    Pick<Item, 'name' | 'serialNumber' | 'employee'> & {
       image: Uri | null;
       customFields: {
         label: string;
         value: string;
       }[];
-    }>;
+    }
+  >;
 };
 
 export type DeleteItemParams = {

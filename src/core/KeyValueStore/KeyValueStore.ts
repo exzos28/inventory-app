@@ -1,6 +1,7 @@
 import {GlobalError} from '../Error';
 import {Either} from '../fp';
 import {RouterSource} from '../structure';
+import {Maybe} from '../Maybe';
 
 export interface KeyValueStore<
   KV extends AbstractKeyValueMap = AbstractKeyValueMap,
@@ -8,11 +9,8 @@ export interface KeyValueStore<
   get<K extends keyof KV>(
     key: K,
   ): Promise<Either<KV[K] | undefined, GlobalError>>;
-  set<K extends keyof KV>(
-    key: K,
-    value: KV[K],
-  ): Promise<Either<void, GlobalError>>;
-  delete<K extends keyof KV>(key: K): Promise<Either<void, GlobalError>>;
+  set<K extends keyof KV>(key: K, value: KV[K]): Promise<Maybe<void>>;
+  delete<K extends keyof KV>(key: K): Promise<Maybe<void>>;
   readonly sideUpdates: RouterSource<UpdatesKeyValueMap<KV>>;
 }
 

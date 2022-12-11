@@ -1,18 +1,17 @@
 import {RestClient} from '../BaseRestClient';
 import {GlobalError} from '../Error';
 import {Either} from '../fp';
-import {ProjectId} from '../HadesServer';
+import {ProjectId, UserId, UserRole} from '../HadesServer';
+import {Maybe} from '../Maybe';
 
 export interface ProjectRestClient extends RestClient {
-  getAll(): Promise<Either<ProjectResponse[], GlobalError>>;
-  create(
-    params: CreateProjectParams,
-  ): Promise<Either<ProjectResponse, GlobalError>>;
-  get(params: GetProjectParams): Promise<Either<ProjectResponse, GlobalError>>;
-  update(
-    params: UpdateProjectParams,
-  ): Promise<Either<ProjectResponse, GlobalError>>;
-  delete(params: DeleteProjectParams): Promise<Either<void, GlobalError>>;
+  getAll(): Promise<Either<GetAllResponse, GlobalError>>;
+  create(params: CreateProjectParams): Promise<Either<void, GlobalError>>;
+  get(
+    params: GetProjectParams,
+  ): Promise<Either<AggregatedProjectResponse, GlobalError>>;
+  update(params: UpdateProjectParams): Promise<Either<void, GlobalError>>;
+  delete(params: DeleteProjectParams): Promise<Maybe<void>>;
 }
 
 export type CreateProjectParams = {
@@ -35,7 +34,20 @@ export type GetProjectParams = {
   id: ProjectId;
 };
 
+export type GetAllResponse = {
+  projects: ProjectResponse[];
+};
+
 export type ProjectResponse = {
   id: ProjectId;
   name: string;
+};
+
+export type AggregatedProjectResponse = ProjectResponse & {
+  users: {
+    id: UserId;
+    username: string;
+    email: string;
+    role: UserRole;
+  }[];
 };

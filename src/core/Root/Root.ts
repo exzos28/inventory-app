@@ -15,13 +15,16 @@ import {Configuration} from '../Configuration';
 import {AuthHelper, AuthState} from '../Auth';
 import {AccountStore} from '../AccountStore';
 import {ProjectStore} from '../ProjectStore';
-import {ProjectRestClientHelper} from '../ProjectRestClientHelper';
-import {ItemRestClientHelper} from '../ItemRestClientHelper';
+import {ProjectHelper} from '../ProjectHelper';
+import {ItemHelperImpl} from '../ItemHelper';
+import {ProjectUsersHelper} from '../ProjectUsersHelper';
+import {ProjectPermissionHelper} from '../ProjectPermissionHelper';
+import {ErrorRepository} from '../ErrorRepository';
 
 export interface Root {
   readonly accountStore: AccountStore;
   readonly projectStore: ProjectStore;
-
+  readonly errorRepository: ErrorRepository;
   readonly appLifecycle: AppLifecycle;
   readonly navigationContainer: NavigationContainer;
   readonly navigationContainerBinding: NavigationContainerBinding;
@@ -38,8 +41,11 @@ export interface Root {
   readonly navigationContainerTheme: NavigationContainerTheme;
   // readonly deviceInfo: DeviceInfo;
 
-  readonly projectRestClientHelper: ProjectRestClientHelper;
-  readonly itemRestClientHelper: ItemRestClientHelper;
+  readonly projectHelper: ProjectHelper;
+  readonly itemHelper: ItemHelperImpl;
+  readonly projectUsersHelper: ProjectUsersHelper;
+
+  readonly projectPermissionHelper: ProjectPermissionHelper;
 
   readonly appWindow: AppWindow;
   readonly appWindowState: AppWindowState;

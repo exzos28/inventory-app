@@ -8,6 +8,7 @@ import {
   JsonKeyValueStore,
   UpdatesJsonKeyValueMap,
 } from './JsonKeyValueStore';
+import {Maybe} from '../Maybe';
 
 export default class JsonKeyValueStoreService<
   KV extends AbstractJsonKeyValueMap = AbstractJsonKeyValueMap,
@@ -31,7 +32,7 @@ export default class JsonKeyValueStoreService<
   async set<K extends keyof KV>(
     key: K,
     value: KV[K]['__jsonSerialized__'],
-  ): Promise<Either<void, GlobalError>> {
+  ): Promise<Maybe<void>> {
     const stringify_ = this._root.json.stringify(value);
     if (!stringify_.success) {
       return stringify_;
@@ -39,7 +40,7 @@ export default class JsonKeyValueStoreService<
     return this._store.set(key, stringify_.right as KV[K]);
   }
 
-  async delete<K extends keyof KV>(key: K): Promise<Either<void, GlobalError>> {
+  async delete<K extends keyof KV>(key: K): Promise<Maybe<void>> {
     return this._store.delete(key);
   }
 

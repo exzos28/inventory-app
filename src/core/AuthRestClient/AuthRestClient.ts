@@ -13,7 +13,7 @@ export interface AuthRestClient extends RestClient {
 }
 
 export type OAuth2RefreshParams = {
-  token: RefreshToken;
+  refresh: RefreshToken;
 };
 
 export type OAuth2SignInParams<T extends keyof OAuth2ProviderMap> =
@@ -35,5 +35,4 @@ export type AuthResponse = {
 };
 export type RefreshResponse = {
   access: AccessToken;
-  refresh: RefreshToken;
 };

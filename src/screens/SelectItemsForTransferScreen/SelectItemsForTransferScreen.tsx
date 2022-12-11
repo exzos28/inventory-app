@@ -8,41 +8,49 @@ import {StyleSheet, View} from 'react-native';
 import Leveler from '../../components/Leveler';
 import {Bubble, JustifyContent} from '../../components';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ItemId} from '../../tempTypes';
 import {useStrings} from '../../core';
 import {
   FindItemScene,
   FindItemSceneProps,
 } from '../../components/scenes/FindItemScene';
+import {ItemId} from '../../core/HadesServer';
+import {expr} from 'mobx-utils';
+import {Item} from '../../core/ItemHelper';
 
-export type ItemsSelectionForUserScreenProps = FindItemSceneProps & {
-  getSelectedItems: () => ItemId[];
+export type SelectItemsForTransferScreenProps = FindItemSceneProps & {
+  getSelectedIds: () => ItemId[];
   onSubmitPress: () => void;
+  data: Item[];
 };
 
 const ABSOLUTE_BUTTON_HEIGHT = 85;
 
-export default observer(function ItemsSelectionForUserScreen({
-  getSelectedItems,
+export default observer(function SelectItemsForTransferScreen({
+  getSelectedIds,
   onSubmitPress,
+  data,
   ...rest
-}: ItemsSelectionForUserScreenProps) {
+}: SelectItemsForTransferScreenProps) {
   const strings = useStrings();
-  const items = getSelectedItems();
+  const items = getSelectedIds();
   const insets = useSafeAreaInsets();
   const visibleSubmitButton = items.length !== 0;
   const absoluteButtonHeight = visibleSubmitButton
     ? insets.bottom / 2 + ABSOLUTE_BUTTON_HEIGHT
     : insets.bottom;
+  const isEmpty = expr(
+    () => data.length === 0 || getSelectedIds().length === 0,
+  );
   return (
     <RootView>
       <FindItemScene
         {...rest}
+        data={data}
         rightAccessory={item =>
           items.includes(item.id) ? <RightAccessory /> : <RightAccessoryView />
         }
       />
-      {items.length !== 0 && (
+      {!isEmpty && (
         <AbsoluteButtonView style={{height: absoluteButtonHeight}}>
           <AbsoluteButtonBubble>
             <Button onPress={onSubmitPress}>

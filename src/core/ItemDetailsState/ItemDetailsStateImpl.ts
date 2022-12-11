@@ -1,20 +1,27 @@
 import {PromiseStateProvider} from '../AsyncAtom/PromiseStateProvider';
-import {GlobalError} from '../Error';
-import {Item, ItemRestClientHelper} from '../ItemRestClientHelper';
+import {GlobalError, UNKNOWN_ERROR, UnknownError} from '../Error';
+import {ItemHelperImpl} from '../ItemHelper';
 import PromiseStateProviderImpl from '../AsyncAtom/PromiseStateProviderImpl';
-import {bind, success} from '../fp';
+import {bind, error, success} from '../fp';
 import {computed, makeObservable} from 'mobx';
-import {ItemDetailsState} from './ItemDetailsState';
+import {DetailedItem, ItemDetailsState} from './ItemDetailsState';
 import {ItemId} from '../HadesServer';
+import {ProjectUsersHelper} from '../ProjectUsersHelper';
+import {ErrorRepository} from '../ErrorRepository';
 
 export default class ItemDetailsStateImpl implements ItemDetailsState {
-  private readonly _promiseState: PromiseStateProvider<Item, GlobalError>;
+  private readonly _promiseState: PromiseStateProvider<
+    DetailedItem,
+    GlobalError
+  >;
+  private _selectedItemId?: ItemId;
 
   constructor(
     private readonly _root: {
-      readonly itemRestClientHelper: ItemRestClientHelper;
+      readonly itemHelper: ItemHelperImpl;
+      readonly projectUsersHelper: ProjectUsersHelper;
+      readonly errorRepository: ErrorRepository;
     },
-    public itemId: ItemId,
   ) {
     makeObservable(this);
     this._promiseState = new PromiseStateProviderImpl(this._fetch);
@@ -25,7 +32,8 @@ export default class ItemDetailsStateImpl implements ItemDetailsState {
     return this._promiseState.state;
   }
 
-  fetch = bind(async () => {
+  fetch = bind(async (id: ItemId) => {
+    this._selectedItemId = id;
     const response_ = await this._promiseState.fetch();
     if (response_.success) {
       return success();
@@ -33,7 +41,23 @@ export default class ItemDetailsStateImpl implements ItemDetailsState {
     return response_;
   }, this);
 
-  private _fetch = bind(() => {
-    return this._root.itemRestClientHelper.get({id: this.itemId});
+  private _fetch = bind(async () => {
+    if (!this._selectedItemId) {
+      return error(
+        this._root.errorRepository.create<UnknownError>({kind: UNKNOWN_ERROR}),
+      );
+    }
+    const item_ = await this._root.itemHelper.get({id: this._selectedItemId});
+    if (!item_.success) {
+      return item_;
+    }
+    const itemOwner = item_.right.employee;
+    const user_ = itemOwner
+      ? await this._root.projectUsersHelper.getUserById(itemOwner)
+      : undefined;
+    return success({
+      item: item_.right,
+      owner: user_?.success ? user_.right : undefined,
+    });
   }, this);
 }

@@ -15,6 +15,7 @@ import {
   ItemRestClient,
   UpdateItemParams,
 } from './ItemRestClient';
+import {Maybe} from '../Maybe';
 
 export default class ItemRestClientImpl
   extends BaseShadesRestClientImpl
@@ -45,11 +46,7 @@ export default class ItemRestClientImpl
     return this._fetch('GET', `inventory-item/${project_id}` as Url);
   }
 
-  async create({
-    project_id,
-    item,
-  }: CreateItemParams): Promise<Either<void, GlobalError>> {
-    console.log('item', item);
+  async create({project_id, item}: CreateItemParams): Promise<Maybe<void>> {
     return this._fetch(
       'POST',
       `inventory-item/${project_id}` as Url,
@@ -65,11 +62,7 @@ export default class ItemRestClientImpl
     return this._fetch('GET', `inventory-item/${project_id}/${id}` as Url);
   }
 
-  async update({
-    project_id,
-    item,
-    id,
-  }: UpdateItemParams): Promise<Either<void, GlobalError>> {
+  async update({project_id, item, id}: UpdateItemParams): Promise<Maybe<void>> {
     return this._fetch(
       'PATCH',
       `inventory-item/${project_id}/${id}` as Url,
@@ -78,10 +71,7 @@ export default class ItemRestClientImpl
     );
   }
 
-  async delete({
-    id,
-    project_id,
-  }: DeleteProjectParams): Promise<Either<void, GlobalError>> {
+  async delete({id, project_id}: DeleteProjectParams): Promise<Maybe<void>> {
     return this._fetch('DELETE', `inventory-item/${project_id}/${id}` as Url);
   }
 }

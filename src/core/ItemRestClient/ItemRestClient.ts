@@ -1,16 +1,17 @@
 import {RestClient} from '../BaseRestClient';
 import {GlobalError} from '../Error';
 import {Either} from '../fp';
-import {ItemId, ProjectId} from '../HadesServer';
+import {ItemId, ProjectId, UserId} from '../HadesServer';
 import {Uri} from '../units';
 import {JsonString} from '../Json';
+import {Maybe} from '../Maybe';
 
 export interface ItemRestClient extends RestClient {
   getAll(params: GetAllParams): Promise<Either<ServerItem[], GlobalError>>;
-  create(params: CreateItemParams): Promise<Either<void, GlobalError>>;
+  create(params: CreateItemParams): Promise<Maybe<void>>;
   get(params: GetItemParams): Promise<Either<ServerItem, GlobalError>>;
-  update(params: UpdateItemParams): Promise<Either<void, GlobalError>>;
-  delete(params: DeleteProjectParams): Promise<Either<void, GlobalError>>;
+  update(params: UpdateItemParams): Promise<Maybe<void>>;
+  delete(params: DeleteProjectParams): Promise<Maybe<void>>;
 }
 
 export type GetAllParams = {
@@ -29,11 +30,12 @@ export type CreateItemParams = {
 export type UpdateItemParams = {
   project_id: ProjectId;
   id: ItemId;
-  item: Pick<ServerItem, 'name' | 'serial_number'> &
-    Partial<{
+  item: Partial<
+    Pick<ServerItem, 'name' | 'serial_number' | 'employee'> & {
       image: {uri: Uri; name: string; type: string} | null;
       custom_field: JsonString;
-    }>;
+    }
+  >;
 };
 
 export type DeleteProjectParams = {
@@ -64,6 +66,6 @@ export type ServerItem = {
   inventory_type: null; // ?type_id
   localization: null; // ?loc_id
   status: null; // ?status_id
-  employee: null; //?user_id;
+  employee: UserId | null; //?user_id;
   project: ItemId | null; // - ?project_id;
 }>;

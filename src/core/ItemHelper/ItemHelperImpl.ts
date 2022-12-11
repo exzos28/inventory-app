@@ -3,9 +3,9 @@ import {
   DeleteItemParams,
   GetItemParams,
   Item,
-  ItemRestClientHelper,
+  ItemHelper,
   UpdateItemParams,
-} from './ItemRestClientHelper';
+} from './ItemHelper';
 import {bind, Either, error, success} from '../fp';
 import {
   GENERAL_REST_CLIENT_ERROR,
@@ -24,7 +24,7 @@ import {Json, JsonSerializable} from '../Json';
 import {Platform} from 'react-native';
 import {last} from 'lodash';
 
-export default class ItemRestClientHelperImpl implements ItemRestClientHelper {
+export default class ItemHelperImpl implements ItemHelper {
   constructor(
     private readonly _root: {
       readonly itemRestClient: ItemRestClient;
@@ -42,7 +42,7 @@ export default class ItemRestClientHelperImpl implements ItemRestClientHelper {
         this._root.errorRepository.create({kind: PROJECT_NOT_SELECTED}),
       );
     }
-    return success(selectedProject.id);
+    return success(selectedProject.project.id);
   }
 
   private _createImageUri(str: string): Uri {
@@ -166,6 +166,7 @@ export default class ItemRestClientHelperImpl implements ItemRestClientHelper {
       project_id: projectId_.right,
       id: id,
       item: {
+        employee: item.employee,
         name: item.name,
         serial_number: item.serialNumber,
         image: item.image
