@@ -15,3 +15,4 @@ export * from './CookieError';
 export * from './InstagramError';
 export * from './SpecializedShadesResponseError';
 export * from './ProjectError';
+export * from './DataError';

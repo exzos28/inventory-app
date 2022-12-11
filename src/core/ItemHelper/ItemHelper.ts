@@ -1,13 +1,12 @@
-import {Either} from '../fp';
-import {GlobalError} from '../Error';
 import {ItemId, UserId} from '../HadesServer';
 import {Uri} from '../units';
 import {Maybe} from '../Maybe';
 
 export interface ItemHelper {
-  getAll(): Promise<Either<Item[], GlobalError>>;
+  getAll(): Promise<Maybe<Item[]>>;
   create(params: CreateItemParams): Promise<Maybe<void>>;
-  get(params: GetItemParams): Promise<Either<Item, GlobalError>>;
+  get(params: GetItemParams): Promise<Maybe<Item>>;
+  getByQr(qr: string): Promise<Maybe<Item>>;
   update(params: UpdateItemParams): Promise<Maybe<void>>;
   delete(params: DeleteItemParams): Promise<Maybe<void>>;
 }
@@ -30,7 +29,7 @@ export type GetItemParams = {
 export type UpdateItemParams = {
   id: ItemId;
   item: Partial<
-    Pick<Item, 'name' | 'serialNumber' | 'employee'> & {
+    Pick<Item, 'name' | 'serialNumber' | 'employee' | 'qrKey'> & {
       image: Uri | null;
       customFields: {
         label: string;

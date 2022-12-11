@@ -10,6 +10,8 @@ import {bind, Either, error, success} from '../fp';
 import {
   GENERAL_REST_CLIENT_ERROR,
   GlobalError,
+  NOT_FOUND_ERROR,
+  NotFoundError,
   PROJECT_NOT_SELECTED,
 } from '../Error';
 
@@ -125,6 +127,22 @@ export default class ItemHelperImpl implements ItemHelper {
       );
   }
 
+  async getByQr(qr: string) {
+    const getAll_ = await this.getAll();
+    if (!getAll_.success) {
+      return getAll_;
+    }
+    const candidate = getAll_.right.find(_ => _.qrKey === qr);
+    if (candidate) {
+      return success(candidate);
+    }
+    return error(
+      this._root.errorRepository.create<NotFoundError>({
+        kind: NOT_FOUND_ERROR,
+      }),
+    );
+  }
+
   async getAll() {
     const projectId_ = this._getProjectId();
     if (!projectId_.success) {
@@ -172,6 +190,7 @@ export default class ItemHelperImpl implements ItemHelper {
         image: item.image
           ? this._createImageBlog(item.image)
           : (item.image as null), // null or undefined
+        qr_key: item.qrKey,
         custom_field: this._createCustomField(item.customFields),
       },
     });

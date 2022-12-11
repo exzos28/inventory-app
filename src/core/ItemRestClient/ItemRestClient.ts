@@ -31,7 +31,7 @@ export type UpdateItemParams = {
   project_id: ProjectId;
   id: ItemId;
   item: Partial<
-    Pick<ServerItem, 'name' | 'serial_number' | 'employee'> & {
+    Pick<ServerItem, 'name' | 'serial_number' | 'employee' | 'qr_key'> & {
       image: {uri: Uri; name: string; type: string} | null;
       custom_field: JsonString;
     }
