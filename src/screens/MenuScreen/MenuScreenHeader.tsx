@@ -96,7 +96,7 @@ export default observer(function MenuScreenHeader() {
       accountStore.state?.status === FULFILLED
     ) {
       return `${
-        accountStore.state.result.nickname
+        accountStore.state.result.username
       }, ${StaticRoleFormatterImpl.translateUserRole(
         projectStore.selectedProject.role,
         strings,

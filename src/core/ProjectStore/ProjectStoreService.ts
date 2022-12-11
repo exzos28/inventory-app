@@ -51,7 +51,7 @@ export default class ProjectStoreService implements ProjectStore, Service {
     return response_;
   }, this);
 
-  async selectProject(id: ProjectId): Promise<Maybe<void>> {
+  selectProject = bind(async (id: ProjectId): Promise<Maybe<void>> => {
     const exists = this.projects?.find(_ => _.id === id);
     if (!exists) {
       return error(this._root.errorRepository.create({kind: UNKNOWN_ERROR}));
@@ -85,7 +85,7 @@ export default class ProjectStoreService implements ProjectStore, Service {
       return set_;
     }
     return success();
-  }
+  }, this);
 
   private _selectProjectOnFulfilled() {
     return reaction(

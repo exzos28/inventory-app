@@ -25,7 +25,7 @@ export default observer(function FindUserBinding({
   );
   const deleteUser = useCallback(
     async (user: User) => {
-      await projectUsersHelper.deleteUser({email: user.email});
+      await projectUsersHelper.deleteUser({id: user.id});
       await pageState.fetch();
     },
     [pageState, projectUsersHelper],

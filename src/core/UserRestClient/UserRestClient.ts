@@ -11,5 +11,5 @@ export interface UserRestClient extends RestClient {
 export type UserResponse = {
   id: UserId;
   email: string;
-  nickname: string;
+  username: string;
 };

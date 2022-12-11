@@ -25,5 +25,5 @@ export type InviteUserParams = {
 };
 
 export type DeleteUserParams = {
-  email: string;
+  id: UserId;
 };

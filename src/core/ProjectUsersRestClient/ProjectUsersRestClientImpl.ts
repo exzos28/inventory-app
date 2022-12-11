@@ -44,11 +44,8 @@ export default class ProjectUsersRestClientImpl
     return this._fetch('GET', `projects/${project_id}` as Url);
   }
 
-  deleteUser({project_id, email}: DeleteUserParams): Promise<Maybe<void>> {
-    return this._fetch(
-      'DELETE',
-      `project_users/${project_id}?email=${email}` as Url,
-    );
+  deleteUser({project_id, id}: DeleteUserParams): Promise<Maybe<void>> {
+    return this._fetch('DELETE', `project_users/${project_id}?id=${id}` as Url);
   }
 
   inviteUser({

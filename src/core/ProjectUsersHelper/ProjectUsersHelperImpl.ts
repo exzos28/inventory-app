@@ -45,7 +45,7 @@ export default class ProjectUsersHelperImpl implements ProjectUsersHelper {
     }
     return this._root.projectUsersRestClient.deleteUser({
       project_id: projectId_.right,
-      email: params.email,
+      id: params.id,
     });
   }
 
