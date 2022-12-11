@@ -7,7 +7,7 @@ import {JsonString} from '../Json';
 import {Maybe} from '../Maybe';
 
 export interface ItemRestClient extends RestClient {
-  getAll(params: GetAllParams): Promise<Either<ServerItem[], GlobalError>>;
+  getAll(params: GetAllParams): Promise<Either<GetAllResponse, GlobalError>>;
   create(params: CreateItemParams): Promise<Maybe<void>>;
   get(params: GetItemParams): Promise<Either<ServerItem, GlobalError>>;
   update(params: UpdateItemParams): Promise<Maybe<void>>;
@@ -16,6 +16,10 @@ export interface ItemRestClient extends RestClient {
 
 export type GetAllParams = {
   project_id: ProjectId;
+};
+
+export type GetAllResponse = {
+  items: ServerItem[];
 };
 
 export type CreateItemParams = {

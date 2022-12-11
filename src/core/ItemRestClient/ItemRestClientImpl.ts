@@ -14,6 +14,7 @@ import {
   ServerItem,
   ItemRestClient,
   UpdateItemParams,
+  GetAllResponse,
 } from './ItemRestClient';
 import {Maybe} from '../Maybe';
 
@@ -42,7 +43,7 @@ export default class ItemRestClientImpl
 
   async getAll({
     project_id,
-  }: GetAllParams): Promise<Either<ServerItem[], GlobalError>> {
+  }: GetAllParams): Promise<Either<GetAllResponse, GlobalError>> {
     return this._fetch('GET', `inventory-item/${project_id}` as Url);
   }
 

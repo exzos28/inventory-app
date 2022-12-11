@@ -16,6 +16,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		928DECBD99C35101CF5FB89C /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951677108A628BA4BCB296F /* ExpoModulesProvider.swift */; };
 		A16FB3761AEA193C47D7BDCB /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E454D5B396900C2700023646 /* ExpoModulesProvider.swift */; };
+		A469646829469CAA00878962 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A469646729469CAA00878962 /* BootSplash.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-InventoryApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InventoryApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = InventoryApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-InventoryApp-InventoryAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InventoryApp-InventoryAppTests.release.xcconfig"; path = "Target Support Files/Pods-InventoryApp-InventoryAppTests/Pods-InventoryApp-InventoryAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		A469646729469CAA00878962 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = InventoryApp/BootSplash.storyboard; sourceTree = "<group>"; };
 		E454D5B396900C2700023646 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-InventoryApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		E951677108A628BA4BCB296F /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-InventoryApp-InventoryAppTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				A469646729469CAA00878962 /* BootSplash.storyboard */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -272,6 +275,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A469646829469CAA00878962 /* BootSplash.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

@@ -1,5 +1,5 @@
 import {Either, error, success} from '../fp';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SetterResult} from './common';
 import {ReadonlyDeep} from 'type-fest';
 

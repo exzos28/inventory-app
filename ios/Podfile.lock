@@ -432,6 +432,8 @@ PODS:
     - React-RCTText
   - RNAppleAuthentication (2.2.2):
     - React-Core
+  - RNBootSplash (4.4.0):
+    - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
   - RNDeviceInfo (9.0.2):
@@ -566,6 +568,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeKeyboardManager (from `../node_modules/react-native-keyboard-manager`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
+  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -716,6 +719,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keyboard-manager"
   RNAppleAuthentication:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
+  RNBootSplash:
+    :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDeviceInfo:
@@ -810,6 +815,7 @@ SPEC CHECKSUMS:
   ReactCommon: 01064177e66d652192c661de899b1076da962fd9
   ReactNativeKeyboardManager: f82a63e0982254fb0f6a17ba327fac575a46f1e9
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
+  RNBootSplash: 8ecffd190fae05291b671ea2280c5238f15499a9
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNDeviceInfo: 1e3f62b9ec32f7754fac60bd06b8f8a27124e7f0
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f

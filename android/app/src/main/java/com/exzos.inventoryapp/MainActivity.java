@@ -1,5 +1,6 @@
 package com.exzos.inventoryapp;
 import android.os.Bundle;
+import com.zoontek.rnbootsplash.RNBootSplash;
 import expo.modules.ReactActivityDelegateWrapper;
 
 import com.facebook.react.ReactActivity;
@@ -7,6 +8,13 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 
 public class MainActivity extends ReactActivity {
+
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    RNBootSplash.init(this);
+    super.onCreate(savedInstanceState); // or super.onCreate(null) with react-native-screens
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

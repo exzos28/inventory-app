@@ -160,7 +160,7 @@ export default class ItemHelperImpl implements ItemHelper {
           }
           return response;
         }
-        return success(response.right.map(this._translateItemResponse));
+        return success(response.right.items.map(this._translateItemResponse));
       });
   }
 

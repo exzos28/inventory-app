@@ -116,10 +116,10 @@ export default observer(function MenuScreen({
                 </Space>
               )}
 
-              <MenuItem
-                title={strings['menuScreen.stocktaking']}
-                accessoryLeft={DoneAllOutlineIcon}
-              />
+              {/*<MenuItem*/}
+              {/*  title={strings['menuScreen.stocktaking']}*/}
+              {/*  accessoryLeft={DoneAllOutlineIcon}*/}
+              {/*/>*/}
 
               {/*{isSomeRoleOrBetter(UserRole.Admin) && (*/}
               {/*  <Space gutter={Gutter.Small}>*/}
@@ -177,6 +177,6 @@ const ArrowheadDownOutlineIcon = (props: IconProps) => (
 const PersonAddOutline = (props: IconProps) => (
   <Icon {...props} name="person-add-outline" />
 );
-const DoneAllOutlineIcon = (props: IconProps) => (
-  <Icon {...props} name="done-all-outline" />
-);
+// const DoneAllOutlineIcon = (props: IconProps) => (
+//   <Icon {...props} name="done-all-outline" />
+// );

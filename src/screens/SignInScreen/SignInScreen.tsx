@@ -43,6 +43,7 @@ export default observer(function SignInScreen({}: SignInScreenProps) {
               </Button>
 
               <Button
+                disabled
                 size="large"
                 onPress={() => onPress(OAuthVariant.Google)}
                 accessoryLeft={FacebookIcon}>
@@ -50,6 +51,7 @@ export default observer(function SignInScreen({}: SignInScreenProps) {
               </Button>
 
               <Button
+                disabled
                 status="basic"
                 size="large"
                 onPress={() => onPress(OAuthVariant.Apple)}
