@@ -3,9 +3,6 @@ import {Image, View} from 'react-native';
 import {Button, Divider, Icon, IconProps, Text} from '@ui-kitten/components';
 import {Bubble, Gutter, Space} from '../../components';
 import {useRoot, useStrings, variance} from '../../core';
-import StepList, {Step} from './StepList';
-import {range} from 'lodash';
-import dayjs from 'dayjs';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
 import {DetailedItem} from '../../core/ItemDetailsState';
@@ -55,7 +52,6 @@ export default function ItemDetailsScreen({
                   ))}
                 </Space>
               </Space>
-              <StepList steps={DATA} />
             </Space>
           </Bubble>
           <Divider />
@@ -91,8 +87,6 @@ const QrIcon = (props: IconProps) => (
 const TrashIcon = (props: IconProps) => (
   <Icon name="trash-outline" {...props} />
 );
-
-const DATA: Step[] = range(10).map(_ => ({title: 'Title_' + _, date: dayjs()}));
 
 const RootView = variance(View)(theme => ({
   root: {
