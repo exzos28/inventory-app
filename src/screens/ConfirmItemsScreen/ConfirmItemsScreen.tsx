@@ -15,9 +15,9 @@ import {
 } from '../../components';
 import {ItemList, ItemListProps} from '../../components/organisms/ItemList';
 import {useStrings} from '../../core';
-import {translateUserRole} from '../../tempHelper';
 import {Item} from '../../core/ItemHelper';
 import {User} from '../../core/ProjectUsersHelper';
+import {StaticRoleFormatterImpl} from '../../core/Formatter';
 
 export type ConfirmItemsScreenProps = Exclude<
   ItemListProps,
@@ -70,7 +70,10 @@ export default observer(function ConfirmItemsScreen({
                 <Space gutter={Gutter.Tiny} align={AlignItems.Center}>
                   <Text category="h6">{user.username}</Text>
                   <Text category="c2">
-                    {translateUserRole(user.role, strings)}
+                    {StaticRoleFormatterImpl.translateUserRole(
+                      user.role,
+                      strings,
+                    )}
                   </Text>
                 </Space>
               </Bubble>

@@ -23,7 +23,7 @@ import {
   RippleButton,
   Space,
 } from '../../components';
-import {translateUserRole} from '../../tempHelper';
+import {StaticRoleFormatterImpl} from '../../core/Formatter';
 
 export default observer(function MenuScreenHeader() {
   const theme = useTheme();
@@ -95,7 +95,9 @@ export default observer(function MenuScreenHeader() {
       projectStore.selectedProject &&
       accountStore.state?.status === FULFILLED
     ) {
-      return `${accountStore.state.result.nickname}, ${translateUserRole(
+      return `${
+        accountStore.state.result.nickname
+      }, ${StaticRoleFormatterImpl.translateUserRole(
         projectStore.selectedProject.role,
         strings,
       )}`;

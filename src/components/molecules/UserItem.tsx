@@ -13,9 +13,9 @@ import {
 } from '../index';
 import {useStrings, variance} from '../../core';
 import Grid from '../Grid';
-import {translateUserRole} from '../../tempHelper';
 import {User} from '../../core/ProjectUsersHelper';
 import {View} from 'react-native';
+import {StaticRoleFormatterImpl} from '../../core/Formatter';
 
 export type ExternalItemProps = {
   rightAccessory?: (item: User) => React.ReactNode;
@@ -39,7 +39,10 @@ export default observer(
                 <Text category="s1">{item.username}</Text>
                 <Text category="s2">{item.email}</Text>
                 <Text category="c1">
-                  {translateUserRole(item.role, strings)}
+                  {StaticRoleFormatterImpl.translateUserRole(
+                    item.role,
+                    strings,
+                  )}
                 </Text>
               </Space>
             </Space>
