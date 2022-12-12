@@ -30,15 +30,17 @@ export default observer(function EditItemBinding({
   const itemId = route.params.id;
   const root = useRoot();
   const {itemHelper} = root;
-  const [pageState] = useState(() => new ItemDetailsStateImpl(root, itemId));
+  const [pageState] = useState(() => new ItemDetailsStateImpl(root));
   const {state} = pageState;
   const busyRef = useRef(false);
 
   const getIsFocused = useNavigationGetIsFocused();
   useEffect(
     () =>
-      autorun(() => getIsFocused() && !busyRef.current && pageState.fetch()),
-    [getIsFocused, pageState],
+      autorun(
+        () => getIsFocused() && !busyRef.current && pageState.fetch(itemId),
+      ),
+    [getIsFocused, itemId, pageState],
   );
 
   const goToUnknownError = useGoToUnknownError(navigation);
@@ -62,9 +64,9 @@ export default observer(function EditItemBinding({
         return;
       }
 
-      const isNewImage = state.result.image !== _.image;
+      const isNewImage = state.result.item.image !== _.image;
       const imageWasDeleted =
-        state.result.image !== undefined && _.image === undefined;
+        state.result.item.image !== undefined && _.image === undefined;
       const update_ = await itemHelper.update({
         id: itemId,
         item: {
@@ -99,7 +101,7 @@ export default observer(function EditItemBinding({
     <EditItemScreen
       onNewFieldNameRequest={onNewFieldNameRequest}
       onEditPress={edit}
-      item={state.result}
+      item={state.result.item}
     />
   );
 });

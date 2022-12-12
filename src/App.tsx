@@ -8,13 +8,16 @@ import * as eva from '@eva-design/eva';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {AssetIconsPack, FlagsIconsPack} from './assets/AssetsIconsPack';
+import codePush from 'react-native-code-push';
 
 export default observer(function App() {
   const {appearance} = useRoot();
   const theme = useTheme();
   useEffect(() => {
     const init = async () => {
-      // …do multiple sync or async tasks
+      await codePush.sync({
+        installMode: codePush.InstallMode.IMMEDIATE,
+      });
     };
 
     init().finally(async () => {
