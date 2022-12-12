@@ -49,6 +49,7 @@
     "react-is": "^18.1.0",
     "react-native": "0.70.3",
     "react-native-bootsplash": "^4.4.0",
+    "react-native-code-push": "^7.0.5",
     "react-native-device-info": "^9.0.2",
     "react-native-gesture-handler": "^2.4.2",
     "react-native-get-random-values": "^1.8.0",
