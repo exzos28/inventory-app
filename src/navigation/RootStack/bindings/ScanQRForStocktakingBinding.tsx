@@ -9,7 +9,7 @@ import {ItemId} from '../../../core/HadesServer';
 
 export default observer(function ScanQRForStocktakingBinding({
   navigation,
-}: RootStackBindingProps<'StocktakingResult'>) {
+}: RootStackBindingProps<'ScanQRForStocktaking'>) {
   const getIsTransitioning = useNavigationGetIsTransitioning(navigation);
   const getIsFocused = useNavigationGetIsFocused();
   const goToUnknownError = useGoToUnknownError(navigation);
