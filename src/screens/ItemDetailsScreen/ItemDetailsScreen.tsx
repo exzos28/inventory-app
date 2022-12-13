@@ -11,12 +11,13 @@ import {UserRole} from '../../core/HadesServer';
 export type ItemDetailsScreenProps = {
   detailedItem: DetailedItem;
   onDeletePress: () => void;
+  onAddQrPress: () => void;
 };
 
-// TODO l10n
 export default function ItemDetailsScreen({
   detailedItem,
   onDeletePress,
+  onAddQrPress,
 }: ItemDetailsScreenProps) {
   const strings = useStrings();
   const {
@@ -41,7 +42,8 @@ export default function ItemDetailsScreen({
                   )}
                   {owner !== undefined && (
                     <Text appearance="hint" category="c1">
-                      Current person in charge:{'\n'}
+                      {strings['itemDetailsScreen.currentOwner']}
+                      {'\n'}
                       {owner.username}
                     </Text>
                   )}
@@ -59,6 +61,7 @@ export default function ItemDetailsScreen({
             <Bubble>
               <Space>
                 <Button
+                  onPress={onAddQrPress}
                   status={item.qrKey ? 'basic' : 'primary'}
                   accessoryLeft={QrIcon}>
                   {item.qrKey
@@ -69,7 +72,7 @@ export default function ItemDetailsScreen({
                   onPress={onDeletePress}
                   status="danger"
                   accessoryLeft={TrashIcon}>
-                  Delete
+                  {strings['common.delete']}
                 </Button>
               </Space>
             </Bubble>

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import FindUserScreen from '../../../screens/FindUserScreen/FindUserScreen';
-import {PENDING, REJECTED, useRoot} from '../../../core';
+import {PENDING, REJECTED, useRoot, useStrings} from '../../../core';
 import useNavigationGetIsFocused from '../../hooks/useNavigationGetIsFocused';
 import {autorun} from 'mobx';
 import {FindUserStateImpl} from '../../../core/FindUserState';
@@ -14,6 +14,7 @@ export default observer(function FindUserBinding({
   navigation,
 }: RootStackBindingProps<'FindUser'>) {
   const root = useRoot();
+  const strings = useStrings();
   const {projectUsersHelper, accountStore, projectStore} = root;
   const [pageState] = useState(() => new FindUserStateImpl(root));
   const [searchValue, setSearchValue] = useState('');
@@ -30,26 +31,25 @@ export default observer(function FindUserBinding({
     },
     [pageState, projectUsersHelper],
   );
-  // TODO l10n
   const promptDeleteUser = useCallback(
     async (user: User) => {
       return Alert.alert(
-        'Warning',
-        'Are you sure you want to delete this user?',
+        strings['common.warning'],
+        strings['findUserScreen.deleteAlert.description'],
         [
           {
-            text: 'Yes',
+            text: strings['common.yes'],
             onPress: () => deleteUser(user),
             style: 'default',
           },
           {
-            text: 'Cancel',
+            text: strings['common.cancel'],
             style: 'cancel',
           },
         ],
       );
     },
-    [deleteUser],
+    [deleteUser, strings],
   );
   if (
     state === undefined ||

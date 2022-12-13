@@ -22,7 +22,7 @@ export default observer(function SignInScreen({}: SignInScreenProps) {
           <Bubble>
             <Leveler align={AlignItems.Center}>
               <Text category="h1" status="control">
-                Hello!
+                {strings['signInScreen.welcome']}
               </Text>
             </Leveler>
           </Bubble>
@@ -31,7 +31,7 @@ export default observer(function SignInScreen({}: SignInScreenProps) {
         <ContentBubble>
           <Space>
             <SignInHelperText appearance="hint" category="c2">
-              {strings['authorizationScreen.socialTitle']}
+              {strings['signInScreen.socialTitle']}
             </SignInHelperText>
             <Space gutter={Gutter.Middle}>
               <Button

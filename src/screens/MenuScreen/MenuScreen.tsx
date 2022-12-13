@@ -67,10 +67,6 @@ export default observer(function MenuScreen({
                       onPress={onSelectUserToTransferPress}
                     />
                   )}
-                  {/*<MenuItem*/}
-                  {/*  title={strings['menuScreen.goodsAndMaterials.receive']}*/}
-                  {/*  accessoryLeft={DownloadOutlineIcon}*/}
-                  {/*/>*/}
                 </View>
               </Space>
 
@@ -117,28 +113,11 @@ export default observer(function MenuScreen({
                   </View>
                 </Space>
               )}
-
               <MenuItem
                 title={strings['menuScreen.stocktaking']}
                 accessoryLeft={DoneAllOutlineIcon}
                 onPress={onStocktakingPress}
               />
-
-              {/*{isSomeRoleOrBetter(UserRole.Admin) && (*/}
-              {/*  <Space gutter={Gutter.Small}>*/}
-              {/*    <Bubble gutter={[0, Gutter.Middle]}>*/}
-              {/*      <Text category="h5">*/}
-              {/*        {strings['menuScreen.reports.title']}*/}
-              {/*      </Text>*/}
-              {/*    </Bubble>*/}
-              {/*    <View>*/}
-              {/*      <MenuItem*/}
-              {/*        title={strings['menuScreen.reports.getReport']}*/}
-              {/*        accessoryLeft={FileTextOutlineIcon}*/}
-              {/*      />*/}
-              {/*    </View>*/}
-              {/*  </Space>*/}
-              {/*)}*/}
             </Space>
           </Bubble>
         </SafeAreaView>
@@ -162,9 +141,6 @@ const SearchIcon = (props: IconProps) => (
 const PlusOutlineIcon = (props: IconProps) => (
   <Icon {...props} name="plus-outline" />
 );
-// const DownloadOutlineIcon = (props: IconProps) => (
-//   <Icon {...props} name="download-outline" />
-// );
 const UploadOutlineIcon = (props: IconProps) => (
   <Icon {...props} name="upload-outline" />
 );
@@ -174,9 +150,6 @@ const CameraIcon = (props: IconProps) => (
 const ArrowheadDownOutlineIcon = (props: IconProps) => (
   <Icon {...props} name="arrowhead-down-outline" />
 );
-// const FileTextOutlineIcon = (props: IconProps) => (
-//   <Icon {...props} name="file-text-outline" />
-// );
 const PersonAddOutline = (props: IconProps) => (
   <Icon {...props} name="person-add-outline" />
 );

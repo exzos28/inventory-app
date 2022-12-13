@@ -22,7 +22,6 @@ export type InviteUserToProjectFormValues = {
   role: UserRole;
 };
 
-// TODO l10n
 export default observer(function InviteUserToProjectScreen({
   onInvitePress,
   formRef,
@@ -58,7 +57,7 @@ export default observer(function InviteUserToProjectScreen({
                   <Input
                     autoFocus
                     autoCapitalize="none"
-                    placeholder="User email"
+                    placeholder={strings['inviteUserScreen.inputEmail']}
                     onChangeText={onChange}
                     onBlur={onBlur}
                     value={value}
@@ -101,7 +100,9 @@ export default observer(function InviteUserToProjectScreen({
                 name="role"
               />
             </Space>
-            <Button onPress={handleSubmit(onInvitePress)}>Add</Button>
+            <Button onPress={handleSubmit(onInvitePress)}>
+              {strings['common.add']}
+            </Button>
           </Space>
         </Bubble>
       </ScrollView>

@@ -12,7 +12,7 @@ import {
 } from '@ui-kitten/components';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import ItemDetailsStateImpl from '../../../core/ItemDetailsState/ItemDetailsStateImpl';
-import {PENDING, REJECTED, useRoot} from '../../../core';
+import {PENDING, REJECTED, useRoot, useStrings} from '../../../core';
 import {ErrorScreen} from '../../../screens/ErrorScreen';
 import useNavigationGetIsFocused from '../../hooks/useNavigationGetIsFocused';
 import {autorun} from 'mobx';
@@ -26,6 +26,7 @@ export default observer(function ItemDetailsBinding({
   navigation,
 }: ItemDetailsBindingProps) {
   const root = useRoot();
+  const strings = useStrings();
   const {itemHelper} = root;
   const itemId = route.params.id;
   const [pageState] = useState(() => new ItemDetailsStateImpl(root));
@@ -39,24 +40,27 @@ export default observer(function ItemDetailsBinding({
     await itemHelper.delete({id: itemId});
     navigation.goBack();
   }, [itemId, itemHelper, navigation]);
-  // TODO l10n
   const promptDeleteItem = useCallback(async () => {
     return Alert.alert(
-      'Warning',
-      'Are you sure you want to delete this item?',
+      strings['common.warning'],
+      strings['itemDetails.deleteAlert.description'],
       [
         {
-          text: 'Yes',
+          text: strings['common.yes'],
           onPress: deleteItem,
           style: 'default',
         },
         {
-          text: 'Cancel',
+          text: strings['common.cancel'],
           style: 'cancel',
         },
       ],
     );
-  }, [deleteItem]);
+  }, [deleteItem, strings]);
+  const addQr = useCallback(
+    () => navigation.navigate('QrItemMarking', {id: itemId}),
+    [itemId, navigation],
+  );
   if (state === undefined || state.status === PENDING) {
     return null;
   }
@@ -73,6 +77,7 @@ export default observer(function ItemDetailsBinding({
     <ItemDetailsScreen
       detailedItem={state.result}
       onDeletePress={promptDeleteItem}
+      onAddQrPress={addQr}
     />
   );
 });

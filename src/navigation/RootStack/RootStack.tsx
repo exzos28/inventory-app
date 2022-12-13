@@ -207,19 +207,24 @@ export const RootStack = observer(() => {
           name="ConfirmItemsTransfer"
           component={ConfirmItemsTransferBinding}
         />
-        {/*TODO l10n */}
-        <Screen name="CreateProject" component={CreateProjectBinding} />
+        <Screen
+          options={{title: strings['createProjectScreen.headerTitle']}}
+          name="CreateProject"
+          component={CreateProjectBinding}
+        />
         <Screen
           name="InviteUserToProject"
           component={InviteUserToProjectBinding}
         />
-        {/* TODO l01n */}
         <Screen
           name="SelectUserToStocktaking"
           component={SelectUserToStocktakingBinding}
         />
-        {/* TODO l01n */}
-        <Screen name="Stocktaking" component={StocktakingBinding} />
+        <Screen
+          options={{title: strings['stocktakingScreen.headerTitle']}}
+          name="Stocktaking"
+          component={StocktakingBinding}
+        />
         <Screen
           name="ScanQRForStocktaking"
           component={ScanQRForStocktakingBinding}

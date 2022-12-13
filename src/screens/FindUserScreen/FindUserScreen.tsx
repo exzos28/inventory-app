@@ -15,7 +15,6 @@ export type FindUserScreenProps = FindUserSceneProps & {
   currentRole: UserRole;
 };
 
-// TODO l10n
 export default observer(function FindUserScreen({
   onDeleteUserPress,
   currentUserId,

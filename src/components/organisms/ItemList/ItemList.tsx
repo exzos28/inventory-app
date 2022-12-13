@@ -26,7 +26,6 @@ export type ItemListProps = Omit<ListProps, 'renderItem'> &
     visibleCreateButton?: boolean;
   };
 
-// TODO l10n
 export default observer(function ItemList({
   data,
   searchValue,
@@ -78,7 +77,9 @@ export default observer(function ItemList({
         <EmptyListView>
           <EmptyList>
             {visibleCreateButton && isSomeRoleOrBetter(UserRole.Manager) && (
-              <Button onPress={onCreatePress}>Create</Button>
+              <Button onPress={onCreatePress}>
+                {strings['common.create']}
+              </Button>
             )}
           </EmptyList>
         </EmptyListView>

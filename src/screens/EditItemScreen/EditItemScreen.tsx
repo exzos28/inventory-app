@@ -22,7 +22,7 @@ export default function EditItemScreen({
     <ItemFormScene
       onSubmitPress={onEditPress}
       onNewFieldNameRequest={onNewFieldNameRequest}
-      submitTitle={strings['editItemScreen.editButton']}
+      submitTitle={strings['common.save']}
       defaultValues={item}
     />
   );

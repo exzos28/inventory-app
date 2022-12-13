@@ -15,7 +15,11 @@ export default observer(function ScanQRForStocktakingBinding({
   const goToUnknownError = useGoToUnknownError(navigation);
   const onSuccessScan = useCallback(
     (id: ItemId) =>
-      navigation.navigate('Stocktaking', {scannedValue: {itemId: id}}),
+      navigation.navigate({
+        name: 'Stocktaking',
+        params: {scannedValue: {itemId: id}},
+        merge: true,
+      }),
     [navigation],
   );
   return (

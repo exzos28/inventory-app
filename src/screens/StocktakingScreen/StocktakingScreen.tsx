@@ -18,6 +18,7 @@ import {Item} from '../../core/ItemHelper';
 import {noop} from 'lodash';
 import EmptyList from '../../components/EmptyList';
 import {EmptyListView} from '../../components/organisms/ItemList';
+import {useStrings} from '../../core';
 
 export type StocktakingScreenProps = Omit<
   FindItemSceneProps,
@@ -29,7 +30,6 @@ export type StocktakingScreenProps = Omit<
   data: Item[];
 };
 
-// TODO l10n
 export default observer(function StocktakingScreen({
   getSelectedIds,
   onScanPress,
@@ -39,6 +39,7 @@ export default observer(function StocktakingScreen({
 }: StocktakingScreenProps) {
   const items = getSelectedIds();
   const insets = useSafeAreaInsets();
+  const strings = useStrings();
   return (
     <RootView>
       <FindItemScene
@@ -55,7 +56,7 @@ export default observer(function StocktakingScreen({
         }
         ListEmptyComponent={
           <EmptyListView>
-            <EmptyList title="Does not have items" />
+            <EmptyList title={strings['stocktakingScreen.doesNotHaveItems']} />
           </EmptyListView>
         }
         contentContainerStyle={styles.container}
@@ -65,10 +66,14 @@ export default observer(function StocktakingScreen({
           <Bubble>
             <Grid gutter={Gutter.Small}>
               <Cell>
-                <Button onPress={onScanPress}>Scan</Button>
+                <Button onPress={onScanPress}>
+                  {strings['stocktakingScreen.scanButton']}
+                </Button>
               </Cell>
               <Cell>
-                <Button onPress={onNextPress}>Next</Button>
+                <Button onPress={onNextPress}>
+                  {strings['stocktakingScreen.nextButton']}
+                </Button>
               </Cell>
             </Grid>
           </Bubble>

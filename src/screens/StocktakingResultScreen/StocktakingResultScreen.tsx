@@ -19,6 +19,7 @@ import {
   JustifyContent,
   Space,
 } from '../../components';
+import {useStrings} from '../../core';
 
 export type StocktakingResultScreenProps = Omit<
   FindItemSceneProps,
@@ -28,12 +29,12 @@ export type StocktakingResultScreenProps = Omit<
   onGoToMenuPress: () => void;
 };
 
-// TODO l10n
 export default observer(function StocktakingResultScreen({
   data,
   ...rest
 }: StocktakingResultScreenProps) {
   const isGood = data.length === 0;
+  const strings = useStrings();
   const content = isGood ? (
     <Bubble
       style={styles.content}
@@ -42,10 +43,12 @@ export default observer(function StocktakingResultScreen({
       <Space gutter={Gutter.Large}>
         <Space gutter={Gutter.Tiny} align={AlignItems.Center}>
           <Text category="h5">✨</Text>
-          <Text category="h5">All items have been found. </Text>
+          <Text category="h5">
+            {strings['stocktakingResultScreen.successMessage']}
+          </Text>
           <Text category="h5">✨✨</Text>
         </Space>
-        <Button>Go to menu</Button>
+        <Button>{strings['stocktakingResultScreen.goToMenuButton']}</Button>
       </Space>
     </Bubble>
   ) : (
@@ -59,7 +62,9 @@ export default observer(function StocktakingResultScreen({
         <View>
           <Layout>
             <Bubble>
-              <Text category="h6">Not found next items:</Text>
+              <Text category="h6">
+                {strings['stocktakingResultScreen.notFoundNextItems']}
+              </Text>
             </Bubble>
           </Layout>
           <Divider />

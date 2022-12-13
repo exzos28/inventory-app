@@ -6,7 +6,7 @@ import useNavigationGetIsTransitioning from '../../hooks/useNavigationGetIsTrans
 import useNavigationGetIsFocused from '../../hooks/useNavigationGetIsFocused';
 import {BarCodeScanningResult} from 'expo-camera';
 import {Alert} from 'react-native';
-import {useRoot} from '../../../core';
+import {useRoot, useStrings} from '../../../core';
 import useGoToUnknownError from '../useGoToUnknownError';
 
 export default observer(function QrItemMarkingBinding({
@@ -14,6 +14,7 @@ export default observer(function QrItemMarkingBinding({
   route,
 }: RootStackBindingProps<'QrItemMarking'>) {
   const {itemHelper} = useRoot();
+  const strings = useStrings();
   const getIsTransitioning = useNavigationGetIsTransitioning(navigation);
   const getIsFocused = useNavigationGetIsFocused();
   const {id} = route.params || {};
@@ -33,17 +34,16 @@ export default observer(function QrItemMarkingBinding({
   );
   const onBarCodeScanned = useCallback(
     async ({data}: BarCodeScanningResult) => {
-      // TODO l10n
       Alert.alert(
-        'Ostrzeżenie',
-        'Czy na pewno chcesz przypisać ten kod QR do tego przedmiotu?',
+        strings['common.warning'],
+        strings['qrItemMarkingScreen.changeAlert.description'],
         [
-          {text: 'Nie', style: 'destructive'},
-          {text: 'Tak', onPress: () => updateQr(data)},
+          {text: strings['common.cancel'], style: 'destructive'},
+          {text: strings['common.yes'], onPress: () => updateQr(data)},
         ],
       );
     },
-    [updateQr],
+    [strings, updateQr],
   );
   return (
     <ScanQRScreen

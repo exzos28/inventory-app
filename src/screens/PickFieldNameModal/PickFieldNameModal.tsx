@@ -57,7 +57,7 @@ const BottomSheetContent = observer(({onSubmit}: BottomSheetContentProps) => {
             onFocus={onFocus}
             onChangeText={setValue}
           />
-          <Button onPress={handleSubmit}>{strings['actions.save']}</Button>
+          <Button onPress={handleSubmit}>{strings['common.save']}</Button>
         </Space>
       </Space>
     </RootView>

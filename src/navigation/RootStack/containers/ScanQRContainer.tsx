@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {observer} from 'mobx-react-lite';
 import {ScanQRScreen} from '../../../screens/ScanQRScreen';
 import {BarCodeScanningResult} from 'expo-camera';
-import {GlobalError, NOT_FOUND_ERROR, useRoot} from '../../../core';
+import {GlobalError, NOT_FOUND_ERROR, useRoot, useStrings} from '../../../core';
 import {Alert} from 'react-native';
 import {ItemId} from '../../../core/HadesServer';
 
@@ -13,7 +13,6 @@ export type ScanQrContainerProps = {
   getIsFocused: () => boolean;
 };
 
-// TODO l10n
 export default observer(function ScanQrContainer({
   onUnknownError,
   onSuccessScan,
@@ -21,18 +20,22 @@ export default observer(function ScanQrContainer({
   getIsFocused,
 }: ScanQrContainerProps) {
   const {itemHelper} = useRoot();
+  const strings = useStrings();
   const onBarCodeScanned = useCallback(
     async ({data}: BarCodeScanningResult) => {
       const item_ = await itemHelper.getByQr(data);
       if (!item_.success && item_.left.kind === NOT_FOUND_ERROR) {
-        return Alert.alert('Warning!', 'Item not found');
+        return Alert.alert(
+          strings['common.warning'],
+          strings['scanQrScreen.alert.itemNotFound'],
+        );
       }
       if (!item_.success) {
         return onUnknownError(item_.left);
       }
       onSuccessScan(item_.right.id);
     },
-    [itemHelper, onSuccessScan, onUnknownError],
+    [itemHelper, onSuccessScan, onUnknownError, strings],
   );
 
   return (

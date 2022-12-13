@@ -3,7 +3,7 @@ import {Locale, PreferencesService} from '../Preferences';
 import {Translation} from './Translation';
 import {template, TemplateExecutor} from 'lodash';
 import {LocaleDict, LocaleKeys} from './LocaleStrings';
-import {de, en, pl} from './dictionaries';
+import {en, pl} from './dictionaries';
 import {Localization} from './Localization';
 
 export default class TranslationService implements Translation {
@@ -31,8 +31,6 @@ export default class TranslationService implements Translation {
     switch (this.locale) {
       case Locale.English:
         return en;
-      case Locale.German:
-        return de;
       case Locale.Polish:
         return pl;
       default:

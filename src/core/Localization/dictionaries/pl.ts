@@ -1,27 +1,46 @@
 import {Dictionary} from './types';
 
-// TODO write translations
-const pl: Partial<Dictionary> = {
-  'actions.save': 'Zapisać',
-  'authorizationScreen.socialTitle':
-    'Zaloguj się za pomocą sieci społecznościowej:',
-  'authorizationScreen.title': 'Autoryzacja',
+const pl: Dictionary = {
   'changeLanguage.title': 'Zmiana języka',
+  'changeProjectModal.createButton': 'Utwórz projekt',
+  'common.add': 'Dodaj',
+  'common.cancel': 'Cofnij',
+  'common.create': 'Stwórz',
+  'common.delete': 'Usuń',
+  'common.emptyList': 'Lista pusta',
+  'common.save': 'Zapisz',
+  'common.warning': 'Uwaga!',
+  'common.yes': 'Tak',
   'confirmItemsTransferScreen.confirmButton': 'Zaakceptuj',
   'confirmItemsTransferScreen.headerTitle': 'Potwierdzenie transferu',
+  'confirmItemsTransferScreen.successAlert.description':
+    'Przedmioty przeniesione',
+  'confirmItemsTransferScreen.successAlert.title': 'Sukces',
   'createItemScreen.createButton': 'Stwórz',
   'createItemScreen.createFieldButton': 'Utwórz pole',
   'createItemScreen.headerTitle': 'Utwórz przedmiot',
   'createItemScreen.itemNameLabel': 'Nazwa przedmiotu',
   'createItemScreen.pickImageButton': 'Wybierz obraz',
   'createItemScreen.serialNumberLabel': 'Numer seryjny',
-  'editItemScreen.editButton': 'Zapisać',
-  'editItemScreen.headerTitle': 'Edytuj przedmiot',
+  'createProjectScreen.headerTitle': 'Tworzenie projektu',
+  'createProjectScreen.inputName': 'Nazwa projektu',
+  'editItemScreen.headerTitle': 'Edytowanie przedmiotu',
+  'errorScreen.description':
+    'Spróbuj ponownie później lub skontaktuj się z pomocą techniczną',
+  'errorScreen.returnButton': 'Powrót',
+  'errorScreen.title': 'Coś poszło nie tak',
   'findItemScreen.headerTitle': 'Wyszukiwanie przedmiotów',
   'findItemScreen.input': 'Wyszukaj',
+  'findUserScreen.deleteAlert.description':
+    'Czy na pewno chcesz usunąć tego użytkownika?',
   'findUserScreen.headerTitle': 'Wyszukiwanie użytkowników',
   'findUserScreen.input': 'Wyszukaj',
+  'inviteUserScreen.inputEmail': 'Email użytkownika',
+  'inviteUserScreen.notFoundError': 'Nie znaleziono',
+  'itemDetails.deleteAlert.description':
+    'Czy na pewno chcesz usunąć ten przedmiot?',
   'itemDetailsScreen.addQrButton': 'Dodać QR',
+  'itemDetailsScreen.currentOwner': 'Obecna osoba odpowiedzialna:',
   'itemDetailsScreen.headerTitle': 'Szczegóły przedmiotu',
   'itemDetailsScreen.history': 'Historia',
   'itemDetailsScreen.replaceQrButton': 'Zmień QR',
@@ -46,14 +65,20 @@ const pl: Partial<Dictionary> = {
   'menuScreen.users.find': 'Szukać',
   'menuScreen.users.invite': 'Zaproś',
   'menuScreen.users.title': 'Użytkownicy',
+  'navigation.authorizationError': 'Błąd autoryzacji',
+  'notFoundProjectScreen.createButton': 'Utwórz projekt',
+  'notFoundProjectScreen.title': 'Nie znaleziono żadnych projektów.',
   'onboarding.button': 'Next',
   'pickFieldNameModal.button': 'Zapisać',
   'pickFieldNameModal.label': 'Nazwa pola',
   'qrItemMarkingBindingScreen.headerTitle': 'Znakowanie QR',
+  'qrItemMarkingScreen.changeAlert.description':
+    'Czy na pewno chcesz przypisać ten kod QR do tego przedmiotu?',
   'role.admin': 'Admin',
   'role.manager': 'Manager',
   'role.owner': 'Właściciel',
   'role.user': 'Użytkownik',
+  'scanQrScreen.alert.itemNotFound': 'Przedmiot nie został znaleziony',
   'scanQrScreen.grantAccessButton': 'Nadać dostęp',
   'scanQrScreen.headerTitle': 'Skanowanie QR',
   'scanQrScreen.openSettingsButton': 'Ustawienia',
@@ -65,6 +90,18 @@ const pl: Partial<Dictionary> = {
   'settingsScreen.headerTitle': 'Ustawienia',
   'settingsScreen.languageItem': 'Język',
   'settingsScreen.themeItem': 'Motyw',
+  'signInScreen.socialTitle': 'Zaloguj się za pomocą sieci społecznościowej:',
+  'signInScreen.title': 'Autoryzacja',
+  'signInScreen.welcome': 'Cześć 👋',
+  'stocktakingResultScreen.goToMenuButton': 'Przejdź do menu',
+  'stocktakingResultScreen.notFoundNextItems':
+    'Nie znaleziono następnych przedmiotów:',
+  'stocktakingResultScreen.successMessage':
+    'Wszystkie elementy zostały znalezione.',
+  'stocktakingScreen.doesNotHaveItems': 'Nie ma przedmiotów.',
+  'stocktakingScreen.headerTitle': 'Inwentaryzacja',
+  'stocktakingScreen.nextButton': 'Dalej',
+  'stocktakingScreen.scanButton': 'Skanuj',
 };
 
 export default pl;

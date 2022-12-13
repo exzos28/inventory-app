@@ -3,7 +3,7 @@ import {observer} from 'mobx-react-lite';
 import {ScrollView, StyleSheet} from 'react-native';
 import {Button, Input} from '@ui-kitten/components';
 import {Bubble, Gutter, Space} from '../../components';
-import {variance} from '../../core';
+import {useStrings, variance} from '../../core';
 import {NavigationIQKeyboardManager} from '../../navigation/components';
 import {Controller, useForm} from 'react-hook-form';
 
@@ -15,10 +15,10 @@ export type CreateProjectFormValues = {
   name: string;
 };
 
-// TODO l10n
 export default observer(function CreateProjectScreen({
   onCreateProjectPress,
 }: CreateProjectScreen) {
+  const strings = useStrings();
   const {
     control,
     formState: {errors},
@@ -40,7 +40,7 @@ export default observer(function CreateProjectScreen({
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
                   autoFocus
-                  placeholder="Project name"
+                  placeholder={strings['createProjectScreen.inputName']}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
@@ -50,7 +50,9 @@ export default observer(function CreateProjectScreen({
               name="name"
             />
 
-            <Button onPress={handleSubmit(onCreateProjectPress)}>Create</Button>
+            <Button onPress={handleSubmit(onCreateProjectPress)}>
+              {strings['common.create']}
+            </Button>
           </Space>
         </Bubble>
       </ScrollView>

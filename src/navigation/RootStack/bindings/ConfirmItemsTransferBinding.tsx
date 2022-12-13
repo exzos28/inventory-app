@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import {RootStackBindingProps} from '../RootStackBindingProps';
-import {ConfirmItemsScreen} from '../../../screens/ConfirmItemsScreen';
+import {ConfirmItemsTransferScreen} from '../../../screens/ConfirmItemsTransferScreen';
 import {Alert} from 'react-native';
-import {PENDING, REJECTED, useRoot} from '../../../core';
+import {PENDING, REJECTED, useRoot, useStrings} from '../../../core';
 import useNavigationGetIsFocused from '../../hooks/useNavigationGetIsFocused';
 import {autorun} from 'mobx';
 import {ErrorScreen} from '../../../screens/ErrorScreen';
@@ -12,12 +12,12 @@ import {noop} from 'lodash';
 import ConfirmItemsTransferState from '../ConfirmItemsTransferState';
 import useGoToUnknownError from '../useGoToUnknownError';
 
-// TODO l10n
 export default observer(function ConfirmItemsTransferBinding({
   navigation,
   route,
 }: RootStackBindingProps<'ConfirmItemsTransfer'>) {
   const root = useRoot();
+  const strings = useStrings();
   const [pageState] = useState(() => new ConfirmItemsTransferState(root));
 
   const {items, forUser} = route.params;
@@ -38,11 +38,13 @@ export default observer(function ConfirmItemsTransferBinding({
     if (!response_.success) {
       return goToUnknownError(response_.left);
     }
-    Alert.alert('Result', 'Transaction has been created');
+    Alert.alert(
+      strings['confirmItemsTransferScreen.successAlert.title'],
+      strings['confirmItemsTransferScreen.successAlert.description'],
+    );
     navigation.popToTop();
-  }, [goToUnknownError, navigation, pageState]);
+  }, [goToUnknownError, navigation, pageState, strings]);
 
-  // TODO user
   if (pageState.state === undefined || pageState.state.status === PENDING) {
     return null;
   }
@@ -57,7 +59,7 @@ export default observer(function ConfirmItemsTransferBinding({
   }
 
   return (
-    <ConfirmItemsScreen
+    <ConfirmItemsTransferScreen
       onItemPress={goToDetails}
       data={pageState.state.result.items}
       user={pageState.state.result.user}

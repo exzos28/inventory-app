@@ -29,7 +29,6 @@ export type ScanQRScreenProps = {
   getIsTransitioning: () => boolean;
 };
 
-// TODO move to scene
 export default observer(function ScanQRScreen({
   getIsFocused,
   getIsTransitioning,
