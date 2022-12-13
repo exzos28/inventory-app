@@ -18,7 +18,7 @@ import {
 import {ProjectStore} from '../ProjectStore';
 import {ErrorRepository} from '../ErrorRepository';
 import {ServerItem, ItemRestClient} from '../ItemRestClient';
-import {ProjectId} from '../HadesServer';
+import {ProjectId, UserId} from '../HadesServer';
 import {Configuration} from '../Configuration';
 import {Uri} from '../units';
 import {nanoid} from 'nanoid';
@@ -141,6 +141,15 @@ export default class ItemHelperImpl implements ItemHelper {
         kind: NOT_FOUND_ERROR,
       }),
     );
+  }
+
+  async getAllItemsByEmployee(userId: UserId) {
+    const getAll_ = await this.getAll();
+    if (!getAll_.success) {
+      return getAll_;
+    }
+    const items = getAll_.right.filter(_ => _.employee === userId);
+    return success(items);
   }
 
   async getAll() {

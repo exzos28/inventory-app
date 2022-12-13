@@ -1,8 +1,6 @@
 import {BaseShadesRestClientImpl} from '../BaseShadesRestClient';
 import {Configuration} from '../Configuration';
-import {GlobalError} from '../Error';
 import {ErrorRepository} from '../ErrorRepository';
-import {Either} from '../fp';
 import {Fetch} from '../Http';
 import {Json} from '../Json';
 import {Url} from '../units';
@@ -41,9 +39,7 @@ export default class ItemRestClientImpl
     return this._root.configuration.current.values.shadesRestApiTimeout;
   }
 
-  async getAll({
-    project_id,
-  }: GetAllParams): Promise<Either<GetAllResponse, GlobalError>> {
+  async getAll({project_id}: GetAllParams): Promise<Maybe<GetAllResponse>> {
     return this._fetch('GET', `inventory-item/${project_id}` as Url);
   }
 
@@ -56,10 +52,7 @@ export default class ItemRestClientImpl
     );
   }
 
-  async get({
-    id,
-    project_id,
-  }: GetItemParams): Promise<Either<ServerItem, GlobalError>> {
+  async get({id, project_id}: GetItemParams): Promise<Maybe<ServerItem>> {
     return this._fetch('GET', `inventory-item/${project_id}/${id}` as Url);
   }
 

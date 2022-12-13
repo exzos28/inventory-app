@@ -3,9 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {FULFILLED, PENDING, REJECTED, useRoot, useStrings} from '../../core';
 import {AuthHeader} from '../../components/AuthHeader';
-import SignInBinding from './SignInBinding';
+import SignInBinding from './bindings/SignInBinding';
 import {UNAUTHORIZED} from '../../core/Auth';
-import AuthorizationErrorBinding from './AuthorizationErrorBinding';
+import AuthorizationErrorBinding from './bindings/AuthorizationErrorBinding';
 
 export type AuthParamList = {
   Loader: undefined;

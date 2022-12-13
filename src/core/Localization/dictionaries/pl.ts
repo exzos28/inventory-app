@@ -4,7 +4,7 @@ import {Dictionary} from './types';
 const pl: Partial<Dictionary> = {
   'scanQrScreen.warningTitle':
     'Poczekaj chwilę! \nMusisz zezwolić na dostęp do kamery.',
-  'itemDetailsScreen.addQrButton': 'Znakowanie QR',
+  'itemDetailsScreen.addQrButton': 'Dodać QR',
   'itemDetailsScreen.replaceQrButton': 'Zmień QR',
   'qrItemMarkingBindingScreen.headerTitle': 'Znakowanie QR',
   'role.admin': 'Admin',

@@ -16,6 +16,7 @@ export type MenuScreenProps = {
   onSelectUserToTransferPress: () => void;
   onSelectItemForQrMarking: () => void;
   onInviteUserPress: () => void;
+  onStocktakingPress: () => void;
 };
 
 export default observer(function MenuScreen({
@@ -26,6 +27,7 @@ export default observer(function MenuScreen({
   onSelectUserToTransferPress,
   onSelectItemForQrMarking,
   onInviteUserPress,
+  onStocktakingPress,
 }: MenuScreenProps) {
   const strings = useStrings();
   const {
@@ -116,10 +118,11 @@ export default observer(function MenuScreen({
                 </Space>
               )}
 
-              {/*<MenuItem*/}
-              {/*  title={strings['menuScreen.stocktaking']}*/}
-              {/*  accessoryLeft={DoneAllOutlineIcon}*/}
-              {/*/>*/}
+              <MenuItem
+                title={strings['menuScreen.stocktaking']}
+                accessoryLeft={DoneAllOutlineIcon}
+                onPress={onStocktakingPress}
+              />
 
               {/*{isSomeRoleOrBetter(UserRole.Admin) && (*/}
               {/*  <Space gutter={Gutter.Small}>*/}
@@ -177,6 +180,6 @@ const ArrowheadDownOutlineIcon = (props: IconProps) => (
 const PersonAddOutline = (props: IconProps) => (
   <Icon {...props} name="person-add-outline" />
 );
-// const DoneAllOutlineIcon = (props: IconProps) => (
-//   <Icon {...props} name="done-all-outline" />
-// );
+const DoneAllOutlineIcon = (props: IconProps) => (
+  <Icon {...props} name="done-all-outline" />
+);

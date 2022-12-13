@@ -2,16 +2,17 @@ import React from 'react';
 
 import {observer} from 'mobx-react-lite';
 
-import {useTheme, variance} from '../../core/styling';
-import {Button, Icon} from '@ui-kitten/components';
-import {StyleSheet, View} from 'react-native';
-import Leveler from '../../components/Leveler';
-import {Bubble, JustifyContent} from '../../components';
+import {variance} from '../../core/styling';
+import {Button} from '@ui-kitten/components';
+import {View} from 'react-native';
+import {Bubble} from '../../components';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useStrings} from '../../core';
 import {
   FindItemScene,
   FindItemSceneProps,
+  RightAccessoryView,
+  RightCheckAccessory,
 } from '../../components/scenes/FindItemScene';
 import {ItemId} from '../../core/HadesServer';
 import {expr} from 'mobx-utils';
@@ -47,7 +48,11 @@ export default observer(function SelectItemsForTransferScreen({
         {...rest}
         data={data}
         rightAccessory={item =>
-          items.includes(item.id) ? <RightAccessory /> : <RightAccessoryView />
+          items.includes(item.id) ? (
+            <RightCheckAccessory />
+          ) : (
+            <RightAccessoryView />
+          )
         }
       />
       {!isEmpty && (
@@ -63,38 +68,9 @@ export default observer(function SelectItemsForTransferScreen({
   );
 });
 
-const RightAccessory = observer(() => {
-  const theme = useTheme();
-  return (
-    <RightAccessoryView>
-      <Leveler justify={JustifyContent.Center}>
-        <Icon
-          name="checkmark-outline"
-          style={styles.icon}
-          fill={theme.palette['color-primary-400']}
-        />
-      </Leveler>
-    </RightAccessoryView>
-  );
-});
-
-const styles = StyleSheet.create({
-  icon: {
-    width: 25,
-    height: 25,
-  },
-});
-
 const RootView = variance(View)(() => ({
   root: {
     flex: 1,
-  },
-}));
-
-const RightAccessoryView = variance(View)(() => ({
-  root: {
-    width: 50,
-    alignItems: 'flex-end',
   },
 }));
 

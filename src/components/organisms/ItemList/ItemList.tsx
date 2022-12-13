@@ -118,7 +118,7 @@ const SearchIcon = (props: IconProps) => (
   <Icon {...props} name="search-outline" />
 );
 
-const EmptyListView = variance(Layout)(() => ({
+export const EmptyListView = variance(Layout)(() => ({
   root: {
     flex: 1,
     justifyContent: 'center',

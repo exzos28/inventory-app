@@ -7,6 +7,7 @@ export interface ItemHelper {
   create(params: CreateItemParams): Promise<Maybe<void>>;
   get(params: GetItemParams): Promise<Maybe<Item>>;
   getByQr(qr: string): Promise<Maybe<Item>>;
+  getAllItemsByEmployee(userId: UserId): Promise<Maybe<Item[]>>;
   update(params: UpdateItemParams): Promise<Maybe<void>>;
   delete(params: DeleteItemParams): Promise<Maybe<void>>;
 }

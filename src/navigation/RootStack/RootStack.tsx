@@ -1,29 +1,35 @@
 import {observer} from 'mobx-react-lite';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import ChangeLanguageBinding from './ChangeLanguageBinding';
+import ChangeLanguageBinding from './bindings/ChangeLanguageBinding';
 import {useStrings} from '../../core';
-import MenuScreenBinding from './MenuBinding';
+import MenuScreenBinding from './bindings/MenuBinding';
 import MenuScreenHeader from '../../screens/MenuScreen/MenuScreenHeader';
-import ScanQRBinding from './ScanQRBinding';
+import ScanQRBinding from './bindings/ScanQRBinding';
 import {Header} from '../components/Header';
-import SettingsBinding from './SettingsBinding';
-import FindUserBinding from './FindUserBinding';
-import FindItemBinding from './FindItemBinding';
-import ItemDetailsBinding, {ItemDetailsHeader} from './ItemDetailsBinding';
-import CreateItemBinding from './CreateItemBinding';
-import PickFieldNameBinding from './PickFieldNameBinding';
-import EditItemBinding from './EditItemBinding';
-import SelectUserToTransferBinding from './SelectUserToTransferBinding';
-import SelectItemsForTransferBinding from './SelectItemsForTransferBinding';
-import ConfirmItemsTransferBinding from './ConfirmItemsTransferBinding';
-import SelectItemForQrMarkingBinding from './SelectItemForQrMarkingBinding';
-import QrItemMarkingBinding from './QrItemMarkingBinding';
-import ChangeProjectBinding from './ChangeProjectBinding';
-import CreateProjectBinding from './CreateProjectBinding';
-import UnknownErrorBinding from './UnknownErrorBinding';
+import SettingsBinding from './bindings/SettingsBinding';
+import FindUserBinding from './bindings/FindUserBinding';
+import FindItemBinding from './bindings/FindItemBinding';
+import ItemDetailsBinding, {
+  ItemDetailsHeader,
+} from './bindings/ItemDetailsBinding';
+import CreateItemBinding from './bindings/CreateItemBinding';
+import PickFieldNameBinding from './bindings/PickFieldNameBinding';
+import EditItemBinding from './bindings/EditItemBinding';
+import SelectUserToTransferBinding from './bindings/SelectUserToTransferBinding';
+import SelectItemsForTransferBinding from './bindings/SelectItemsForTransferBinding';
+import ConfirmItemsTransferBinding from './bindings/ConfirmItemsTransferBinding';
+import SelectItemForQrMarkingBinding from './bindings/SelectItemForQrMarkingBinding';
+import QrItemMarkingBinding from './bindings/QrItemMarkingBinding';
+import ChangeProjectBinding from './bindings/ChangeProjectBinding';
+import CreateProjectBinding from './bindings/CreateProjectBinding';
+import UnknownErrorBinding from './bindings/UnknownErrorBinding';
 import {ItemId, UserId} from '../../core/HadesServer';
-import InviteUserToProjectBinding from './InviteUserToProjectBinding';
+import InviteUserToProjectBinding from './bindings/InviteUserToProjectBinding';
+import SelectUserToStocktakingBinding from './bindings/SelectUserToStocktakingBinding';
+import {StocktakingBinding} from './bindings/StocktakingBinding';
+import ScanQRForStocktakingBinding from './bindings/ScanQRForStocktakingBinding';
+import {StocktakingResultBinding} from './bindings/StocktakingResultBinding';
 
 export type RootParamList = {
   Menu: undefined;
@@ -33,11 +39,11 @@ export type RootParamList = {
   SelectItemsForTransfer: {
     forUser: UserId;
   };
-
   ConfirmItemsTransfer: {
     items: ItemId[];
     forUser: UserId;
   };
+  //
   FindItem: undefined;
   //
   //
@@ -92,6 +98,18 @@ export type RootParamList = {
   //
 
   FindUser: undefined;
+  SelectUserToStocktaking: undefined;
+  Stocktaking: {
+    userId?: UserId;
+    scannedValue?: {
+      itemId: ItemId;
+    };
+  };
+  StocktakingResult: {
+    userId: UserId;
+    items: ItemId[];
+  };
+  ScanQRForStocktaking: undefined;
 
   Account: undefined;
   Settings: undefined;
@@ -195,6 +213,18 @@ export const RootStack = observer(() => {
           name="InviteUserToProject"
           component={InviteUserToProjectBinding}
         />
+        {/* TODO l01n */}
+        <Screen
+          name="SelectUserToStocktaking"
+          component={SelectUserToStocktakingBinding}
+        />
+        {/* TODO l01n */}
+        <Screen name="Stocktaking" component={StocktakingBinding} />
+        <Screen
+          name="ScanQRForStocktaking"
+          component={ScanQRForStocktakingBinding}
+        />
+        <Screen name="StocktakingResult" component={StocktakingResultBinding} />
 
         <Screen name="UnknownError" component={UnknownErrorBinding} />
 
